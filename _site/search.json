@@ -54,5 +54,33 @@
     "title": "Hands-on Exercise 00: Working with tidyverse",
     "section": "Working with filter() of dplyr",
     "text": "Working with filter() of dplyr\n\nrealis2019_filtered &lt;- realis2019_selected %&gt;%\n  filter(`Property Type` == \"Condominium\" |\n           `Property Type` == \"Apartment\") %&gt;%\n  filter(`Type of Sale` == \"New Sale\") %&gt;%\n  filter(`Unit Price ($ psm)` &lt;= 13000)\n\nrealis2019_filtered\n\n# A tibble: 87 × 5\n   `Project Name`     `Transacted Price ($)` `Type of Sale` `Unit Price ($ psm)`\n   &lt;chr&gt;                               &lt;dbl&gt; &lt;chr&gt;                         &lt;dbl&gt;\n 1 RIVERFRONT RESIDE…                1029000 New Sale                      12863\n 2 RIVERFRONT RESIDE…                 871000 New Sale                      12809\n 3 RIVERFRONT RESIDE…                1940000 New Sale                      12848\n 4 RIVERFRONT RESIDE…                1030000 New Sale                      12875\n 5 RIVERFRONT RESIDE…                2061000 New Sale                      12962\n 6 RIVERFRONT RESIDE…                 762000 New Sale                      12915\n 7 RIVERFRONT RESIDE…                1001000 New Sale                      12513\n 8 RIVERFRONT RESIDE…                1271000 New Sale                      12838\n 9 RIVERFRONT RESIDE…                1310000 New Sale                      12970\n10 RIVERFRONT RESIDE…                1339000 New Sale                      13000\n# ℹ 77 more rows\n# ℹ 1 more variable: `Property Type` &lt;chr&gt;\n\n\n\nPutting It All Together\nAlternatively, you can combine the select() and filter() functions together as shown in the code chunk below:\n\nrealis2019_filtered2 &lt;- realis2019 %&gt;%\n  select('Project Name',\n         'Transacted Price ($)',\n         'Type of Sale',\n         'Unit Price ($ psm)',\n         'Property Type') %&gt;%\n  filter(`Property Type` == \"Condominium\" |\n           `Property Type` == \"Apartment\") %&gt;%\n  filter(`Type of Sale` == \"New Sale\") %&gt;%\n  filter(`Unit Price ($ psm)` &lt;= 13000)\n\nrealis2019_filtered2\n\n# A tibble: 87 × 5\n   `Project Name`     `Transacted Price ($)` `Type of Sale` `Unit Price ($ psm)`\n   &lt;chr&gt;                               &lt;dbl&gt; &lt;chr&gt;                         &lt;dbl&gt;\n 1 RIVERFRONT RESIDE…                1029000 New Sale                      12863\n 2 RIVERFRONT RESIDE…                 871000 New Sale                      12809\n 3 RIVERFRONT RESIDE…                1940000 New Sale                      12848\n 4 RIVERFRONT RESIDE…                1030000 New Sale                      12875\n 5 RIVERFRONT RESIDE…                2061000 New Sale                      12962\n 6 RIVERFRONT RESIDE…                 762000 New Sale                      12915\n 7 RIVERFRONT RESIDE…                1001000 New Sale                      12513\n 8 RIVERFRONT RESIDE…                1271000 New Sale                      12838\n 9 RIVERFRONT RESIDE…                1310000 New Sale                      12970\n10 RIVERFRONT RESIDE…                1339000 New Sale                      13000\n# ℹ 77 more rows\n# ℹ 1 more variable: `Property Type` &lt;chr&gt;"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html",
+    "href": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html",
+    "title": "Hands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods",
+    "section": "",
+    "text": "pacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#loading-the-required-libraries",
+    "href": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#loading-the-required-libraries",
+    "title": "Hands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods",
+    "section": "",
+    "text": "pacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#importing-data",
+    "href": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#importing-data",
+    "title": "Hands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods",
+    "section": "Importing Data",
+    "text": "Importing Data\nThe code chunk below imports exam_data.csv into R environment by using the read_csv() function of the readr package.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\n\nThere data set contains seven attributes:\n\nCategorical Attributes: ID, CLASS, GENDER and RACE. These columns are denoted as chr (“character type”).\nContinuous Attributes: ENGLISH, MATHS, and SCIENCE. These columns are stored as dbl (“double type”), i.e. numeric values."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#r-graphics-vs.-ggplot",
+    "href": "Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html#r-graphics-vs.-ggplot",
+    "title": "Hands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods",
+    "section": "R Graphics vs. ggplot",
+    "text": "R Graphics vs. ggplot\nThe tabset below compares how R Graphics and ggplot plot a simple histogram:"
   }
 ]
