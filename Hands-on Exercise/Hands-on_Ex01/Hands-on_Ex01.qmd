@@ -33,8 +33,6 @@ There data set contains seven attributes:
 
 The tabset below compares how R Graphics and ggplot plot a simple histogram:
 
-# Histogram Comparison
-
 ::: panel-tabset
 ## R Graphics
 
@@ -50,6 +48,379 @@ ggplot(data=exam_data, aes(x = MATHS)) +
                  boundary = 100,
                  color="black", 
                  fill="grey") +
-  ggtitle("Distribution of Maths scores")
+  ggtitle("Distribution of Maths Scores")
 ```
 :::
+
+### *Side Note: Attempting to Customise the R Graphics Histogram*
+
+The code chunk below customises the R Graphics histogram so that it's similar to the ggplot2 histogram.
+
+```{r}
+hist(exam_data$MATHS, 
+     breaks = 20,                     
+     col = "grey",                
+     border = "black",                 
+     main = "Distribution of Maths Scores",  
+     xlab = "MATHS",            
+     ylab = "Count")               
+```
+
+::: callout-note
+After plotting the histograms using both **R Graphics** and **ggplot2**, I noted the following:
+
+-   **X-Axis Labels**: R Graphics automatically labels the x-axis with the column reference ("*exam_data\$MATHS")*. This reduces the plot's readability and interpretability as it directly reflects the code rather than a clear, descriptive label. On the other hand, ggplot2 retains the column name ("MATHS") as the x-axis label, providing a more intuitive presentation by default.
+
+-   **Layers**: ggplot2 uses a layered approach, where data, aesthetics and geometric objects are added step-by-step using +.
+:::
+
+## Essential Grammatical Elements in ggplot2: Data
+
+The code chunk below is used to call the ggplot() function.
+
+```{r}
+ggplot(data=exam_data)
+```
+
+## Essential Grammatical Elements in ggplot2: Aesthetics Mappings
+
+The aesthetic mappings take attributes of the data and use them to influence visual characteristics. Each visual characteristics can thus encode an aspect of the data and be used to convey information.
+
+All aesthetics of a plot are specified in the aes() function call.
+
+```{r}
+ggplot(data=exam_data, aes(x=MATHS))
+```
+
+::: callout-note
+Other aesthetic mappings include - x, y, color, size, shape, alpha (transparency).
+:::
+
+## Essential Grammatical Elements in ggplot2: geom
+
+Geometric objects are the actual marks we put on a plot. Examples include:
+
+-   *geom_point* for drawing individual points (e.g., a scatter plot)
+
+-   *geom_line* for drawing lines (e.g., for a line charts)
+
+-   *geom_smooth* for drawing smoothed lines (e.g., for simple trends or approximations)
+
+-   *geom_bar* for drawing bars (e.g., for bar charts)
+
+-   *geom_histogram* for drawing binned values (e.g. a histogram)
+
+-   *geom_polygon* for drawing arbitrary shapes
+
+-   *geom_map* for drawing polygons in the shape of a map! (You can access the data to use for these maps by using the map_data() function).
+
+A plot must have at least one geom.
+
+### Geometric Objects: geom_bar
+
+The code chunk below plots a bar chart using geom_bar():
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar()
+```
+
+### Geometric Objects: geom_dotplot
+
+In a dot plot, the width of a dot corresponds to the bin width (or maximum width, depending on the binning algorithm), and dots are stacked, with each dot representing one observation.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot(dotsize = 0.5)
+```
+
+::: callout-note
+The y-scale is misleading.
+:::
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot(binwidth=2.5,         
+               dotsize = 0.5) +      
+  scale_y_continuous(NULL,           
+                     breaks = NULL)  
+```
+
+### Geometric Objects: geom_histogram
+
+The code chunk below uses geom_histogram() to create a simple histogram.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram()  
+```
+
+### Modifying a Geometric Object by Changing geom
+
+In the code chunk below:
+
+-   *bins* is used to change the number of bins to 20
+
+-   *fill* is used to shade the histogram with light blue
+
+-   *color* is used to change the **outline** colour of the bars in black.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS)) +
+  geom_histogram(bins=20,            
+                 color="black",      
+                 fill="light blue")  
+```
+
+### Modifying a Geometric Object by Changing aes( )
+
+The code chunk below changes the interior colour of the histogram by using sub-group of aes():
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           fill = GENDER)) +
+  geom_histogram(bins=20, 
+                 color="grey30")
+```
+
+### Geometric Objects: geom_density
+
+geom-density() computes and plots kernel density estimate, which is a smoothed version of the histogram.
+
+It is a useful alternative to the histogram for continuous data that comes from an underlying smooth distribution.
+
+The code below plots the distribution of Maths scores in a kernel density estimate plot.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_density()           
+```
+
+The code chunk below plots two kernel density lines by using *colour* or *fill* arguments of *aes()*
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = MATHS, 
+           colour = GENDER)) +
+  geom_density()
+```
+
+### Geometric Objects: geom_boxplot
+
+geom_boxplot() displays continuous value list. It visualises five summary statistics (the median, two hinges and two whiskers), and all “outlying” points individually.
+
+The code chunk below plots boxplots by using geom_boxplot().
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS,       
+           x= GENDER)) +    
+  geom_boxplot()            
+```
+
+Notches are used in box plots to help visually assess whether the medians of distributions differ. If the notches do not overlap, this is evidence that the medians are different.
+
+The code chunk below plots the distribution of Maths scores by gender in notched plot instead of boxplot.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_boxplot(notch=TRUE)
+```
+
+### Geometric Objects: geom_violin
+
+geom_violin is designed for creating violin plot. Violin plots are a way of comparing multiple data distributions. With ordinary density curves, it is difficult to compare more than just a few distributions because the lines visually interfere with each other. With a violin plot, it’s easier to compare several distributions since they’re placed side by side.
+
+The code below plot the distribution of Maths score by gender in violin plot.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_violin()
+```
+
+### Geometric Objects: geom_point
+
+geom_point() is especially useful for creating scatterplot.
+
+The code chunk below plots a scatterplot showing the Maths and English grades of pupils by using geom_point().
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point()            
+```
+
+### Geom Objects can be Combined
+
+The code chunk below plots the data points on the boxplots by using both `geom_boxplot()` and `geom_point()`.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_boxplot() +                    
+  geom_point(position="jitter", 
+             size = 0.5)        
+```
+
+## Essential Grammatical Elements in ggplot2: stat
+
+### Working with stat( )
+
+The boxplots below are incomplete because the positions of the means were not shown.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, x= GENDER)) +
+  geom_boxplot()
+```
+
+### Working with stat - the stat_summary( ) Method
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, x= GENDER)) +
+  geom_boxplot() +
+  stat_summary(geom = "point",       
+               fun = "mean",         
+               colour ="red",        
+               size=4)               
+```
+
+### Working with stat - the geom( ) Method
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = MATHS, x= GENDER)) +
+  geom_boxplot() +
+  geom_point(stat="summary",        
+             fun="mean",           
+             colour="red",          
+             size=4)          
+```
+
+### Adding a Best Fit Curve on a Scatterplot
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(size=0.5)
+```
+
+The default method used is loess. The default smoothing method can be overridden as shown below.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              linewidth=0.5)
+```
+
+## Essential Grammatical Elements in ggplot2: Facets
+
+Facetting generates small multiples (sometimes also called trellis plot), each displaying a different subset of the data. They are an alternative to aesthetics for displaying additional discrete variables.
+
+### Working with facet_wrap
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS)) +
+  geom_histogram(bins=20) +
+    facet_wrap(~ CLASS)
+```
+
+### facet_grid() Function
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS)) +
+  geom_histogram(bins=20) +
+    facet_grid(~ CLASS)
+```
+
+## Essential Grammatical Elements in ggplot2: Coordinates
+
+### Working with Coordinates
+
+By default, the bar chart of ggplot2 is in vertical form.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar()
+```
+
+However, you can flip the bar chart into a horizontal bar chart.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip()
+```
+
+### Changing the y- and x-axis Range
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, size=0.5)
+```
+
+Fixing both y-axis and x-axis range from 0 to 100.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              size=0.5) +  
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+```
+
+## Essential Grammatical Elements in ggplot2: Theme
+
+Themes control elements of the graph not related to the data,
+
+### Working with theme
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_gray()
+```
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_classic()
+```
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_minimal()
+```
