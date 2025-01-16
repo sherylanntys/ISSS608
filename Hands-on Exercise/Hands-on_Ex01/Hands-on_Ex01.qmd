@@ -240,6 +240,12 @@ ggplot(data=exam_data,
   geom_boxplot(notch=TRUE)
 ```
 
+::: callout-note
+Generally, the notches serve as a visual indicator of the confidence interval around the median.
+
+Notched Box Plots are particularly useful in assessing whether the medians are meaningfully different across groups.
+:::
+
 ### 5.8 Geometric Objects: geom_violin
 
 geom_violin is designed for creating violin plot. Violin plots are a way of comparing multiple data distributions. With ordinary density curves, it is difficult to compare more than just a few distributions because the lines visually interfere with each other. With a violin plot, it’s easier to compare several distributions since they’re placed side by side.
@@ -252,6 +258,12 @@ ggplot(data=exam_data,
            x= GENDER)) +
   geom_violin()
 ```
+
+::: callout-note
+The shape of the violin represents the **density** of the data at different values. Wider sections indicate higher data concentration.
+
+Some factors to consider when interpreting violin plots include the shape of the violin (width, number of peaks, etc.) and its symmetry. Symmetry represents the skewness of the data.
+:::
 
 ### 5.9 Geometric Objects: geom_point
 
