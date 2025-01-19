@@ -311,6 +311,37 @@ patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 ```
 
+### 4.1.6 Attempting to Modify the Plot in 4.1.5
+
+As the plot title of *p3* was cut off, with the titles of *p2* overlapping *p3*, we will attempt to modify the plot by reducing the title size. At the same time, I will also try other themes.
+
+::: panel-tabset
+#### Reducing the Title Size
+
+Adding `plot.title = element_text(size=10)` will reduce the respective plots' title size.
+
+```{r}
+patchwork & 
+  theme_economist() & 
+  theme(
+    plot.title = element_text(size = 9),        # Reduce plot title size
+    axis.text = element_text(size = 6),         # Reduce axis tick text size
+    axis.title = element_text(size = 6)         # Reduce axis labels size
+  )
+```
+
+#### Using `theme_wsj()`
+
+```{r}
+patchwork & 
+  theme_wsj() & 
+  theme(
+    plot.title = element_text(size = 8),        # Reduce plot title size
+    axis.text = element_text(size = 6),         # Reduce axis tick text size
+    axis.title = element_text(size = 6)         # Reduce axis labels size
+  )
+```
+
 # 5.0 References
 
 -   [Patchwork R package goes nerd viral](https://www.littlemissdata.com/blog/patchwork)
@@ -330,3 +361,4 @@ patchwork & theme_economist()
 ## 5.1 Disclaimer
 
 This document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages.
+:::

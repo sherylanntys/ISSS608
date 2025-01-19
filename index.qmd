@@ -9,7 +9,7 @@ listing:
     sort: "title desc"
     type: grid
     feed:
-      items: 5  # Limit to 5 items
+      items: 6  # Limit to 5 items
 ---
 
 Welcome to **ISSS608 Visual Analytics and Applications**.
