@@ -341,6 +341,7 @@ patchwork &
     axis.title = element_text(size = 6)         # Reduce axis labels size
   )
 ```
+:::
 
 # 5.0 References
 
@@ -361,4 +362,4 @@ patchwork &
 ## 5.1 Disclaimer
 
 This document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages.
-:::
+
