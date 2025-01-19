@@ -362,4 +362,3 @@ patchwork &
 ## 5.1 Disclaimer
 
 This document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages.
-
