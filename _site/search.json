@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ISSS608",
+    "title": "ISSS608 Visual Analytics and Applications",
     "section": "",
     "text": "Welcome to ISSS608 Visual Analytics and Applications."
   },
@@ -152,5 +152,82 @@
     "title": "Hands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods",
     "section": "10.0 Reference",
     "text": "10.0 Reference\n\nHadley Wickham (2023) ggplot2: Elegant Graphics for Data Analysis. Online 3rd edition.\nWinston Chang (2013) R Graphics Cookbook 2nd edition. Online version.\nHealy, Kieran (2019) Data Visualization: A practical introduction. Online version\nLearning ggplot2 on Paper – Components\nLearning ggplot2 on Paper – Layer\nLearning ggplot2 on Paper – Scale"
+  },
+  {
+    "objectID": "index.html#latest-posts",
+    "href": "index.html#latest-posts",
+    "title": "ISSS608 Visual Analytics and Applications",
+    "section": "Latest Posts",
+    "text": "Latest Posts\n\n\n\n\n\n\n\n\nHands-on Exercise 02: Beyond ggplot2 Fundamentals\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 00: Working with tidyverse\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "",
+    "text": "The following R packages will be used:\n\nggrepel: Provides geoms for ggplot2 to repel overlapping text labels.\nggthemes: Provides extra themes, geoms and scales for ggplot2.\nhrbrthemes: Provides typography-centric themes and theme components for ggplot2.\npatchwork: Prepares composite figure created using ggplot2.\n\n\npacman::p_load(ggrepel, patchwork, \n               ggthemes, hrbrthemes,\n               tidyverse) \n\n\n\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#installing-and-loading-the-required-libraries",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#installing-and-loading-the-required-libraries",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "",
+    "text": "The following R packages will be used:\n\nggrepel: Provides geoms for ggplot2 to repel overlapping text labels.\nggthemes: Provides extra themes, geoms and scales for ggplot2.\nhrbrthemes: Provides typography-centric themes and theme components for ggplot2.\npatchwork: Prepares composite figure created using ggplot2.\n\n\npacman::p_load(ggrepel, patchwork, \n               ggthemes, hrbrthemes,\n               tidyverse)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#importing-data",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#importing-data",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "",
+    "text": "exam_data &lt;- read_csv(\"data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggrepel.",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggrepel.",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "2.1 Working with ggrepel.",
+    "text": "2.1 Working with ggrepel.\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\") +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\ngeom_label_repel(aes(label = ID), fontface = “bold”): Replaces geom_label to dynamically adjust label positions and prevent overlapping.\nThe density of points in certain regions of the graph may lead to labels being omitted.\n\n\n\n2.1.1 Exploring Other Arguments in geom_label_repel\nA list of arguments that can be used with geom_label_repel() can be found here."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#max.overlaps",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#max.overlaps",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "max.overlaps",
+    "text": "max.overlaps\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\",\n                   max.overlaps=20) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nmax.overlaps\nBy default, geom_label_repel exclude text labels when they overlap too many other labels. The default is 10. Increasing the max.overlaps argument would increase the number of labels displayed in the graph."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggrepel",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggrepel",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "2.1 Working with ggrepel",
+    "text": "2.1 Working with ggrepel\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\") +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\ngeom_label_repel(aes(label = ID), fontface = \"bold\"): Replaces geom_label() to dynamically adjust label positions and prevent overlapping.\nThe density of points in certain regions of the graph may lead to labels being omitted.\n\n\n\n2.1.1 Exploring Other Arguments in geom_label_repel\nA list of arguments that can be used with geom_label_repel() can be found here.\nmax.overlaps\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\",\n                   max.overlaps=20) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nmax.overlaps\nBy default, geom_label_repel exclude text labels when they overlap too many other labels. The default is 10. Increasing the max.overlaps argument would increase the number of labels displayed in the graph."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggtheme-package",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-ggtheme-package",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "3.1 Working with ggtheme Package",
+    "text": "3.1 Working with ggtheme Package\nIn the example below, The Economist theme is used.\n\nggplot(data=exam_data, \n             aes(x = MATHS)) +\n  geom_histogram(bins=20, \n                 boundary = 100,\n                 color=\"grey25\", \n                 fill=\"grey90\") +\n  ggtitle(\"Distribution of Maths scores\") +\n  theme_economist()"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-hrbthems-package",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#working-with-hrbthems-package",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "3.2 Working with hrbthems Package",
+    "text": "3.2 Working with hrbthems Package\nThe hrbrthemes package provides a base theme that focuses on typographic elements, including where various labels are placed, and fonts that are used.\n\nggplot(data=exam_data, \n             aes(x = MATHS)) +\n  geom_histogram(bins=20, \n                 boundary = 100,\n                 color=\"grey25\", \n                 fill=\"grey90\") +\n  ggtitle(\"Distribution of Maths scores\") +\n  theme_ipsum()\n\n\n\n\n\n\n\n\n\nggplot(data=exam_data, \n             aes(x = MATHS)) +\n  geom_histogram(bins=20, \n                 boundary = 100,\n                 color=\"grey25\", \n                 fill=\"grey90\") +\n  ggtitle(\"Distribution of Maths scores\") +\n  theme_ipsum(axis_title_size = 18,\n              base_size = 15,\n              grid = \"Y\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\naxis_title_size: Adjust the font size of the axis title.\nbase_size: Adjust the font size of the axis labels.\ngrid: Remove the x-axis grid lines."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#creating-composite-graphics-patchwork-methods",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#creating-composite-graphics-patchwork-methods",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "4.1 Creating Composite Graphics: patchwork Methods",
+    "text": "4.1 Creating Composite Graphics: patchwork Methods\nGenerally syntax that can be used:\n\n+: Used to create a two-column layout\n( ): Used to create a subplot group.\n/: Used to create a two-row layout.\n\n\n4.1.1 Combining Two ggplot2 Graphs\n\nUsing +Using ()Using /\n\n\n\np1 + p2\n\n\n\n\n\n\n\n\n\n\n\n(p1 + p2)/p1\n\n\n\n\n\n\n\n\n\n\n\np1 / p3\n\n\n\n\n\n\n\n\n\n\n\n\n\n4.1.2 Combining Three ggplot2 Graphs\nThe following syntax can be used:\n\n/: Used to stack two graphs.\n|: Used to place the plots beside each other.\n( ): Used to define the sequence of the plotting.\n\n\n(p1 / p2) | p3\n\n\n\n\n\n\n\n\n\n\n4.1.3 Creating a Composite Figure with Tag\n\n((p1 / p2) | p3) + \n  plot_annotation(tag_levels = 'I')\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nplot_annotation(): Adds annotations to the composite plot.\ntag_levels = 'I': Automatically tags each subplot with Roman numerals. Other options for tag_levels include: A, a, 1\n\n\n\n\n4.1.3.1 Other Arguments for plot_annotation()\nA list of arguments that can be used with plot_annotation() can be found here.\nUsing tag_prefix:\n\n((p1 / p2) | p3) + \n  plot_annotation(tag_levels = '1', tag_prefix=\"Figure \")\n\n\n\n\n\n\n\n\n\n\n\n4.1.4 Creating Figure with inset\ninset_element() of patchwork enables us to place several plots or graphic elements freely on top or below another plot.\n\np3 + inset_element(p2, \n                   left = 0.02, \n                   bottom = 0.7, \n                   right = 0.5, \n                   top = 1)\n\n\n\n\n\n\n\n\n\n\n4.1.5 Creating a Composite Figure by Using patchwork and ggtheme\n\npatchwork &lt;- (p1 / p2) | p3\npatchwork & theme_economist()"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#disclaimer",
+    "href": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html#disclaimer",
+    "title": "Hands-on Exercise 02: Beyond ggplot2 Fundamentals",
+    "section": "5.1 Disclaimer",
+    "text": "5.1 Disclaimer\nThis document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages."
   }
 ]

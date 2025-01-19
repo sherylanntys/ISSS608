@@ -1,7 +1,23 @@
 ---
-title: "ISSS608"
+title: "ISSS608 Visual Analytics and Applications"
+toc: false # Disable table of contents
+listing:
+  - id: recent-posts
+    contents:
+      - "Hands-on Exercise/Hands-on_Ex*/*.qmd"
+      - "lab-notes/*reports.qmd"
+    sort: "title desc"
+    type: grid
+    feed:
+      items: 5  # Limit to 5 items
 ---
 
 Welcome to **ISSS608 Visual Analytics and Applications**.
 
 ![](images/clipboard-4218098757.png)
+
+## Latest Posts
+
+::: {#recent-posts}
+:::
+
