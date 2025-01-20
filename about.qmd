@@ -2,4 +2,4 @@
 title: "About"
 ---
 
-![![](images/clipboard-1554749533.png)](images/clipboard-383353770.png)
+![![](images/clipboard-1554749533.png){width="650"}](images/clipboard-383353770.png){width="650"}
