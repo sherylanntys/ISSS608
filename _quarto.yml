@@ -16,17 +16,21 @@ website:
     left:
       - text: "Hands-on Exercise"
         menu:
-        - text: "Hands-On Exercise 0"
+        - text: "Hands-On Exercise 0.0"
           href: Hands-on Exercise/Hands-on_Ex00/Hands-on_Ex00.html
-        - text: "Hands-On Exercise 1"
+        - text: "Hands-On Exercise 1.0"
           href: Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html
-        - text: "Hands-On Exercise 2"
+        - text: "Hands-On Exercise 2.0"
           href: Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html
+        - text: "Hands-On Exercise 3.1"
+          href: Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html
           
       - text: "In-class Exercise"
         menu:
-        - text: "In-class Exercise 1"
-          href: https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17371867514480/Dashboard1
+        - text: "In-class Exercise 1.0"
+          href: https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17377898729330/Dashboard1
+        - text: "In-class Exercise 2.0"
+          href: https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17371867514480/Dashboard2
       - text: "Take-home Exercise"
         menu: 
         - text: "Take-home Exercise 1 - Coming Soon"
