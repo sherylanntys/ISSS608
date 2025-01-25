@@ -12,12 +12,14 @@ execute:
 
 # 1.0 Getting Started
 
+## 1.1 Loading the R Packages
+
 ```{r}
 pacman::p_load(ggiraph, plotly, 
                patchwork, DT, tidyverse) 
 ```
 
-## 1.1 Importing Data
+## 1.2 Importing Data
 
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
