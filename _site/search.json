@@ -158,7 +158,7 @@
     "href": "index.html#latest-posts",
     "title": "ISSS608 Visual Analytics and Applications",
     "section": "Latest Posts",
-    "text": "Latest Posts\n\n\n\n\n\n\n\n\nHands-on Exercise 3.1: Programming Interactive Data Visualisation with R\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 26, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 02: Beyond ggplot2 Fundamentals\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 00: Working with tidyverse\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Latest Posts\n\n\n\n\n\n\n\n\nHands-on Exercise 3.2: Programming Animated Statistical Graphics with R\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 26, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 3.1: Programming Interactive Data Visualisation with R\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 26, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 02: Beyond ggplot2 Fundamentals\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 01: A Layered Grammar of Graphics: ggplot2 Methods\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\n\n\n\n\nHands-on Exercise 00: Working with tidyverse\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html",
@@ -235,7 +235,7 @@
     "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html",
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
     "section": "",
-    "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n\n\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
+    "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n\n\n\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#importing-data",
@@ -355,5 +355,68 @@
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
     "section": "6.1 Disclaimer",
     "text": "6.1 Disclaimer\nThis document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages."
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#loading-the-r-packages",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#loading-the-r-packages",
+    "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
+    "section": "",
+    "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "",
+    "text": "pacman::p_load(readxl, gifski, gapminder,\n               plotly, gganimate, tidyverse)\n\n\n\n\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_each_(funs(factor(.)), col) %&gt;%\n  mutate(Year = as.integer(Year))\n\nSince mutate_each( ) and funs( ) were deprecated. The code chunk will be re-written using mutate_at( ).\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_at(col, as.factor) %&gt;%\n  mutate(Year = as.integer(Year))\n\nacross( ) can also be used to derive the same outputs.\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate(across(col, as.factor)) %&gt;%\n  mutate(Year = as.integer(Year))"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#loading-the-r-packages",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#loading-the-r-packages",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "",
+    "text": "pacman::p_load(readxl, gifski, gapminder,\n               plotly, gganimate, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#importing-the-data",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#importing-the-data",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "",
+    "text": "col &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_each_(funs(factor(.)), col) %&gt;%\n  mutate(Year = as.integer(Year))\n\nSince mutate_each( ) and funs( ) were deprecated. The code chunk will be re-written using mutate_at( ).\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_at(col, as.factor) %&gt;%\n  mutate(Year = as.integer(Year))\n\nacross( ) can also be used to derive the same outputs.\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate(across(col, as.factor)) %&gt;%\n  mutate(Year = as.integer(Year))"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-a-static-population-bubble-plot",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-a-static-population-bubble-plot",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "2.1 Building a Static Population Bubble Plot",
+    "text": "2.1 Building a Static Population Bubble Plot\n\nggplot(globalPop, aes(x = Old, y = Young, \n                      size = Population, \n                      colour = Country)) +\n  geom_point(alpha = 0.7, \n             show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(title = 'Year: {frame_time}', \n       x = '% Aged', \n       y = '% Young')"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "2.2 Building an Animated Bubble Plot",
+    "text": "2.2 Building an Animated Bubble Plot\n\nggplot(globalPop, aes(x = Old, y = Young, \n                      size = Population, \n                      colour = Country)) +\n  geom_point(alpha = 0.7, \n             show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(title = 'Year: {frame_time}', \n       x = '% Aged', \n       y = '% Young') +\n  transition_time(Year) +       \n  ease_aes('linear')"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot-ggplotly-method",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot-ggplotly-method",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "3.1 Building an Animated Bubble Plot: ggplotly( ) Method",
+    "text": "3.1 Building an Animated Bubble Plot: ggplotly( ) Method\n\ngg &lt;- ggplot(globalPop, \n       aes(x = Old, \n           y = Young, \n           size = Population, \n           colour = Country)) +\n  geom_point(aes(size = Population,\n                 frame = Year),\n             alpha = 0.7, \n             show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(x = '% Aged', \n       y = '% Young')\n\nggplotly(gg)\n\n\n\n\n\nAlthough show.legend = FALSE was used, the legend still appears on the plot. Hence, theme(legend.position='none') will be used to replace the affected code chunk.\n\ngg &lt;- ggplot(globalPop, \n       aes(x = Old, \n           y = Young, \n           size = Population, \n           colour = Country)) +\n  geom_point(aes(size = Population,\n                 frame = Year),\n             alpha = 0.7) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(x = '% Aged', \n       y = '% Young') + \n  theme(legend.position='none')\n\nggplotly(gg)"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot-plot_ly-method",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#building-an-animated-bubble-plot-plot_ly-method",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "3.2 Building an Animated Bubble Plot: plot_ly( ) Method",
+    "text": "3.2 Building an Animated Bubble Plot: plot_ly( ) Method\n\nbp &lt;- globalPop %&gt;%\n  plot_ly(x = ~Old, \n          y = ~Young, \n          size = ~Population, \n          color = ~Continent,\n          sizes = c(2, 100),\n          frame = ~Year, \n          text = ~Country, \n          hoverinfo = \"text\",\n          type = 'scatter',\n          mode = 'markers'\n          ) %&gt;%\n  layout(showlegend = FALSE)\nbp"
+  },
+  {
+    "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#disclaimer",
+    "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html#disclaimer",
+    "title": "Hands-on Exercise 3.2: Programming Animated Statistical Graphics with R",
+    "section": "4.1 Disclaimer",
+    "text": "4.1 Disclaimer\nThis document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages."
   }
 ]
