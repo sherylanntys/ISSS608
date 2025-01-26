@@ -1,5 +1,5 @@
 ---
-title: "ISSS608 Visual Analytics and Applications"
+title: "Hands-on Exercise Landing Page"
 toc: false
 number-sections: false
 anchor-sections: false
@@ -7,10 +7,8 @@ listing:
   - id: recent-posts
     contents:
       - "Hands-on Exercise/Hands-on_Ex*/*.qmd"
-      - "lab-notes/*reports.qmd"
-    sort: "title desc"
+    sort: "title"
     type: grid
-    max-items: 3
 ---
 
 ```{=html}
@@ -71,24 +69,8 @@ listing:
 </style>
 ```
 
-```{=html}
 
-<center><img src="images/clipboard-889759809.png" class="welcome-image" width="425"></center>
-```
-
-## Welcome
-
-```{=html}
-<center><p class="welcome-text">Hello and welcome to my webpage for <b>ISSS608 Visual Analytics and Applications</b> taught by Prof. Kam Tin Seong. Here, you'll find my coursework and projects for the module. Enjoy!</center></p>
-```
-
-## Explore
-
-```{=html}
-<div class="image-explore"><a href="https://isss608-sherylanntan.netlify.app/hands-on_Ex_Landing"><img src="images/clipboard-3919549054.png"></a> <a href="https://public.tableau.com/app/profile/sherylanntys/vizzes"><img src="images/clipboard-2944120352.png"></a> <img src="images/clipboard-2328227339.png"></div>
-```
-
-## Latest Posts
+## Overview of Hands-on Exercises
 
 ::: {#recent-posts}
 :::
