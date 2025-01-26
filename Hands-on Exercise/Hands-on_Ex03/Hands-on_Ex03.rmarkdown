@@ -10,6 +10,8 @@ execute:
   freeze: true
 ---
 
+
+
 # 1.0 Getting Started
 
 ## 1.1 Loading the R Packages
@@ -24,18 +26,26 @@ The following R packages would installed and loaded:
 | `tidyverse` |                                                     |
 | `patchwork` | Combines multiple `ggplot2` graphs into one figure. |
 
+
+
 ```{r}
 pacman::p_load(ggiraph, plotly, 
                patchwork, DT, tidyverse) 
 ```
 
+
+
 ## 1.2 Importing Data
 
 The code chunk below uses `read_csv( )` to import the *Exam_data.csv* data file into R and save it as a tibble data frame called `exam_data`.
 
+
+
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
+
+
 
 # 2.0 Interative Data Visualisation: `ggiraph` Methods
 
@@ -50,6 +60,8 @@ The code chunk consists of the following parts:
 2.  `girafe( )` of `ggiraph` will be used to create an interactive svg object.
 
 `geom_dotplot_interactive( )` will be used to create a basic graph while `girafe( )` will be used to generate a svg object to be displayed on a html page.
+
+
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -68,6 +80,8 @@ girafe(
 )
 ```
 
+
+
 # 3.0 Interactivity
 
 Hovering the mouse pointer on a data point of interest in the graph under Section 2.1 would display the student's ID.
@@ -75,6 +89,8 @@ Hovering the mouse pointer on a data point of interest in the graph under Sectio
 ## 3.1 Displaying Multiple Information on `tooltip`
 
 The code chunk below can be customised by including a list object:
+
+
 
 ```{r}
 exam_data$tooltip <- c(paste0(     
@@ -97,9 +113,13 @@ girafe(
 )
 ```
 
+
+
 ## 3.2 Customising `tooltip` Style
 
 `opts_tooltip( )` of `ggiraph` customises tooltip rendering by adding CSS declarations.
+
+
 
 ```{r}
 tooltip_css <- "background-color:white; #<<
@@ -126,9 +146,13 @@ girafe(
 )                                        
 ```
 
+
+
 ## 3.3 Displaying Statistics on `tooltip`
 
 The code chunk below uses a function to compute 90% confidence interval of the mean. The derived statistics are then displayed in the tooltip.
+
+
 
 ```{r}
 tooltip <- function(y, ymax, accuracy = .01) {
@@ -157,9 +181,13 @@ girafe(ggobj = gg_point,
        height_svg = 8*0.618)
 ```
 
+
+
 ## 3.4 Hover Effect with `data_id` Aesthetic
 
 Elements associated with `data_id` will be highlighted upon mouse over. The default value of the hover css is `hover_css="fill:orange;"`.
+
+
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -178,7 +206,11 @@ girafe(
 )                                        
 ```
 
+
+
 ## 3.5 Styling Hover Effect
+
+
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -202,7 +234,11 @@ girafe(
 
 ```
 
+
+
 ## 3.6 Combining `tooltip` and `hover` Effects
+
+
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -226,9 +262,13 @@ girafe(
 )                                        
 ```
 
+
+
 ## 3.7 Click Effect with `onclick`
 
 The data object would link to a web document, which would be displayed in a new window once clicked.
+
+
 
 ```{r}
 exam_data$onclick <- sprintf("window.open(\"%s%s\")",
@@ -250,7 +290,11 @@ girafe(
   height_svg = 6*0.618)                                        
 ```
 
+
+
 ## 3.8 Coordinated Multiple Views with `ggiraph`
+
+
 
 ```{r}
 p1 <- ggplot(data=exam_data, 
@@ -285,6 +329,8 @@ girafe(code = print(p1 + p2), # patchwork
        ) 
 ```
 
+
+
 -   When a data point of one of the dotplot is selected, the corresponding data point ID on the second data visualisation will be highlighted too.
 
 -   `patchwork` will be used inside the `girafe` function to create the interactive coordinated multiple views.
@@ -293,13 +339,19 @@ girafe(code = print(p1 + p2), # patchwork
 
 ## 4.1 Creating an Interactive Scatter Plot: `plot_ly( )` Method
 
+
+
 ```{r}
 plot_ly(data = exam_data, 
              x = ~MATHS, 
              y = ~ENGLISH)
 ```
 
+
+
 ## 4.2 Working with Visual Variable: `plot_ly( )` Method
+
+
 
 ```{r}
 plot_ly(data = exam_data, 
@@ -308,7 +360,11 @@ plot_ly(data = exam_data,
         color = ~RACE)
 ```
 
+
+
 ## 4.3 Creating an Interactive Scatterplot: `ggplotly( )` Method
+
+
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -320,6 +376,8 @@ p <- ggplot(data=exam_data,
 ggplotly(p)
 ```
 
+
+
 ## 4.4 Coordinated Multiple Views with `plotly`
 
 -   `highlight_key( )` is used as shared data
@@ -327,6 +385,8 @@ ggplotly(p)
 -   Two scatterplots would be created via `ggplot2`
 
 -   `subplot( )` will be used to place them next to each other.
+
+
 
 ```{r}
 d <- highlight_key(exam_data)
@@ -347,15 +407,23 @@ subplot(ggplotly(p1),
         ggplotly(p2))
 ```
 
+
+
 # 5.0 Interactive Data Visualisation - `crosstalk` Methods
 
 ## 5.1 Interactive Data Table: DT Package
+
+
 
 ```{r}
 DT::datatable(exam_data, class= "compact")
 ```
 
+
+
 ## 5.2 Linked Brushing: `crosstalk` Method
+
+
 
 ```{r}
 d <- highlight_key(exam_data) 
@@ -374,6 +442,8 @@ crosstalk::bscols(gg,
                   widths = 5)        
 ```
 
+
+
 # 6.0 Exploring Other Interactive Visualisations
 
 ::: panel-tabset
@@ -382,6 +452,8 @@ crosstalk::bscols(gg,
 The following code chunk plots the a scatter plot of Science Scores vs. English Scores, with a linear regression line added. The regression line indicates a positive correlation between English and Science scores.
 
 Points are grouped by `CLASS` using the `data_id` aesthetic. Hovering over one point highlights all students from the same class. The `tooltip` displays the `ID` and `CLASS` for each point.
+
+
 
 ```{r}
 p <- ggplot(data = exam_data, aes(x = ENGLISH, y = SCIENCE)) +
@@ -411,11 +483,15 @@ girafe(
 
 ```
 
+
+
 ## `ggiraph`: Interactive Boxplot
 
 The following code chunk creates a series of boxplots to visualise examination scores (`MATHS`, `ENGLISH`, and `SCIENCE`) by gender. The plots are combined using `patchwork` for easy comparison.
 
 Hovering over the respective boxplots would display the tooltips containing the following information: median score, IQR, maximum and minimum scores.
+
+
 
 ```{r}
 
@@ -482,9 +558,13 @@ girafe(
 
 ```
 
+
+
 ## `plotly`: Interactive Boxplot
 
 The following code chunk plots the boxplots of English scores for each `RACE`, allowing a visual comparison of English score distributions between races. Hovering over each boxplot will display the five-number summary.
+
+
 
 ```{r}
 plot_ly(data = exam_data, y = ~ENGLISH, color = ~RACE, type = "box", hoverinfo = "y+name") %>%
@@ -493,6 +573,8 @@ plot_ly(data = exam_data, y = ~ENGLISH, color = ~RACE, type = "box", hoverinfo =
          yaxis = list(title = "English Scores"))
 
 ```
+
+
 :::
 
 # 7.0 References
@@ -528,3 +610,4 @@ This [link](https://davidgohel.github.io/ggiraph/index.html) provides online ver
 ## 7.1 Disclaimer
 
 This document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages.
+

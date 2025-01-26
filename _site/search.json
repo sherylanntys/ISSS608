@@ -235,14 +235,14 @@
     "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html",
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
     "section": "",
-    "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n\n\n\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
+    "text": "The following R packages would installed and loaded:\n\n\n\nR Package\nDescription\n\n\n\n\nggiraph\nMakes ggplot graphics interactive.\n\n\nplotly\nPlots interactive statistical graphs.\n\n\nDT\nCreates interactive tables on a html page.\n\n\ntidyverse\n\n\n\npatchwork\nCombines multiple ggplot2 graphs into one figure.\n\n\n\n\npacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n\n\n\n\nThe code chunk below uses read_csv( ) to import the Exam_data.csv data file into R and save it as a tibble data frame called exam_data.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#importing-data",
     "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#importing-data",
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
     "section": "",
-    "text": "exam_data &lt;- read_csv(\"data/Exam_data.csv\")"
+    "text": "The code chunk below uses read_csv( ) to import the Exam_data.csv data file into R and save it as a tibble data frame called exam_data.\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")"
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#tooltip-effect-with-tooltip-aesthetic",
@@ -353,15 +353,15 @@
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#disclaimer",
     "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#disclaimer",
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
-    "section": "6.1 Disclaimer",
-    "text": "6.1 Disclaimer\nThis document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages."
+    "section": "7.1 Disclaimer",
+    "text": "7.1 Disclaimer\nThis document includes content written with the assistance of ChatGPT, which was used for grammar correction and the explanation of arguments for the various packages."
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#loading-the-r-packages",
     "href": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html#loading-the-r-packages",
     "title": "Hands-on Exercise 3.1: Programming Interactive Data Visualisation with R",
     "section": "",
-    "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
+    "text": "The following R packages would installed and loaded:\n\n\n\nR Package\nDescription\n\n\n\n\nggiraph\nMakes ggplot graphics interactive.\n\n\nplotly\nPlots interactive statistical graphs.\n\n\nDT\nCreates interactive tables on a html page.\n\n\ntidyverse\n\n\n\npatchwork\nCombines multiple ggplot2 graphs into one figure.\n\n\n\n\npacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
   },
   {
     "objectID": "Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html",
