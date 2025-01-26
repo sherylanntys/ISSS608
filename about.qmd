@@ -1,5 +1,7 @@
 ---
 title: "About"
+number-sections: false
+anchor-sections: false
 ---
 
 ```{=html}
@@ -20,11 +22,16 @@ title: "About"
   }
 
   .image-container {
-    text-align: center; /* Centers the images */
+    text-align: center;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    height: 100vh;
   }
 
   .image-container img {
     max-width: 650px;
+    height: auto;
     margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
@@ -34,4 +41,3 @@ title: "About"
 
 <div class="image-container"><img src="images/clipboard-1905753634.png"></div>
 ```
-
