@@ -34,21 +34,31 @@ listing:
     font-family: 'Playfair Display', serif;
     font-size: 48px;
     font-weight: 100;
-    margin-top: 50px;
+    margin-top: 100px;
     border-bottom: none;
+  }
+  
+    .welcome-image {
+    margin-top: 65px;
+    margin-bottom: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 </style>
 ```
 
-![](images/clipboard-889759809.png){fig-align="center" width="400"}
+```{=html}
+
+<center><img src="images/clipboard-889759809.png" class="welcome-image" width="425"></center>
+
+```
 
 ## Welcome
 
 ```{=html}
-
-<center>Hello and welcome to my webpage for <b>ISSS608 Visual Analytics and Applications</b> taught by Prof. Kam Tin Seong. Here, you'll find my coursework and projects for the module. Enjoy!</center><p> </p>
-
+<center>Hello and welcome to my webpage for <b>ISSS608 Visual Analytics and Applications</b> taught by Prof. Kam Tin Seong. Here, you'll find my coursework and projects for the module. Enjoy!</center>
 ```
 
 ## Latest Posts
