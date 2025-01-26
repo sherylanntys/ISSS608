@@ -2,4 +2,33 @@
 title: "About"
 ---
 
-![![](images/clipboard-1554749533.png){width="650"}](images/clipboard-383353770.png){width="650"}
+```{=html}
+
+<style>
+  body {
+    background-image: url('images/tp244-bg3-01.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    display: none; /* Hides the page title */
+  }
+
+  .image-container {
+    text-align: center; /* Centers the images */
+  }
+
+  .image-container img {
+    max-width: 650px;
+    margin: 10px auto;
+    display: block;
+  }
+</style>
+
+<div class="image-container"><img src="images/clipboard-2414664938.png"> <img src="images/clipboard-3002950809.png"></div>
+```

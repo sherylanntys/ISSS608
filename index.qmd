@@ -1,6 +1,6 @@
 ---
 title: "ISSS608 Visual Analytics and Applications"
-toc: false # Disable table of contents
+toc: false
 listing:
   - id: recent-posts
     contents:
@@ -9,15 +9,49 @@ listing:
     sort: "title desc"
     type: grid
     feed:
-      items: 6  # Limit to 5 items
+      items: 6
 ---
 
-Welcome to **ISSS608 Visual Analytics and Applications**.
+```{=html}
 
-![](images/clipboard-4218098757.png)
+<style>
+  body {
+    background-image: url('images/tp244-bg3-01.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+  display: none;
+}
+
+  h2 {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 100;
+    margin-top: 50px;
+    border-bottom: none;
+  }
+
+</style>
+```
+
+![](images/clipboard-889759809.png){fig-align="center" width="400"}
+
+## Welcome
+
+```{=html}
+
+<center>Hello and welcome to my webpage for <b>ISSS608 Visual Analytics and Applications</b> taught by Prof. Kam Tin Seong. Here, you'll find my coursework and projects for the module. Enjoy!</center><p> </p>
+
+```
 
 ## Latest Posts
 
 ::: {#recent-posts}
 :::
-
