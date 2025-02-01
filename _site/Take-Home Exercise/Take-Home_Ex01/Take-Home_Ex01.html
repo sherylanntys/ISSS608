@@ -149,6 +149,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html">
  <span class="dropdown-text">Hands-On Exercise 3.2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex041.html">
+ <span class="dropdown-text">Hands-On Exercise 4.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex042.html">
+ <span class="dropdown-text">Hands-On Exercise 4.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex043.html">
+ <span class="dropdown-text">Hands-On Exercise 4.3</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -223,7 +235,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">2.1 Loading R Packages</a></li>
   <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">2.2 Importing the Data</a></li>
-  <li><a href="#understanding-the-data" id="toc-understanding-the-data" class="nav-link" data-scroll-target="#understanding-the-data">2.3 Understanding the Data</a></li>
+  <li><a href="#understanding-the-data-and-data-wrangling" id="toc-understanding-the-data-and-data-wrangling" class="nav-link" data-scroll-target="#understanding-the-data-and-data-wrangling">2.3 Understanding the Data and Data Wrangling</a>
+  <ul class="collapse">
+  <li><a href="#filtering-of-columns" id="toc-filtering-of-columns" class="nav-link" data-scroll-target="#filtering-of-columns">2.3.1 Filtering of Columns</a></li>
+  <li><a href="#duplicate-and-missing-value-checks" id="toc-duplicate-and-missing-value-checks" class="nav-link" data-scroll-target="#duplicate-and-missing-value-checks">2.3.2 Duplicate and Missing Value Checks</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#data-visualisation" id="toc-data-visualisation" class="nav-link" data-scroll-target="#data-visualisation">3.0 Data Visualisation</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">7.0 References</a></li>
@@ -274,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>1.0 Introduction</h1>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
-<p>Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023).</p>
+<p>Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, thus making it a growing public health concern (Ohira et al., 2023).</p>
 </section>
 <section id="the-task" class="level2">
 <h2 class="anchored" data-anchor-id="the-task">1.2 The Task</h2>
@@ -301,105 +317,216 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>2.0 Data Pre-Processing</h1>
 <section id="loading-r-packages" class="level2">
 <h2 class="anchored" data-anchor-id="loading-r-packages">2.1 Loading R Packages</h2>
+<p>The following R packages were used:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>R Package</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dplyr</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>tidyverse</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggiraph, plotly, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse, dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="importing-the-data">2.2 Importing the Data</h2>
+<p>The dataset was imported into R using the <code>read_csv</code> function from the <code>readr</code> package, which is part of the <code>tidyverse</code> suite.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>heartattack_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/japan_heart_attack_dataset.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="understanding-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="understanding-the-data">2.3 Understanding the Data</h2>
-<p>The following code chunk allows us to understand the structure of the dataset.</p>
+<section id="understanding-the-data-and-data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-data-and-data-wrangling">2.3 Understanding the Data and Data Wrangling</h2>
+<p>To gain an initial understanding of the dataset, the following code chunk utilises the <code>glimpse</code> function from the <code>dplyr</code> package. This function provides a quick overview of the dataset’s structure by displaying the first few entries of each column along with their data types.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Results</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(heartattack_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(heartattack_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>spc_tbl_ [30,000 × 32] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
- $ Age                    : num [1:30000] 56 69 46 32 60 25 78 38 56 75 ...
- $ Gender                 : chr [1:30000] "Male" "Male" "Male" "Female" ...
- $ Region                 : chr [1:30000] "Urban" "Urban" "Rural" "Urban" ...
- $ Smoking_History        : chr [1:30000] "Yes" "No" "Yes" "No" ...
- $ Diabetes_History       : chr [1:30000] "No" "No" "No" "No" ...
- $ Hypertension_History   : chr [1:30000] "No" "No" "No" "No" ...
- $ Cholesterol_Level      : num [1:30000] 186 185 211 211 224 ...
- $ Physical_Activity      : chr [1:30000] "Moderate" "Low" "Low" "Moderate" ...
- $ Diet_Quality           : chr [1:30000] "Poor" "Good" "Average" "Good" ...
- $ Alcohol_Consumption    : chr [1:30000] "Low" "Low" "Moderate" "High" ...
- $ Stress_Levels          : num [1:30000] 3.64 3.38 3.81 6.01 6.81 ...
- $ BMI                    : num [1:30000] 34 28.2 27.6 23.7 19.8 ...
- $ Heart_Rate             : num [1:30000] 72.3 57.5 64.7 55.1 76.7 ...
- $ Systolic_BP            : num [1:30000] 124 130 146 132 101 ...
- $ Diastolic_BP           : num [1:30000] 85.7 73.5 72 68.2 92.9 ...
- $ Family_History         : chr [1:30000] "No" "Yes" "No" "No" ...
- $ Heart_Attack_Occurrence: chr [1:30000] "No" "No" "No" "No" ...
- $ Extra_Column_1         : num [1:30000] 0.405 0.0363 0.853 0.3909 0.9336 ...
- $ Extra_Column_2         : num [1:30000] 0.433 0.513 0.22 0.297 0.976 ...
- $ Extra_Column_3         : num [1:30000] 0.629 0.668 0.613 0.156 0.174 ...
- $ Extra_Column_4         : num [1:30000] 0.702 0.116 0.508 0.87 0.295 ...
- $ Extra_Column_5         : num [1:30000] 0.498 0.424 0.901 0.39 0.959 ...
- $ Extra_Column_6         : num [1:30000] 0.0079 0.0839 0.2272 0.4032 0.6898 ...
- $ Extra_Column_7         : num [1:30000] 0.795 0.689 0.496 0.741 0.905 ...
- $ Extra_Column_8         : num [1:30000] 0.291 0.83 0.752 0.224 0.757 ...
- $ Extra_Column_9         : num [1:30000] 0.497 0.634 0.182 0.329 0.338 ...
- $ Extra_Column_10        : num [1:30000] 0.522 0.302 0.629 0.143 0.362 ...
- $ Extra_Column_11        : num [1:30000] 0.7997 0.0437 0.0183 0.9078 0.7286 ...
- $ Extra_Column_12        : num [1:30000] 0.7224 0.4517 0.0632 0.5423 0.1767 ...
- $ Extra_Column_13        : num [1:30000] 0.149 0.879 0.147 0.922 0.485 ...
- $ Extra_Column_14        : num [1:30000] 0.834 0.536 0.997 0.626 0.312 ...
- $ Extra_Column_15        : num [1:30000] 0.0616 0.6178 0.9745 0.2286 0.4528 ...
- - attr(*, "spec")=
-  .. cols(
-  ..   Age = col_double(),
-  ..   Gender = col_character(),
-  ..   Region = col_character(),
-  ..   Smoking_History = col_character(),
-  ..   Diabetes_History = col_character(),
-  ..   Hypertension_History = col_character(),
-  ..   Cholesterol_Level = col_double(),
-  ..   Physical_Activity = col_character(),
-  ..   Diet_Quality = col_character(),
-  ..   Alcohol_Consumption = col_character(),
-  ..   Stress_Levels = col_double(),
-  ..   BMI = col_double(),
-  ..   Heart_Rate = col_double(),
-  ..   Systolic_BP = col_double(),
-  ..   Diastolic_BP = col_double(),
-  ..   Family_History = col_character(),
-  ..   Heart_Attack_Occurrence = col_character(),
-  ..   Extra_Column_1 = col_double(),
-  ..   Extra_Column_2 = col_double(),
-  ..   Extra_Column_3 = col_double(),
-  ..   Extra_Column_4 = col_double(),
-  ..   Extra_Column_5 = col_double(),
-  ..   Extra_Column_6 = col_double(),
-  ..   Extra_Column_7 = col_double(),
-  ..   Extra_Column_8 = col_double(),
-  ..   Extra_Column_9 = col_double(),
-  ..   Extra_Column_10 = col_double(),
-  ..   Extra_Column_11 = col_double(),
-  ..   Extra_Column_12 = col_double(),
-  ..   Extra_Column_13 = col_double(),
-  ..   Extra_Column_14 = col_double(),
-  ..   Extra_Column_15 = col_double()
-  .. )
- - attr(*, "problems")=&lt;externalptr&gt; </code></pre>
+<pre><code>Rows: 30,000
+Columns: 32
+$ Age                     &lt;dbl&gt; 56, 69, 46, 32, 60, 25, 78, 38, 56, 75, 36, 40…
+$ Gender                  &lt;chr&gt; "Male", "Male", "Male", "Female", "Female", "F…
+$ Region                  &lt;chr&gt; "Urban", "Urban", "Rural", "Urban", "Rural", "…
+$ Smoking_History         &lt;chr&gt; "Yes", "No", "Yes", "No", "No", "No", "No", "Y…
+$ Diabetes_History        &lt;chr&gt; "No", "No", "No", "No", "No", "No", "Yes", "No…
+$ Hypertension_History    &lt;chr&gt; "No", "No", "No", "No", "No", "No", "Yes", "No…
+$ Cholesterol_Level       &lt;dbl&gt; 186.4002, 185.1367, 210.6966, 211.1655, 223.81…
+$ Physical_Activity       &lt;chr&gt; "Moderate", "Low", "Low", "Moderate", "High", …
+$ Diet_Quality            &lt;chr&gt; "Poor", "Good", "Average", "Good", "Good", "Go…
+$ Alcohol_Consumption     &lt;chr&gt; "Low", "Low", "Moderate", "High", "High", "Hig…
+$ Stress_Levels           &lt;dbl&gt; 3.644786, 3.384056, 3.810911, 6.014878, 6.8068…
+$ BMI                     &lt;dbl&gt; 33.96135, 28.24287, 27.60121, 23.71729, 19.771…
+$ Heart_Rate              &lt;dbl&gt; 72.30153, 57.45764, 64.65870, 55.13147, 76.667…
+$ Systolic_BP             &lt;dbl&gt; 123.90209, 129.89331, 145.65490, 131.78522, 10…
+$ Diastolic_BP            &lt;dbl&gt; 85.68281, 73.52426, 71.99481, 68.21133, 92.902…
+$ Family_History          &lt;chr&gt; "No", "Yes", "No", "No", "No", "No", "No", "No…
+$ Heart_Attack_Occurrence &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", "No"…
+$ Extra_Column_1          &lt;dbl&gt; 0.40498852, 0.03627815, 0.85297888, 0.39085280…
+$ Extra_Column_2          &lt;dbl&gt; 0.43330004, 0.51256694, 0.21959083, 0.29684675…
+$ Extra_Column_3          &lt;dbl&gt; 0.62871236, 0.66839275, 0.61343656, 0.15572404…
+$ Extra_Column_4          &lt;dbl&gt; 0.70160955, 0.11552874, 0.50800995, 0.87025144…
+$ Extra_Column_5          &lt;dbl&gt; 0.49814235, 0.42381938, 0.90066981, 0.39035591…
+$ Extra_Column_6          &lt;dbl&gt; 0.007901312, 0.083932768, 0.227205241, 0.40318…
+$ Extra_Column_7          &lt;dbl&gt; 0.79458257, 0.68895108, 0.49634358, 0.74140891…
+$ Extra_Column_8          &lt;dbl&gt; 0.29077922, 0.83016364, 0.75210679, 0.22396813…
+$ Extra_Column_9          &lt;dbl&gt; 0.49719307, 0.63449028, 0.18150125, 0.32931387…
+$ Extra_Column_10         &lt;dbl&gt; 0.52199452, 0.30204337, 0.62918031, 0.14319054…
+$ Extra_Column_11         &lt;dbl&gt; 0.79965663, 0.04368285, 0.01827617, 0.90778075…
+$ Extra_Column_12         &lt;dbl&gt; 0.72239788, 0.45166789, 0.06322702, 0.54232201…
+$ Extra_Column_13         &lt;dbl&gt; 0.1487387, 0.8786714, 0.1465122, 0.9224606, 0.…
+$ Extra_Column_14         &lt;dbl&gt; 0.8340099, 0.5356022, 0.9972962, 0.6262165, 0.…
+$ Extra_Column_15         &lt;dbl&gt; 0.061632229, 0.617825340, 0.974455410, 0.22860…</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>Based on the output generated, the dataset consists of 30,000 rows and 32 columns.</p>
+<section id="filtering-of-columns" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-of-columns">2.3.1 Filtering of Columns</h3>
+<p>From the output generated in Section 2.3, the dataset includes 15 columns labelleed from <code>Extra_Column_1</code> to <code>Extra_Column_15</code> . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.</p>
+<p>After filtering out the irrelevant columns, the dataset now comprises of 17 columns as shown in the <em>Results</em> tab below:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>heartattack_data_filtered <span class="ot">&lt;-</span> <span class="fu">select</span>(heartattack_data, <span class="sc">-</span><span class="fu">matches</span>(<span class="st">"Extra_Column_"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30,000
+Columns: 17
+$ Age                     &lt;dbl&gt; 56, 69, 46, 32, 60, 25, 78, 38, 56, 75, 36, 40…
+$ Gender                  &lt;chr&gt; "Male", "Male", "Male", "Female", "Female", "F…
+$ Region                  &lt;chr&gt; "Urban", "Urban", "Rural", "Urban", "Rural", "…
+$ Smoking_History         &lt;chr&gt; "Yes", "No", "Yes", "No", "No", "No", "No", "Y…
+$ Diabetes_History        &lt;chr&gt; "No", "No", "No", "No", "No", "No", "Yes", "No…
+$ Hypertension_History    &lt;chr&gt; "No", "No", "No", "No", "No", "No", "Yes", "No…
+$ Cholesterol_Level       &lt;dbl&gt; 186.4002, 185.1367, 210.6966, 211.1655, 223.81…
+$ Physical_Activity       &lt;chr&gt; "Moderate", "Low", "Low", "Moderate", "High", …
+$ Diet_Quality            &lt;chr&gt; "Poor", "Good", "Average", "Good", "Good", "Go…
+$ Alcohol_Consumption     &lt;chr&gt; "Low", "Low", "Moderate", "High", "High", "Hig…
+$ Stress_Levels           &lt;dbl&gt; 3.644786, 3.384056, 3.810911, 6.014878, 6.8068…
+$ BMI                     &lt;dbl&gt; 33.96135, 28.24287, 27.60121, 23.71729, 19.771…
+$ Heart_Rate              &lt;dbl&gt; 72.30153, 57.45764, 64.65870, 55.13147, 76.667…
+$ Systolic_BP             &lt;dbl&gt; 123.90209, 129.89331, 145.65490, 131.78522, 10…
+$ Diastolic_BP            &lt;dbl&gt; 85.68281, 73.52426, 71.99481, 68.21133, 92.902…
+$ Family_History          &lt;chr&gt; "No", "Yes", "No", "No", "No", "No", "No", "No…
+$ Heart_Attack_Occurrence &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", "No"…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="duplicate-and-missing-value-checks" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-and-missing-value-checks">2.3.2 Duplicate and Missing Value Checks</h3>
+<p><strong>Duplicate Data Check</strong></p>
+<p>We performed a check for duplicate records using the <code>dplyr</code> package. Duplicates can skew analysis results. Hence, identifying and removing them is crucial.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>heartattack_data_v3 <span class="ot">&lt;-</span> heartattack_data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_duplicate =</span> <span class="fu">duplicated</span>(.) <span class="sc">|</span> <span class="fu">duplicated</span>(., <span class="at">fromLast =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering to obtain only the rows that are duplicates</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>duplicates_only <span class="ot">&lt;-</span> <span class="fu">filter</span>(heartattack_data_v3, is_duplicate <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Displaying the first few rows of the duplicates</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(duplicates_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 18
+# ℹ 18 variables: Age &lt;dbl&gt;, Gender &lt;chr&gt;, Region &lt;chr&gt;, Smoking_History &lt;chr&gt;,
+#   Diabetes_History &lt;chr&gt;, Hypertension_History &lt;chr&gt;,
+#   Cholesterol_Level &lt;dbl&gt;, Physical_Activity &lt;chr&gt;, Diet_Quality &lt;chr&gt;,
+#   Alcohol_Consumption &lt;chr&gt;, Stress_Levels &lt;dbl&gt;, BMI &lt;dbl&gt;,
+#   Heart_Rate &lt;dbl&gt;, Systolic_BP &lt;dbl&gt;, Diastolic_BP &lt;dbl&gt;,
+#   Family_History &lt;chr&gt;, Heart_Attack_Occurrence &lt;chr&gt;, is_duplicate &lt;lgl&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>After applying the duplicate check, the output indicated a tibble data frame of 0 × 18, which implies that there are no duplicate records in our dataset.</p>
+<p><strong>Missing Value Check</strong></p>
+<p>Missing values in a dataset can introduce bias and affect the accuracy of statistical analysis, leading to misleading results. Hence, the <code>dplyr</code> package was utilised to identify and summarise the missing values across each variable in the dataset.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>missing_values_summary <span class="ot">&lt;-</span> heartattack_data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.)))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>missing_values_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 17
+    Age Gender Region Smoking_History Diabetes_History Hypertension_History
+  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;           &lt;int&gt;            &lt;int&gt;                &lt;int&gt;
+1     0      0      0               0                0                    0
+# ℹ 11 more variables: Cholesterol_Level &lt;int&gt;, Physical_Activity &lt;int&gt;,
+#   Diet_Quality &lt;int&gt;, Alcohol_Consumption &lt;int&gt;, Stress_Levels &lt;int&gt;,
+#   BMI &lt;int&gt;, Heart_Rate &lt;int&gt;, Systolic_BP &lt;int&gt;, Diastolic_BP &lt;int&gt;,
+#   Family_History &lt;int&gt;, Heart_Attack_Occurrence &lt;int&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="data-visualisation" class="level1">

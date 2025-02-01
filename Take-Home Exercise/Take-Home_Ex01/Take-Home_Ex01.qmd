@@ -14,7 +14,7 @@ execute:
 
 ## 1.1 Background
 
-Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023).
+Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, thus making it a growing public health concern (Ohira et al., 2023).
 
 ## 1.2 The Task
 
@@ -44,34 +44,135 @@ This dataset provides the opportunity to perform a comprehensive analysis of hea
 
 ## 2.1 Loading R Packages
 
+The following R packages were used:
+
+| R Package   | Description |
+|-------------|-------------|
+| `dplyr`     |             |
+| `tidyverse` |             |
+|             |             |
+|             |             |
+|             |             |
+|             |             |
+|             |             |
+
 ```{r}
 pacman::p_load(ggiraph, plotly, 
-               patchwork, DT, tidyverse) 
+               patchwork, DT, tidyverse, dplyr) 
 ```
 
 ## 2.2 Importing the Data
+
+The dataset was imported into R using the `read_csv` function from the `readr` package, which is part of the `tidyverse` suite.
 
 ```{r}
 heartattack_data <- read_csv("data/japan_heart_attack_dataset.csv")
 ```
 
-## 2.3 Understanding the Data
+## 2.3 Understanding the Data and Data Wrangling
 
-The following code chunk allows us to understand the structure of the dataset. 
+To gain an initial understanding of the dataset, the following code chunk utilises the `glimpse` function from the `dplyr` package. This function provides a quick overview of the dataset's structure by displaying the first few entries of each column along with their data types.
 
-::: {.panel-tabset}
-### Code
-```{r, eval=FALSE}
-str(heartattack_data)
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+glimpse(heartattack_data)
 ```
 
-### Results
+#### Results
+
 ```{r, echo=FALSE}
 # Display the structure of the dataset
-str(heartattack_data)
+glimpse(heartattack_data)
 ```
 :::
 
+Based on the output generated, the dataset consists of 30,000 rows and 32 columns.
+
+### 2.3.1 Filtering of Columns
+
+From the output generated in Section 2.3, the dataset includes 15 columns labelled from `Extra_Column_1` to `Extra_Column_15` . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.
+
+After filtering out the irrelevant columns, the dataset now comprises of 17 columns as shown in the *Results* tab below:
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+heartattack_data_filtered <- select(heartattack_data, -matches("Extra_Column_"))
+
+```
+
+#### Results
+
+```{r, echo=FALSE}
+glimpse(heartattack_data_filtered)
+
+```
+:::
+
+### 2.3.2 Duplicate and Missing Value Checks
+
+**Duplicate Data Check**
+
+We performed a check for duplicate records using the `dplyr` package. Duplicates can skew analysis results. Hence, identifying and removing them is crucial.
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+heartattack_data_v3 <- heartattack_data_filtered %>%
+  mutate(is_duplicate = duplicated(.) | duplicated(., fromLast = TRUE))
+
+# Filtering to obtain only the rows that are duplicates
+duplicates_only <- filter(heartattack_data_v3, is_duplicate == TRUE)
+
+# Displaying the first few rows of the duplicates
+head(duplicates_only)
+```
+
+#### Results
+
+```{r, echo=FALSE}
+heartattack_data_v3 <- heartattack_data_filtered %>%
+  mutate(is_duplicate = duplicated(.) | duplicated(., fromLast = TRUE))
+
+# Filtering to obtain only the rows that are duplicates
+duplicates_only <- filter(heartattack_data_v3, is_duplicate == TRUE)
+
+# Displaying the first few rows of the duplicates
+head(duplicates_only)
+```
+:::
+
+After applying the duplicate check, the output indicated a tibble data frame of 0 × 18, which implies that there are no duplicate records in our dataset.
+
+**Missing Value Check**
+
+Missing values in a dataset can introduce bias and affect the accuracy of statistical analysis, leading to misleading results. Hence, the `dplyr` package was utilised to identify and summarise the missing values across each variable in the dataset.
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+missing_values_summary <- heartattack_data_filtered %>%
+  summarise_all(~ sum(is.na(.)))
+
+missing_values_summary
+```
+
+#### Results
+
+```{r, echo=FALSE}
+missing_values_summary <- heartattack_data_filtered %>%
+  summarise_all(~ sum(is.na(.)))
+
+missing_values_summary
+```
+:::
+
+The output indicates the count of missing values for each variable in the dataset. In this case, all columns have a count of 0, indicating that this dataset has no missing values.
 
 # 3.0 Data Visualisation
 
