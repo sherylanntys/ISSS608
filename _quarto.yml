@@ -32,6 +32,8 @@ website:
           href: Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex042.html
         - text: "Hands-On Exercise 4.3"
           href: Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex043.html
+        - text: "Hands-On Exercise 4.4"
+          href: Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex044.html
           
       - text: "In-class Exercise"
         menu:
@@ -39,9 +41,12 @@ website:
           href: https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17377898729330/Dashboard1
         - text: "In-class Exercise 2.0"
           href: https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17371867514480/Dashboard2
+      
+      
+      
       - text: "Take-home Exercise"
         menu: 
-        - text: "Take-home Exercise 1 - Coming Soon"
+        - text: "Take-home Exercise 1"
           href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html
 
 
