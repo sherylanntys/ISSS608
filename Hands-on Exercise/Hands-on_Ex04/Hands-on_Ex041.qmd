@@ -17,7 +17,7 @@ execute:
 The following R packages will be used in this exercise:
 
 | R Package | Description |
-|----------------------|--------------------------------------------------|
+|----|----|
 | `ggridges` | For plotting ridgeline plots. |
 | `ggdist` | For visualising distribution and uncertainty. |
 | `tidyverse` |  |

@@ -17,7 +17,7 @@ execute:
 The following code chunk imports and loads the following R packages:
 
 | R Package | Description |
-|---------------------|---------------------------------------------------|
+|----|----|
 | `gifski` | Converts image frames into high-quality GIF animations. |
 | `gganimate` | A `ggplot` extension for creating animated statistical graphs. |
 | `gapminder` | An excerpt of the data available at Gapminder.org. The *country_colors* scheme will be used in this exercise. |
@@ -66,7 +66,7 @@ globalPop <- read_xls("data/GlobalPopulation.xls",
 The table below describes some of the grammar classes under `gganimate`:
 
 | Grammar Class | Description |
-|------------------------|------------------------------------------------|
+|----|----|
 | `transition_*( )` | Defines how the data should be spread out and how it relates itself across time. |
 | `view_*( )` | Defines how the positional scales should change along the animation |
 | `shadow_*( )` | Defines how data from other points in time should be presented in the given point in time. |
