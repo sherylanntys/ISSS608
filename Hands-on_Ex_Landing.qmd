@@ -69,7 +69,6 @@ listing:
 </style>
 ```
 
-
 ## Overview of Hands-on Exercises
 
 ::: {#recent-posts}

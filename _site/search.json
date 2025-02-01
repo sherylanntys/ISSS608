@@ -446,5 +446,47 @@
     "title": "Hands-on Exercise Landing Page",
     "section": "",
     "text": "Sheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 26, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSheryl Ann Tan Yi-Shi\n\n\nJan 26, 2025\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "",
+    "text": "Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023).\n\n\n\nThis exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:\n\nHeart Attack in Japan\nShip Performance in the Gulf of Guinea\n\nFor the purposes of this take-home exercise, the theme Heart Attack in Japan was selected for the preparation of data visualizations for the article.\n\n\n\nThe dataset used in this exercise is sourced from Kaggle and can be accessed via this link.\nThis dataset provides the opportunity to perform a comprehensive analysis of heart attack incidents in Japan as it includes a range of features such as:\n\nAge and Demographics including gender and region.\nMedical Indicators including cholesterol level, heart rate, systolic blood pressure, and diastolic blood pressure.\nPhysical Metrics including Body Mass Index (BMI) measurements.\nBehavioural Factors including physical activity levels and levels of alcohol consumption."
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#background",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#background",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "",
+    "text": "Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023)."
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#the-task",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#the-task",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "",
+    "text": "This exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:\n\nHeart Attack in Japan\nShip Performance in the Gulf of Guinea\n\nFor the purposes of this take-home exercise, the theme Heart Attack in Japan was selected for the preparation of data visualizations for the article."
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#about-the-dataset",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#about-the-dataset",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "",
+    "text": "The dataset used in this exercise is sourced from Kaggle and can be accessed via this link.\nThis dataset provides the opportunity to perform a comprehensive analysis of heart attack incidents in Japan as it includes a range of features such as:\n\nAge and Demographics including gender and region.\nMedical Indicators including cholesterol level, heart rate, systolic blood pressure, and diastolic blood pressure.\nPhysical Metrics including Body Mass Index (BMI) measurements.\nBehavioural Factors including physical activity levels and levels of alcohol consumption."
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#loading-r-packages",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#loading-r-packages",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "2.1 Loading R Packages",
+    "text": "2.1 Loading R Packages\n\npacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#importing-the-data",
+    "href": "Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html#importing-the-data",
+    "title": "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default",
+    "section": "2.2 Importing the Data",
+    "text": "2.2 Importing the Data\n\nexam_data &lt;- read_csv(\"data/japan_heart_attack_dataset.csv\")"
   }
 ]

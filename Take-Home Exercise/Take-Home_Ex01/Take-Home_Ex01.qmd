@@ -1,0 +1,62 @@
+---
+title: "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-02-15"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Introduction
+
+## 1.1 Background
+
+Cardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023).
+
+## 1.2 The Task
+
+This exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:
+
+-   Heart Attack in Japan
+
+-   Ship Performance in the Gulf of Guinea
+
+For the purposes of this take-home exercise, the theme, ***Heart Attack in Japan***, was selected for the preparation of data visualizations for the article.
+
+## 1.3 About the Dataset
+
+The dataset used in this exercise is sourced from Kaggle and can be accessed via this [link](https://www.kaggle.com/datasets/ashaychoudhary/heart-attack-in-japan-youth-vs-adult).
+
+This dataset provides the opportunity to perform a comprehensive analysis of heart attack incidents in Japan as it includes a range of features such as:
+
+-   **Age and Demographics** including gender and region.
+
+-   **Medical Indicators** including cholesterol level, heart rate, systolic blood pressure, and diastolic blood pressure.
+
+-   **Physical Metrics** including Body Mass Index (BMI) measurements.
+
+-   **Behavioural Factors** including physical activity levels and levels of alcohol consumption.
+
+# 2.0 Data Preparation
+
+## 2.1 Loading R Packages
+
+```{r}
+pacman::p_load(ggiraph, plotly, 
+               patchwork, DT, tidyverse) 
+```
+
+## 2.2 Importing the Data
+
+```{r}
+exam_data <- read_csv("data/japan_heart_attack_dataset.csv")
+```
+
+# 3.0 Data Visualisation
+
+# 7.0 References
+
+Ohira, T., Eguchi, E., Hayashi, F., Kinuta, M., & Imano, H. (2023). Epidemiology of cardiovascular disease in Japan: An overview study. *Journal of Cardiology, 81*(5), 379-387. https://doi.org/10.1016/j.jjcc.2023.07.007

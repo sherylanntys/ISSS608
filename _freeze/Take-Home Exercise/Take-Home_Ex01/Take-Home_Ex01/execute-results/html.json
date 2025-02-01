@@ -1,0 +1,15 @@
+{
+  "hash": "4f6a94f63b256c20d59cfe406943fba6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default\"\nauthor: \"Sheryl Ann Tan Yi-Shi\"\ndate: \"2025-02-15\"\ndate-modified: \"last-modified\"\nexecute: \n  echo: true\n  eval: true\n  warning: false\n  freeze: true\n---\n\n\n\n# 1.0 Introduction\n\n## 1.1 Background\n\nCardiovascular diseases, including heart attacks, are a leading cause of mortality worldwide. In recent years, Japan has experienced a steady increase in heart disease-related mortality, largely driven by its aging population, making it a growing public health concern (Ohira et al., 2023).\n\n## 1.2 The Task\n\nThis exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:\n\n-   Heart Attack in Japan\n\n-   Ship Performance in the Gulf of Guinea\n\nFor the purposes of this take-home exercise, the theme ***Heart Attack in Japan*** was selected for the preparation of data visualizations for the article.\n\n## 1.3 About the Dataset\n\nThe dataset used in this exercise is sourced from Kaggle and can be accessed via this [link](https://www.kaggle.com/datasets/ashaychoudhary/heart-attack-in-japan-youth-vs-adult).\n\nThis dataset provides the opportunity to perform a comprehensive analysis of heart attack incidents in Japan as it includes a range of features such as:\n\n-   **Age and Demographics** including gender and region.\n\n-   **Medical Indicators** including cholesterol level, heart rate, systolic blood pressure, and diastolic blood pressure.\n\n-   **Physical Metrics** including Body Mass Index (BMI) measurements.\n\n-   **Behavioural Factors** including physical activity levels and levels of alcohol consumption.\n\n# 2.0 Data Preparation\n\n## 2.1 Loading R Packages\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n```\n:::\n\n\n\n## 2.2 Importing the Data\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam_data <- read_csv(\"data/japan_heart_attack_dataset.csv\")\n```\n:::\n\n\n\n# 3.0 Data Visualisation\n\n# 7.0 References\n\nOhira, T., Eguchi, E., Hayashi, F., Kinuta, M., & Imano, H. (2023). Epidemiology of cardiovascular disease in Japan: An overview study. *Journal of Cardiology, 81*(5), 379-387. https://doi.org/10.1016/j.jjcc.2023.07.007\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

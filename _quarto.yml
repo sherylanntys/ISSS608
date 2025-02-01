@@ -36,7 +36,7 @@ website:
       - text: "Take-home Exercise"
         menu: 
         - text: "Take-home Exercise 1 - Coming Soon"
-          href: Take-Home_Ex1.html
+          href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html
 
 
 format:
