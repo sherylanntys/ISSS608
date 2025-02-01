@@ -174,7 +174,124 @@ missing_values_summary
 
 The output indicates the count of missing values for each variable in the dataset. In this case, all columns have a count of 0, indicating that this dataset has no missing values.
 
-# 3.0 Data Visualisation
+### 2.3.3 Recoding Variables
+
+**Recoding BMI**
+
+The World Health Organisation's International BMI Classification was applied to the dataset to categorise the BMI values into four distinct groups. Applying this classification would simplify the interpretation of BMI values, making it easier to understand how the different weight categories impact heart attacks.
+
+The categories used are as follows:
+
+| Classification | BMI         |
+|----------------|-------------|
+| Underweight    | \<18.5      |
+| Normal Weight  | 18.5 - 24.9 |
+| Pre-Obese      | 25.0 - 29.9 |
+| Obese          | \>=30       |
+
+To implement this categorisation in our dataset, the `cut` function in R was utilised. This function assigns each BMI value to one of the specified categories, creating a new column, `BMI_Category`, in the dataset.
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+# Categorizing BMI according to WHO standards
+heartattack_data_filtered$BMI_Category <- cut(
+  heartattack_data_filtered$BMI,
+  breaks = c(-Inf, 18.5, 24.9, 29.9, Inf),
+  labels = c("Underweight", "Normal Weight", "Pre-Obese", "Obese"),
+  right = TRUE
+)
+
+```
+
+#### Results
+
+```{r, echo=FALSE}
+# Categorizing BMI according to WHO standards
+heartattack_data_filtered$BMI_Category <- cut(
+  heartattack_data_filtered$BMI,
+  breaks = c(-Inf, 18.5, 24.9, 29.9, Inf),
+  labels = c("Underweight", "Normal Weight", "Pre-Obese", "Obese"),
+  right = TRUE
+)
+
+head(heartattack_data_filtered$BMI_Category)
+```
+:::
+
+### 2.3.4 Data Type Conversion
+
+The data table below shows the current data type of each of the 17 columns, along with the proposed data type for conversion. To improve data handling, the proposed data type for each column should align with the nature of the data.
+
+| Variable                | Current Data Type | Proposed Data Type |
+|-------------------------|-------------------|--------------------|
+| Age                     | Double            | Integer            |
+| Cholesterol_Level       | Double            | Double             |
+| Stress_Levels           | Double            | Double             |
+| Heart_Rate              | Double            | Double             |
+| Systolic_BP             | Double            | Double             |
+| Diastolic_BP            | Double            | Double             |
+| Gender                  | Character         | Factor             |
+| Region                  | Character         | Factor             |
+| Smoking_History         | Character         | Factor             |
+| Diabetes_History        | Character         | Factor             |
+| Hypertension_History    | Character         | Factor             |
+| Physical_Activity       | Character         | Ordered Factor     |
+| Diet_Quality            | Character         | Ordered Factor     |
+| Alcohol_Consumption     | Character         | Ordered Factor     |
+| Family_History          | Character         | Factor             |
+| Heart_Attack_Occurrence | Character         | Factor             |
+| BMI_Category            | Character         | Ordered Factor     |
+
+The following code chunk is used to implement the proposed data type conversions:
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+# Convert numeric variables
+heartattack_data_filtered <- heartattack_data_filtered %>%
+  mutate(
+    Age = as.integer(Age)
+  )
+
+# Convert categorical variables to factors
+heartattack_data_filtered <- heartattack_data_filtered %>%
+  mutate(
+    Gender = as.factor(Gender),
+    Region = as.factor(Region),
+    Smoking_History = as.factor(Smoking_History),
+    Diabetes_History = as.factor(Diabetes_History),
+    Hypertension_History = as.factor(Hypertension_History),
+    Family_History = as.factor(Family_History),
+    Heart_Attack_Occurrence = as.factor(Heart_Attack_Occurrence)
+  )
+
+# Convert ordered categorical variables
+heartattack_data_filtered <- heartattack_data_filtered %>%
+  mutate(
+    Physical_Activity = factor(Physical_Activity, 
+                               levels = c("Low", "Moderate", "High"), 
+                               ordered = TRUE),
+    Diet_Quality = factor(Diet_Quality, 
+                          levels = c("Poor", "Average", "Good"), 
+                          ordered = TRUE),
+    Alcohol_Consumption = factor(Alcohol_Consumption, 
+                                 levels = c("None", "Low", "Moderate", "High"), 
+                                 ordered = TRUE),
+    BMI_Category = factor(BMI_Category, 
+                          levels = c("Underweight", "Normal Weight", "Pre-Obese", "Obese"), 
+                          ordered = TRUE)
+  )
+```
+
+#### Results
+
+```{r, echo=FALSE}
+glimpse(heartattack_data_filtered)
+```
+:::
 
 # 7.0 References
 

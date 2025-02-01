@@ -161,6 +161,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex043.html">
  <span class="dropdown-text">Hands-On Exercise 4.3</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex044.html">
+ <span class="dropdown-text">Hands-On Exercise 4.4</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -185,7 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
         <li>
     <a class="dropdown-item" href="../../Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01.html">
- <span class="dropdown-text">Take-home Exercise 1 - Coming Soon</span></a>
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
   </li>  
     </ul>
   </li>
@@ -239,9 +243,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#filtering-of-columns" id="toc-filtering-of-columns" class="nav-link" data-scroll-target="#filtering-of-columns">2.3.1 Filtering of Columns</a></li>
   <li><a href="#duplicate-and-missing-value-checks" id="toc-duplicate-and-missing-value-checks" class="nav-link" data-scroll-target="#duplicate-and-missing-value-checks">2.3.2 Duplicate and Missing Value Checks</a></li>
+  <li><a href="#recoding-variables" id="toc-recoding-variables" class="nav-link" data-scroll-target="#recoding-variables">2.3.3 Recoding Variables</a></li>
+  <li><a href="#data-type-conversion" id="toc-data-type-conversion" class="nav-link" data-scroll-target="#data-type-conversion">2.3.4 Data Type Conversion</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#data-visualisation" id="toc-data-visualisation" class="nav-link" data-scroll-target="#data-visualisation">3.0 Data Visualisation</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">7.0 References</a></li>
   </ul>
 </nav>
@@ -424,7 +429,7 @@ $ Extra_Column_15         &lt;dbl&gt; 0.061632229, 0.617825340, 0.974455410, 0.2
 <p>Based on the output generated, the dataset consists of 30,000 rows and 32 columns.</p>
 <section id="filtering-of-columns" class="level3">
 <h3 class="anchored" data-anchor-id="filtering-of-columns">2.3.1 Filtering of Columns</h3>
-<p>From the output generated in Section 2.3, the dataset includes 15 columns labelleed from <code>Extra_Column_1</code> to <code>Extra_Column_15</code> . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.</p>
+<p>From the output generated in Section 2.3, the dataset includes 15 columns labelled from <code>Extra_Column_1</code> to <code>Extra_Column_15</code> . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.</p>
 <p>After filtering out the irrelevant columns, the dataset now comprises of 17 columns as shown in the <em>Results</em> tab below:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Results</a></li></ul>
@@ -526,11 +531,237 @@ $ Heart_Attack_Occurrence &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", 
 </div>
 </div>
 </div>
+<p>The output indicates the count of missing values for each variable in the dataset. In this case, all columns have a count of 0, indicating that this dataset has no missing values.</p>
+</section>
+<section id="recoding-variables" class="level3">
+<h3 class="anchored" data-anchor-id="recoding-variables">2.3.3 Recoding Variables</h3>
+<p><strong>Recoding BMI</strong></p>
+<p>The World Health Organisation’s International BMI Classification was applied to the dataset to categorise the BMI values into four distinct groups. Applying this classification would simplify the interpretation of BMI values, making it easier to understand how the different weight categories impact heart attacks.</p>
+<p>The categories used are as follows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>BMI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Underweight</td>
+<td>&lt;18.5</td>
+</tr>
+<tr class="even">
+<td>Normal Weight</td>
+<td>18.5 - 24.9</td>
+</tr>
+<tr class="odd">
+<td>Pre-Obese</td>
+<td>25.0 - 29.9</td>
+</tr>
+<tr class="even">
+<td>Obese</td>
+<td>&gt;=30</td>
+</tr>
+</tbody>
+</table>
+<p>To implement this categorisation in our dataset, the <code>cut</code> function in R was utilised. This function assigns each BMI value to one of the specified categories, creating a new column, <code>BMI_Category</code>, in the dataset.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorizing BMI according to WHO standards</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>heartattack_data_filtered<span class="sc">$</span>BMI_Category <span class="ot">&lt;-</span> <span class="fu">cut</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  heartattack_data_filtered<span class="sc">$</span>BMI,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">18.5</span>, <span class="fl">24.9</span>, <span class="fl">29.9</span>, <span class="cn">Inf</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Underweight"</span>, <span class="st">"Normal Weight"</span>, <span class="st">"Pre-Obese"</span>, <span class="st">"Obese"</span>),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">right =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Obese         Pre-Obese     Pre-Obese     Normal Weight Normal Weight
+[6] Normal Weight
+Levels: Underweight Normal Weight Pre-Obese Obese</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-type-conversion" class="level3">
+<h3 class="anchored" data-anchor-id="data-type-conversion">2.3.4 Data Type Conversion</h3>
+<p>The data table below shows the current data type of each of the 17 columns, along with the proposed data type for conversion. To improve data handling, the proposed data type for each column should align with the nature of the data.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Current Data Type</th>
+<th>Proposed Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Age</td>
+<td>Double</td>
+<td>Integer</td>
+</tr>
+<tr class="even">
+<td>Cholesterol_Level</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Stress_Levels</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Heart_Rate</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Systolic_BP</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Diastolic_BP</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Gender</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="even">
+<td>Region</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="odd">
+<td>Smoking_History</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="even">
+<td>Diabetes_History</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="odd">
+<td>Hypertension_History</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="even">
+<td>Physical_Activity</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+<tr class="odd">
+<td>Diet_Quality</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+<tr class="even">
+<td>Alcohol_Consumption</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+<tr class="odd">
+<td>Family_History</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="even">
+<td>Heart_Attack_Occurrence</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="odd">
+<td>BMI_Category</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+</tbody>
+</table>
+<p>The following code chunk is used to implement the proposed data type conversions:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert numeric variables</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>heartattack_data_filtered <span class="ot">&lt;-</span> heartattack_data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">as.integer</span>(Age)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert categorical variables to factors</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>heartattack_data_filtered <span class="ot">&lt;-</span> heartattack_data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gender =</span> <span class="fu">as.factor</span>(Gender),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Region =</span> <span class="fu">as.factor</span>(Region),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Smoking_History =</span> <span class="fu">as.factor</span>(Smoking_History),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Diabetes_History =</span> <span class="fu">as.factor</span>(Diabetes_History),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Hypertension_History =</span> <span class="fu">as.factor</span>(Hypertension_History),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Family_History =</span> <span class="fu">as.factor</span>(Family_History),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Heart_Attack_Occurrence =</span> <span class="fu">as.factor</span>(Heart_Attack_Occurrence)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert ordered categorical variables</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>heartattack_data_filtered <span class="ot">&lt;-</span> heartattack_data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Physical_Activity =</span> <span class="fu">factor</span>(Physical_Activity, </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                               <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Low"</span>, <span class="st">"Moderate"</span>, <span class="st">"High"</span>), </span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                               <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Diet_Quality =</span> <span class="fu">factor</span>(Diet_Quality, </span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Poor"</span>, <span class="st">"Average"</span>, <span class="st">"Good"</span>), </span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">Alcohol_Consumption =</span> <span class="fu">factor</span>(Alcohol_Consumption, </span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Low"</span>, <span class="st">"Moderate"</span>, <span class="st">"High"</span>), </span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">BMI_Category =</span> <span class="fu">factor</span>(BMI_Category, </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Underweight"</span>, <span class="st">"Normal Weight"</span>, <span class="st">"Pre-Obese"</span>, <span class="st">"Obese"</span>), </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30,000
+Columns: 18
+$ Age                     &lt;int&gt; 56, 69, 46, 32, 60, 25, 78, 38, 56, 75, 36, 40…
+$ Gender                  &lt;fct&gt; Male, Male, Male, Female, Female, Female, Male…
+$ Region                  &lt;fct&gt; Urban, Urban, Rural, Urban, Rural, Rural, Urba…
+$ Smoking_History         &lt;fct&gt; Yes, No, Yes, No, No, No, No, Yes, No, No, No,…
+$ Diabetes_History        &lt;fct&gt; No, No, No, No, No, No, Yes, No, No, No, No, N…
+$ Hypertension_History    &lt;fct&gt; No, No, No, No, No, No, Yes, No, Yes, No, Yes,…
+$ Cholesterol_Level       &lt;dbl&gt; 186.4002, 185.1367, 210.6966, 211.1655, 223.81…
+$ Physical_Activity       &lt;ord&gt; Moderate, Low, Low, Moderate, High, Low, High,…
+$ Diet_Quality            &lt;ord&gt; Poor, Good, Average, Good, Good, Good, Poor, P…
+$ Alcohol_Consumption     &lt;ord&gt; Low, Low, Moderate, High, High, High, High, No…
+$ Stress_Levels           &lt;dbl&gt; 3.644786, 3.384056, 3.810911, 6.014878, 6.8068…
+$ BMI                     &lt;dbl&gt; 33.96135, 28.24287, 27.60121, 23.71729, 19.771…
+$ Heart_Rate              &lt;dbl&gt; 72.30153, 57.45764, 64.65870, 55.13147, 76.667…
+$ Systolic_BP             &lt;dbl&gt; 123.90209, 129.89331, 145.65490, 131.78522, 10…
+$ Diastolic_BP            &lt;dbl&gt; 85.68281, 73.52426, 71.99481, 68.21133, 92.902…
+$ Family_History          &lt;fct&gt; No, Yes, No, No, No, No, No, No, No, Yes, Yes,…
+$ Heart_Attack_Occurrence &lt;fct&gt; No, No, No, No, No, No, No, No, Yes, No, No, N…
+$ BMI_Category            &lt;ord&gt; Obese, Pre-Obese, Pre-Obese, Normal Weight, No…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
-</section>
-<section id="data-visualisation" class="level1">
-<h1>3.0 Data Visualisation</h1>
 </section>
 <section id="references" class="level1">
 <h1>7.0 References</h1>
