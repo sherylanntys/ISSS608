@@ -219,10 +219,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">1.2 The Task</a></li>
   <li><a href="#about-the-dataset" id="toc-about-the-dataset" class="nav-link" data-scroll-target="#about-the-dataset">1.3 About the Dataset</a></li>
   </ul></li>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.0 Data Preparation</a>
+  <li><a href="#data-pre-processing" id="toc-data-pre-processing" class="nav-link" data-scroll-target="#data-pre-processing">2.0 Data Pre-Processing</a>
   <ul class="collapse">
   <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">2.1 Loading R Packages</a></li>
   <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">2.2 Importing the Data</a></li>
+  <li><a href="#understanding-the-data" id="toc-understanding-the-data" class="nav-link" data-scroll-target="#understanding-the-data">2.3 Understanding the Data</a></li>
   </ul></li>
   <li><a href="#data-visualisation" id="toc-data-visualisation" class="nav-link" data-scroll-target="#data-visualisation">3.0 Data Visualisation</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">7.0 References</a></li>
@@ -282,7 +283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Heart Attack in Japan</p></li>
 <li><p>Ship Performance in the Gulf of Guinea</p></li>
 </ul>
-<p>For the purposes of this take-home exercise, the theme <strong><em>Heart Attack in Japan</em></strong> was selected for the preparation of data visualizations for the article.</p>
+<p>For the purposes of this take-home exercise, the theme, <strong><em>Heart Attack in Japan</em></strong>, was selected for the preparation of data visualizations for the article.</p>
 </section>
 <section id="about-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-dataset">1.3 About the Dataset</h2>
@@ -296,8 +297,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="data-preparation" class="level1">
-<h1>2.0 Data Preparation</h1>
+<section id="data-pre-processing" class="level1">
+<h1>2.0 Data Pre-Processing</h1>
 <section id="loading-r-packages" class="level2">
 <h2 class="anchored" data-anchor-id="loading-r-packages">2.1 Loading R Packages</h2>
 <div class="cell">
@@ -308,7 +309,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="importing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="importing-the-data">2.2 Importing the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/japan_heart_attack_dataset.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>heartattack_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/japan_heart_attack_dataset.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="understanding-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-data">2.3 Understanding the Data</h2>
+<p>The following code chunk allows us to understand the structure of the dataset.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(heartattack_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>spc_tbl_ [30,000 × 32] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Age                    : num [1:30000] 56 69 46 32 60 25 78 38 56 75 ...
+ $ Gender                 : chr [1:30000] "Male" "Male" "Male" "Female" ...
+ $ Region                 : chr [1:30000] "Urban" "Urban" "Rural" "Urban" ...
+ $ Smoking_History        : chr [1:30000] "Yes" "No" "Yes" "No" ...
+ $ Diabetes_History       : chr [1:30000] "No" "No" "No" "No" ...
+ $ Hypertension_History   : chr [1:30000] "No" "No" "No" "No" ...
+ $ Cholesterol_Level      : num [1:30000] 186 185 211 211 224 ...
+ $ Physical_Activity      : chr [1:30000] "Moderate" "Low" "Low" "Moderate" ...
+ $ Diet_Quality           : chr [1:30000] "Poor" "Good" "Average" "Good" ...
+ $ Alcohol_Consumption    : chr [1:30000] "Low" "Low" "Moderate" "High" ...
+ $ Stress_Levels          : num [1:30000] 3.64 3.38 3.81 6.01 6.81 ...
+ $ BMI                    : num [1:30000] 34 28.2 27.6 23.7 19.8 ...
+ $ Heart_Rate             : num [1:30000] 72.3 57.5 64.7 55.1 76.7 ...
+ $ Systolic_BP            : num [1:30000] 124 130 146 132 101 ...
+ $ Diastolic_BP           : num [1:30000] 85.7 73.5 72 68.2 92.9 ...
+ $ Family_History         : chr [1:30000] "No" "Yes" "No" "No" ...
+ $ Heart_Attack_Occurrence: chr [1:30000] "No" "No" "No" "No" ...
+ $ Extra_Column_1         : num [1:30000] 0.405 0.0363 0.853 0.3909 0.9336 ...
+ $ Extra_Column_2         : num [1:30000] 0.433 0.513 0.22 0.297 0.976 ...
+ $ Extra_Column_3         : num [1:30000] 0.629 0.668 0.613 0.156 0.174 ...
+ $ Extra_Column_4         : num [1:30000] 0.702 0.116 0.508 0.87 0.295 ...
+ $ Extra_Column_5         : num [1:30000] 0.498 0.424 0.901 0.39 0.959 ...
+ $ Extra_Column_6         : num [1:30000] 0.0079 0.0839 0.2272 0.4032 0.6898 ...
+ $ Extra_Column_7         : num [1:30000] 0.795 0.689 0.496 0.741 0.905 ...
+ $ Extra_Column_8         : num [1:30000] 0.291 0.83 0.752 0.224 0.757 ...
+ $ Extra_Column_9         : num [1:30000] 0.497 0.634 0.182 0.329 0.338 ...
+ $ Extra_Column_10        : num [1:30000] 0.522 0.302 0.629 0.143 0.362 ...
+ $ Extra_Column_11        : num [1:30000] 0.7997 0.0437 0.0183 0.9078 0.7286 ...
+ $ Extra_Column_12        : num [1:30000] 0.7224 0.4517 0.0632 0.5423 0.1767 ...
+ $ Extra_Column_13        : num [1:30000] 0.149 0.879 0.147 0.922 0.485 ...
+ $ Extra_Column_14        : num [1:30000] 0.834 0.536 0.997 0.626 0.312 ...
+ $ Extra_Column_15        : num [1:30000] 0.0616 0.6178 0.9745 0.2286 0.4528 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Age = col_double(),
+  ..   Gender = col_character(),
+  ..   Region = col_character(),
+  ..   Smoking_History = col_character(),
+  ..   Diabetes_History = col_character(),
+  ..   Hypertension_History = col_character(),
+  ..   Cholesterol_Level = col_double(),
+  ..   Physical_Activity = col_character(),
+  ..   Diet_Quality = col_character(),
+  ..   Alcohol_Consumption = col_character(),
+  ..   Stress_Levels = col_double(),
+  ..   BMI = col_double(),
+  ..   Heart_Rate = col_double(),
+  ..   Systolic_BP = col_double(),
+  ..   Diastolic_BP = col_double(),
+  ..   Family_History = col_character(),
+  ..   Heart_Attack_Occurrence = col_character(),
+  ..   Extra_Column_1 = col_double(),
+  ..   Extra_Column_2 = col_double(),
+  ..   Extra_Column_3 = col_double(),
+  ..   Extra_Column_4 = col_double(),
+  ..   Extra_Column_5 = col_double(),
+  ..   Extra_Column_6 = col_double(),
+  ..   Extra_Column_7 = col_double(),
+  ..   Extra_Column_8 = col_double(),
+  ..   Extra_Column_9 = col_double(),
+  ..   Extra_Column_10 = col_double(),
+  ..   Extra_Column_11 = col_double(),
+  ..   Extra_Column_12 = col_double(),
+  ..   Extra_Column_13 = col_double(),
+  ..   Extra_Column_14 = col_double(),
+  ..   Extra_Column_15 = col_double()
+  .. )
+ - attr(*, "problems")=&lt;externalptr&gt; </code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
 </section>

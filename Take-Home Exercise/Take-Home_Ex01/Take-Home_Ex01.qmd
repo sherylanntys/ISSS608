@@ -40,7 +40,7 @@ This dataset provides the opportunity to perform a comprehensive analysis of hea
 
 -   **Behavioural Factors** including physical activity levels and levels of alcohol consumption.
 
-# 2.0 Data Preparation
+# 2.0 Data Pre-Processing
 
 ## 2.1 Loading R Packages
 
@@ -52,8 +52,26 @@ pacman::p_load(ggiraph, plotly,
 ## 2.2 Importing the Data
 
 ```{r}
-exam_data <- read_csv("data/japan_heart_attack_dataset.csv")
+heartattack_data <- read_csv("data/japan_heart_attack_dataset.csv")
 ```
+
+## 2.3 Understanding the Data
+
+The following code chunk allows us to understand the structure of the dataset. 
+
+::: {.panel-tabset}
+### Code
+```{r, eval=FALSE}
+str(heartattack_data)
+```
+
+### Results
+```{r, echo=FALSE}
+# Display the structure of the dataset
+str(heartattack_data)
+```
+:::
+
 
 # 3.0 Data Visualisation
 
