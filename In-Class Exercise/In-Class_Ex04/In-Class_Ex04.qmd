@@ -1,5 +1,38 @@
 ---
-title: "In-Class_Ex04"
-format: html
+title: "In-class Exercise 4.0"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-02-08"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
 ---
 
+# 1.0 Getting Started
+
+## 1.1 Installing and Launching the R Packages
+
+```{r}
+pacman::p_load(haven, SmartEDA, tidyverse, tidymodels, ggplot2)
+```
+
+## 1.2 Importing Data
+
+The code chunk below uses read_csv( ) to import exam_data.csv into R and save it into a tibble data frame:
+
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+# 2.0 Visualising the Distribution of English Scores
+
+```{r}
+ggplot(exam, 
+       aes(x = ENGLISH, # As English is plotted on the x-axis, we will obtain a horizontal boxplot.
+           y = CLASS)) +
+geom_boxplot()
+```
+
+Boxplots show the summary statistics and not really the distribution. Which is why we use the ridgeline plot, which explicitly shows the distribution.

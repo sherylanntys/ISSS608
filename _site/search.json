@@ -1307,5 +1307,26 @@
     "title": "Hands-on Exercise 5.5: Treemap Visualisation with R",
     "section": "4.2 Designing an Interactive Treemap",
     "text": "4.2 Designing an Interactive Treemap\nThe code uses treemap() to build a treemap by using selected variables in condominium data.frame.\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\nd3tree() is then used to build an interactive treemap:\n\nd3tree(tm,rootname = \"Singapore\" )"
+  },
+  {
+    "objectID": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html",
+    "href": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html",
+    "title": "In-class Exercise 4.0",
+    "section": "",
+    "text": "pacman::p_load(haven, SmartEDA, tidyverse, tidymodels, ggplot2)\n\n\n\n\nThe code chunk below uses read_csv( ) to import exam_data.csv into R and save it into a tibble data frame:\n\nexam &lt;- read_csv(\"data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html#installing-and-launching-the-r-packages",
+    "href": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html#installing-and-launching-the-r-packages",
+    "title": "In-class Exercise 4.0",
+    "section": "",
+    "text": "pacman::p_load(haven, SmartEDA, tidyverse, tidymodels, ggplot2)"
+  },
+  {
+    "objectID": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html#importing-data",
+    "href": "In-Class Exercise/In-Class_Ex04/In-Class_Ex04.html#importing-data",
+    "title": "In-class Exercise 4.0",
+    "section": "",
+    "text": "The code chunk below uses read_csv( ) to import exam_data.csv into R and save it into a tibble data frame:\n\nexam &lt;- read_csv(\"data/Exam_data.csv\")"
   }
 ]

@@ -1,0 +1,17 @@
+{
+  "hash": "833ebcf753c3a36d0f74bff07607c61f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"In-class Exercise 4.0\"\nauthor: \"Sheryl Ann Tan Yi-Shi\"\ndate: \"2025-02-08\"\ndate-modified: \"last-modified\"\nexecute: \n  echo: true\n  eval: true\n  warning: false\n  freeze: true\n---\n\n\n\n# 1.0 Getting Started\n\n## 1.1 Installing and Launching the R Packages\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(haven, SmartEDA, tidyverse, tidymodels, ggplot2)\n```\n:::\n\n\n\n## 1.2 Importing Data\n\nThe code chunk below uses read_csv( ) to import exam_data.csv into R and save it into a tibble data frame:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam <- read_csv(\"data/Exam_data.csv\")\n```\n:::\n\n\n\n# 2.0 Visualising the Distribution of English Scores\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(exam, \n       aes(x = ENGLISH, # As English is plotted on the x-axis, we will obtain a horizontal boxplot.\n           y = CLASS)) +\ngeom_boxplot()\n```\n\n::: {.cell-output-display}\n![](In-Class_Ex04_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n\nBoxplots show the summary statistics and not really the distribution. Which is why we use the ridgeline plot, which explicitly shows the distribution.\n",
+    "supporting": [
+      "In-Class_Ex04_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
