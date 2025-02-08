@@ -1,0 +1,389 @@
+---
+title: "Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-02-15"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Introduction
+
+## 1.1 Background
+
+The maritime sector is one of the most critical components of global trade, contributing significantly to economic growth and sustainability. Understanding ship performance, fuel efficiency, and operational cost factors are essential for improving decision-making and minimizing environmental impact.
+
+## 1.2 The Task
+
+This exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:
+
+-   Heart Attack in Japan
+
+-   Ship Performance in the Gulf of Guinea
+
+The selected theme for this task is ***Ship Performance in the Gulf of Guinea*** and the objective is to prepare data visualisation for the article.
+
+## 1.3 About the Dataset
+
+The dataset used in this exercise is sourced from Kaggle. It can be accessed via this [link](https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset/data).
+
+This dataset contains information on key operational metrics and attributes of various ship types in the Gulf of Guinea. The dataset includes numerical (e.g. `speed_over_ground_knots`, `revenue_per_voyage_usd`) and categorical variables (e.g. `ship_type`, `maintenance_status`) relevant to ship performance evaluation.
+
+# 2.0 Data Preparation
+
+## 2.1 Loading R Packages
+
+The following R packages were used:
+
+| R Package   | Description |
+|-------------|-------------|
+| `dplyr`     |             |
+| `tidyverse` |             |
+| `lubridate` |             |
+|             |             |
+|             |             |
+|             |             |
+|             |             |
+
+```{r}
+pacman::p_load(ggiraph, plotly, gifski, gganimate,
+               patchwork, DT, tidyverse, dplyr, lubridate) 
+```
+
+## 2.2 Importing the Data
+
+The dataset was imported into R using the `read_csv` function from the `readr` package, which is part of the `tidyverse` suite.
+
+```{r}
+ship_data <- read_csv("data/ship_performance_dataset.csv")
+```
+
+## 2.3 Understanding the Data and Data Wrangling
+
+To gain an initial understanding of the dataset, the following code chunk utilises the `glimpse` function from the `dplyr` package. This function provides a quick overview of the dataset's structure by displaying the first few entries of each column along with their data types.
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+glimpse(ship_data)
+```
+
+#### Results
+
+```{r, echo=FALSE}
+glimpse(ship_data)
+```
+:::
+
+Based on the output generated, the dataset consists of 2,736 rows and 18 columns.
+
+### 2.3.1 Duplicate and Missing Value Checks
+
+**Duplicate Data Check**
+
+As duplicates can skew analysis results, identifying and removing them is crucial for subsequent analysis. Thus, a check for duplicate records was done using the `dplyr` package as shown in the code chunk below:
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+duplicate_count <- sum(duplicated(ship_data))
+cat("Number of duplicate rows:", duplicate_count, "\n")
+
+if (duplicate_count > 0) {
+  duplicate_rows <- ship_data[duplicated(ship_data), ]
+  print(duplicate_rows)
+} else {
+  cat("No duplicate rows found.\n")
+}
+```
+
+#### Results
+
+```{r, echo=FALSE}
+
+duplicate_rows <- ship_data %>%
+  dplyr::group_by(across(everything())) %>%
+  dplyr::summarise(count = n(), .groups = 'drop') %>%
+
+  dplyr::filter(count > 1)
+
+print(duplicate_rows)
+```
+:::
+
+Based on the output, there are no duplicate records in the dataset.
+
+**Missing Value Check**
+
+Missing values in a dataset can introduce bias and affect the accuracy of subsequent analysis, potentially leading to misleading results. The following code chunk counts the number of missing values (`NA)` in the dataset:
+
+```{r}
+missing_value_count <- sum(rowSums(is.na(ship_data)) > 0)
+cat("Number of rows with missing values:", missing_value_count, "\n")
+```
+
+Although the output indicates that there are no missing values (`NA`) in the dataset, a further assessment of categorical columns is required to check for unrecorded data. The following code chunk generates the unique values for each categorical column in the dataset:
+
+::: panel-tabset
+#### Code
+
+```{r, results="hide"}
+categorical_columns <- names(ship_data)[sapply(ship_data, is.character)]
+
+for (col in categorical_columns) {
+  cat("\nUnique values in", col, ":\n")
+  print(unique(ship_data[[col]]))
+}
+
+```
+
+#### Results
+
+```{r, echo=FALSE}
+categorical_columns <- names(ship_data)[sapply(ship_data, is.character)]
+
+for (col in categorical_columns) {
+  cat("\nUnique values in", col, ":\n")
+  print(unique(ship_data[[col]]))
+}
+```
+:::
+
+From the results, we observe that some categorical columns contain the value ***None***, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of ***None*** values in the affected categorical columns:
+
+::: panel-tabset
+#### Code
+
+```{r, results="hide"}
+categorical_columns <- names(ship_data)[sapply(ship_data, is.character)]
+
+missing_categorical_counts <- data.frame(Column = categorical_columns, 
+                                         Missing_Count = sapply(ship_data[categorical_columns], function(x) sum(is.na(x) | x == "None")))
+
+```
+
+#### Results
+
+```{r, echo=FALSE}
+print(missing_categorical_counts)
+```
+:::
+
+Based on the results obtained above, each affected column contains 136 ***None*** values, representing approximately 5% of the total observations in the dataset. Since the percentage of missing values is relatively low, records containing ***None*** will be excluded from subsequent analysis.
+
+### 2.3.2 Creating New Variables
+
+The dataset covers the following time period: 4 June 2023 to 30 June 2024. To facilitate time-based analysis, the dates have been grouped into two new variables:
+
+-   **Month**: Represents the month of each record in `"MM-YYYY"` format.
+
+-   **Quarter**: Categorizes each record into **Q1, Q2, Q3, or Q4** based on the calendar year.
+
+The following code was used to generate these variables:
+
+```{r}
+
+ship_data$Month <- format(ship_data$Date, "%Y-%m")  
+ship_data$Quarter <- paste0("Q", quarter(ship_data$Date))  
+ship_data$Quarter <- factor(ship_data$Quarter, levels = c("Q1", "Q2", "Q3", "Q4"))
+
+head(ship_data$Month)
+head(ship_data$Quarter)
+```
+
+**Profit (USD)**
+
+Profit is a key financial metric that reflects the overall economic performance of a ship's operation. To incorporate profit into the dataset, a new variable was created based on the difference between `Revenue_per_Voyage_USD` and `Operational_Cost_USD`.
+
+```{r}
+ship_data$Profit_USD <- ship_data$Revenue_per_Voyage_USD - ship_data$Operational_Cost_USD
+
+summary(ship_data$Profit_USD)
+```
+
+Based on the summary statistics of the newly created `Profit_USD`, we can observe that some of the ships are loss-making.
+
+**Profit per Cargo Weight (USD per Ton)**
+
+This metric evaluates how efficiently a ship generates profit relative to the amount of cargo it transports. It helps in understanding which ships or routes are most profitable in terms of cargo handling.
+
+```{r}
+ship_data$Profit_per_Cargo_ton <- ifelse(ship_data$Cargo_Weight_tons != 0, 
+                                         ship_data$Profit_USD / ship_data$Cargo_Weight_tons, 
+                                         NA)
+
+summary(ship_data$Profit_per_Cargo_ton)
+```
+
+### 2.3.3 Data Type Conversion
+
+The data table below shows the current data type of each of the 19 columns, along with the proposed data type for conversion. To improve data handling and ensure accurate analysis, the proposed data type for each column should align with the nature of the data.
+
+| Variable                | Current Data Type | Proposed Data Type |
+|-------------------------|-------------------|--------------------|
+| Date                    | Date              | Date               |
+| Ship_Type               | Character         | Factor             |
+| Route_Type              | Character         | Factor             |
+| Engine_Type             | Character         | Factor             |
+| Maintenance_Status      | Character         | Ordered Factor     |
+| Speed_Over_Ground_knots | Double            | Double             |
+| Engine_Power_kW         | Double            | Double             |
+| Distance_Traveled_nm    | Double            | Double             |
+| Draft_meters            | Double            | Double             |
+| Weather_Condition       | Character         | Ordered Factor     |
+| Cargo_Weight_tons       | Double            | Double             |
+| Operational_Cost_USD    | Double            | Double             |
+| Revenue_per_Voyage_USD  | Double            | Double             |
+| Turnaround_Time_hours   | Double            | Double             |
+| Efficiency_nm_per_kWh   | Double            | Double             |
+| Seasonal_Impact_Score   | Double            | Double             |
+| Weekly_Voyage_Count     | Double            | Integer            |
+| Average_Load_Percentage | Double            | Double             |
+| Month                   | Character         | Ordered Factor     |
+| Quarter                 | Character         | Ordered Factor     |
+| Profit_USD              | Double            | Double             |
+| Profit_per_Cargo_ton    | Double            | Double             |
+
+The following code chunk is used to implement the proposed data type conversions:
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+ship_data$Ship_Type <- as.factor(ship_data$Ship_Type)
+ship_data$Route_Type <- as.factor(ship_data$Route_Type)
+ship_data$Engine_Type <- as.factor(ship_data$Engine_Type)
+
+ship_data$Maintenance_Status <- factor(ship_data$Maintenance_Status, 
+                                       levels = c("Critical", "Fair", "Good","None"), 
+                                       ordered = TRUE)
+
+ship_data$Weather_Condition <- factor(ship_data$Weather_Condition, 
+                                      levels = c("Calm", "Moderate", "Rough", "Severe","None"), 
+                                      ordered = TRUE)
+ship_data$Month <- factor(ship_data$Month, levels = sort(unique(ship_data$Month)), ordered = TRUE)
+
+ship_data$Weekly_Voyage_Count <- as.integer(ship_data$Weekly_Voyage_Count)
+```
+
+#### Results
+
+```{r, echo=FALSE}
+glimpse(ship_data)
+```
+:::
+
+# 3.0 Data Visualisation
+
+# 3.1 Financial
+
+```{r}
+# Aggregate data: Exclude "None" Ship Types & Sum Total Profit
+aggregated_data <- ship_data %>%
+  filter(Ship_Type != "None") %>%  # Exclude "None" Ship Type
+  group_by(Month, Ship_Type) %>%
+  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the Line Chart
+ggplot(aggregated_data, aes(x = Month, y = Total_Profit / 1e6, color = Ship_Type, group = Ship_Type)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Profit in Thousands
+  labs(title = "Seasonal Impact on Profitability",
+       x = "Month",
+       y = "Total Profit (USD Million)",
+       color = "Ship Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+```{r}
+# Aggregate data: Exclude "None" Ship Types & Sum Total Profit
+aggregated_data <- ship_data %>%
+  filter(Route_Type != "None") %>%  # Exclude "None" Ship Type
+  group_by(Month, Route_Type) %>%
+  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the Line Chart
+ggplot(aggregated_data, aes(x = Month, y = Total_Profit / 1e6, color = Route_Type, group = Route_Type)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Profit in Thousands
+  labs(title = "Seasonal Impact on Profitability",
+       x = "Month",
+       y = "Total Profit (USD Million)",
+       color = "Route Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+```{r}
+# Aggregate data: Exclude "None" Ship Types & Summarize Profit and Revenue
+aggregated_data <- ship_data %>%
+  filter(Ship_Type != "None") %>%  # Exclude "None" Ship Type
+  group_by(Ship_Type) %>%
+  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE),
+            Total_Revenue = sum(Revenue_per_Voyage_USD, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the Bubble Plot
+ggplot(aggregated_data, aes(x = Total_Revenue / 1e6,  # Convert to millions
+                            y = Total_Profit / 1e6,  # Convert to millions
+                            size = abs(Total_Profit) / 1e6,  # Bubble size in millions
+                            color = Ship_Type)) +
+  geom_point(alpha = 0.7) +
+  scale_size_continuous(range = c(3, 15)) +  # Adjust bubble sizes
+  scale_x_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Format x-axis
+  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Format y-axis
+  coord_fixed() +  # Ensures equal scaling for X and Y axes
+  labs(title = "Total Profit vs. Total Revenue by Ship Type",
+       x = "Total Revenue (USD Million)",
+       y = "Total Profit (USD Million)",
+       size = "Total Profit (USD Million)",
+       color = "Ship Type") +
+  theme_minimal()
+```
+
+```{r}
+# Filter out "None" ship types
+filtered_data <- ship_data %>%
+  filter(Ship_Type != "None")
+
+# Create the Ridgeline Plot
+ggplot(filtered_data, aes(x = Profit_per_Cargo_ton / 1e3, y = Ship_Type, fill = Ship_Type)) +
+  geom_density_ridges(scale = 1.5, alpha = 0.7) +
+  scale_x_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "K", scale = 1)) +  # Profit in Thousands
+  labs(title = "Profit Distribution by Ship Type",
+       x = "Profit (USD Thousand)",
+       y = "Ship Type",
+       fill = "Ship Type") +
+  theme_minimal() +
+  theme(legend.position = "none")  # Hide legend for cleaner visualization
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Filter out ship type 'None'
+ship_data_filtered <- ship_data %>%
+  filter(Ship_Type != "None")
+
+# Create the dot plot using geom_dotplot
+ggplot(ship_data_filtered, aes(x = Profit_USD, fill = Ship_Type)) +
+  geom_dotplot(binwidth = 50000, stackdir = "up", dotsize = 0.6, position = "dodge") +
+  labs(title = "Distribution of Ships by Profit",
+       x = "Profit (USD)",
+       y = "Count of Ships",
+       fill = "Ship Type") +
+  theme_minimal()
+
+```
+
+# 3.2 Operational

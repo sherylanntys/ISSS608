@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sheryl Ann Tan Yi-Shi">
+<meta name="dcterms.date" content="2025-02-15">
+
+<title>Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default – ISSS608 Coursework</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS608 Coursework</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex00/Hands-on_Ex00.html">
+ <span class="dropdown-text">Hands-On Exercise 0.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html">
+ <span class="dropdown-text">Hands-On Exercise 1.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html">
+ <span class="dropdown-text">Hands-On Exercise 2.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html">
+ <span class="dropdown-text">Hands-On Exercise 3.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html">
+ <span class="dropdown-text">Hands-On Exercise 3.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex041.html">
+ <span class="dropdown-text">Hands-On Exercise 4.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex042.html">
+ <span class="dropdown-text">Hands-On Exercise 4.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex043.html">
+ <span class="dropdown-text">Hands-On Exercise 4.3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex044.html">
+ <span class="dropdown-text">Hands-On Exercise 4.4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex051.html">
+ <span class="dropdown-text">Hands-On Exercise 5.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex052.html">
+ <span class="dropdown-text">Hands-On Exercise 5.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex053.html">
+ <span class="dropdown-text">Hands-On Exercise 5.3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex054.html">
+ <span class="dropdown-text">Hands-On Exercise 5.4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex055.html">
+ <span class="dropdown-text">Hands-On Exercise 5.5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17377898729330/Dashboard1">
+ <span class="dropdown-text">In-class Exercise 1.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17371867514480/Dashboard2">
+ <span class="dropdown-text">In-class Exercise 2.0</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/sherylanntan"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/sherylanntys"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1.0 Introduction</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">1.1 Background</a></li>
+  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">1.2 The Task</a></li>
+  <li><a href="#about-the-dataset" id="toc-about-the-dataset" class="nav-link" data-scroll-target="#about-the-dataset">1.3 About the Dataset</a></li>
+  </ul></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.0 Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">2.1 Loading R Packages</a></li>
+  <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">2.2 Importing the Data</a></li>
+  <li><a href="#understanding-the-data-and-data-wrangling" id="toc-understanding-the-data-and-data-wrangling" class="nav-link" data-scroll-target="#understanding-the-data-and-data-wrangling">2.3 Understanding the Data and Data Wrangling</a>
+  <ul class="collapse">
+  <li><a href="#duplicate-and-missing-value-checks" id="toc-duplicate-and-missing-value-checks" class="nav-link" data-scroll-target="#duplicate-and-missing-value-checks">2.3.1 Duplicate and Missing Value Checks</a></li>
+  <li><a href="#creating-new-variables" id="toc-creating-new-variables" class="nav-link" data-scroll-target="#creating-new-variables">2.3.2 Creating New Variables</a></li>
+  <li><a href="#data-type-conversion" id="toc-data-type-conversion" class="nav-link" data-scroll-target="#data-type-conversion">2.3.3 Data Type Conversion</a></li>
+  <li><a href="#filtering-of-columns" id="toc-filtering-of-columns" class="nav-link" data-scroll-target="#filtering-of-columns">2.3.1 Filtering of Columns</a></li>
+  <li><a href="#recoding-variables" id="toc-recoding-variables" class="nav-link" data-scroll-target="#recoding-variables">2.3.3 Recoding Variables</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-Home Exercise 1.0: Creating Data Visualisation Beyond Default</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sheryl Ann Tan Yi-Shi </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 15, 2025</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">February 5, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>1.0 Introduction</h1>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
+<p>The maritime sector is one of the most critical components of global trade, contributing significantly to economic growth and sustainability. Understanding ship performance, fuel efficiency, and operational cost factors are essential for improving decision-making and minimizing environmental impact.</p>
+</section>
+<section id="the-task" class="level2">
+<h2 class="anchored" data-anchor-id="the-task">1.2 The Task</h2>
+<p>This exercise involves assuming the role of a graphical editor at an international media company that regularly publishes content on digital platforms. The company plans to release articles focused on one of the following themes:</p>
+<ul>
+<li><p>Heart Attack in Japan</p></li>
+<li><p>Ship Performance in the Gulf of Guinea</p></li>
+</ul>
+<p>For the purposes of this take-home exercise, the theme, <strong><em>Ship Performance in the Gulf of Guinea</em></strong>, was selected for the preparation of data visualizations for the article.</p>
+</section>
+<section id="about-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-dataset">1.3 About the Dataset</h2>
+<p>The dataset used in this exercise is sourced from Kaggle and can be accessed via this <a href="https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset/data">link</a>.</p>
+<p>This dataset contains information on key operational metrics and attributes of various ship types in the Gulf of Guinea. The dataset includes numerical (e.g.&nbsp;<code>speed_over_ground_knots</code>, <code>revenue_per_voyage_usd</code>) and categorical variables (e.g.&nbsp;<code>ship_type</code>, <code>maintenance_status</code>) relevant to ship performance evaluation.</p>
+</section>
+</section>
+<section id="data-preparation" class="level1">
+<h1>2.0 Data Preparation</h1>
+<section id="loading-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-r-packages">2.1 Loading R Packages</h2>
+<p>The following R packages were used:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>R Package</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dplyr</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>tidyverse</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggiraph, plotly, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse, dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="importing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-the-data">2.2 Importing the Data</h2>
+<p>The dataset was imported into R using the <code>read_csv</code> function from the <code>readr</code> package, which is part of the <code>tidyverse</code> suite.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ship_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ship_performance_dataset.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="understanding-the-data-and-data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-data-and-data-wrangling">2.3 Understanding the Data and Data Wrangling</h2>
+<p>To gain an initial understanding of the dataset, the following code chunk utilises the <code>glimpse</code> function from the <code>dplyr</code> package. This function provides a quick overview of the dataset’s structure by displaying the first few entries of each column along with their data types.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ship_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,736
+Columns: 18
+$ Date                    &lt;date&gt; 2023-06-04, 2023-06-11, 2023-06-18, 2023-06-2…
+$ Ship_Type               &lt;chr&gt; "Container Ship", "Fish Carrier", "Container S…
+$ Route_Type              &lt;chr&gt; "None", "Short-haul", "Long-haul", "Transocean…
+$ Engine_Type             &lt;chr&gt; "Heavy Fuel Oil (HFO)", "Steam Turbine", "Dies…
+$ Maintenance_Status      &lt;chr&gt; "Critical", "Good", "Fair", "Fair", "Fair", "F…
+$ Speed_Over_Ground_knots &lt;dbl&gt; 12.59756, 10.38758, 20.74975, 21.05510, 13.742…
+$ Engine_Power_kW         &lt;dbl&gt; 2062.9840, 1796.0574, 1648.5567, 915.2618, 108…
+$ Distance_Traveled_nm    &lt;dbl&gt; 1030.9436, 1060.4864, 658.8741, 1126.8225, 144…
+$ Draft_meters            &lt;dbl&gt; 14.132284, 14.653083, 7.199261, 11.789063, 9.7…
+$ Weather_Condition       &lt;chr&gt; "Moderate", "Rough", "Moderate", "Moderate", "…
+$ Cargo_Weight_tons       &lt;dbl&gt; 1959.0179, 162.3947, 178.0409, 1737.3853, 260.…
+$ Operational_Cost_USD    &lt;dbl&gt; 483832.35, 483388.00, 448543.40, 261349.61, 28…
+$ Revenue_per_Voyage_USD  &lt;dbl&gt; 292183.27, 883765.79, 394018.75, 87551.38, 676…
+$ Turnaround_Time_hours   &lt;dbl&gt; 25.86708, 63.24820, 49.41815, 22.40911, 64.158…
+$ Efficiency_nm_per_kWh   &lt;dbl&gt; 1.4551789, 0.2903614, 0.4995945, 0.7029057, 1.…
+$ Seasonal_Impact_Score   &lt;dbl&gt; 1.4156533, 0.8856478, 1.4058132, 1.3707043, 0.…
+$ Weekly_Voyage_Count     &lt;dbl&gt; 1, 6, 9, 1, 8, 7, 3, 6, 8, 2, 9, 4, 3, 7, 7, 3…
+$ Average_Load_Percentage &lt;dbl&gt; 93.76925, 93.89537, 96.21824, 66.19370, 80.008…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Based on the output generated, the dataset consists of 2,736 rows and 18 columns.</p>
+<section id="duplicate-and-missing-value-checks" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-and-missing-value-checks">2.3.1 Duplicate and Missing Value Checks</h3>
+<p><strong>Duplicate Data Check</strong></p>
+<p>As duplicates can skew analysis results, identifying and removing them is crucial for subsequent analysis. Thus, a check for duplicate records was done using the <code>dplyr</code> package as shown in the code chunk below:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>duplicate_count <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">duplicated</span>(ship_data))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of duplicate rows:"</span>, duplicate_count, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (duplicate_count <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  duplicate_rows <span class="ot">&lt;-</span> ship_data[<span class="fu">duplicated</span>(ship_data), ]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(duplicate_rows)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"No duplicate rows found.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of duplicate rows: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No duplicate rows found.</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Based on the output, there are no duplicate records in the dataset</p>
+<p><strong>Missing Value Check</strong></p>
+<p>Missing values in a dataset can introduce bias and affect the accuracy of subsequent analysis, potentially leading to misleading results. The following code chunk counts the number of missing values (<code>NA)</code> in the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>missing_value_count <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">rowSums</span>(<span class="fu">is.na</span>(ship_data)) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of rows with missing values:"</span>, missing_value_count, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of rows with missing values: 0 </code></pre>
+</div>
+</div>
+<p>AAlthough the output indicates that there are no missing values (<code>NA</code>) in the dataset, a further assessment of categorical columns is required to check for unrecorded data. The following code chunk generates the unique values for each categorical column in the dataset:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>categorical_columns <span class="ot">&lt;-</span> <span class="fu">names</span>(ship_data)[<span class="fu">sapply</span>(ship_data, is.character)]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> categorical_columns) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Unique values in"</span>, col, <span class="st">":</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">unique</span>(ship_data[[col]]))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Unique values in Ship_Type :
+[1] "Container Ship" "Fish Carrier"   "Bulk Carrier"   "None"          
+[5] "Tanker"        
+
+Unique values in Route_Type :
+[1] "None"         "Short-haul"   "Long-haul"    "Transoceanic" "Coastal"     
+
+Unique values in Engine_Type :
+[1] "Heavy Fuel Oil (HFO)" "Steam Turbine"        "Diesel"              
+[4] "None"                
+
+Unique values in Maintenance_Status :
+[1] "Critical" "Good"     "Fair"     "None"    
+
+Unique values in Weather_Condition :
+[1] "Moderate" "Rough"    "Calm"     "None"    </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>From the results, we observe that some categorical columns contain the value <strong><em>None</em></strong>, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of <strong><em>None</em></strong> values in the affected categorical columns:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categorical columns</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>categorical_columns <span class="ot">&lt;-</span> <span class="fu">names</span>(ship_data)[<span class="fu">sapply</span>(ship_data, is.character)]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store missing counts</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>missing_categorical_counts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Column =</span> categorical_columns, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">Missing_Count =</span> <span class="fu">sapply</span>(ship_data[categorical_columns], <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x) <span class="sc">|</span> x <span class="sc">==</span> <span class="st">"None"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                               Column Missing_Count
+Ship_Type                   Ship_Type           136
+Route_Type                 Route_Type           136
+Engine_Type               Engine_Type           136
+Maintenance_Status Maintenance_Status           136
+Weather_Condition   Weather_Condition           136</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Based on the results obtained above, each affected column contains 136 <strong><em>None</em></strong> values, representing approximately 5% of the total observations in the dataset. Since the percentage of missing values is relatively low, records containing <strong><em>None</em></strong> will be excluded from subsequent analysis.</p>
+</section>
+<section id="creating-new-variables" class="level3">
+<h3 class="anchored" data-anchor-id="creating-new-variables">2.3.2 Creating New Variables</h3>
+<p><strong>Profit (USD)</strong></p>
+<p>Profit is a key financial metric that reflects the overall economic performance of a ship’s operation. To incorporate profit into the dataset, a new variable was created based on the difference between <code>Revenue_per_Voyage_USD</code> and <code>Operational_Cost_USD</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Profit_USD <span class="ot">&lt;-</span> ship_data<span class="sc">$</span>Revenue_per_Voyage_USD <span class="sc">-</span> ship_data<span class="sc">$</span>Operational_Cost_USD</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the new Profit variable</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ship_data<span class="sc">$</span>Profit_USD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-444584   40885  262716  266219  492216  977168 </code></pre>
+</div>
+</div>
+<p>Based on the summary statistics of the newly created <code>Profit_USD</code>, we can observe that some of the ships are loss-making.</p>
+<p><strong>Profit per Cargo Weight (USD per Ton)</strong></p>
+<p>This metric evaluates how efficiently a ship generates profit relative to the amount of cargo it transports. It helps in understanding which ships or routes are most profitable in terms of cargo handling.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Avoid division by zero errors</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Profit_per_Cargo_ton <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ship_data<span class="sc">$</span>Cargo_Weight_tons <span class="sc">!=</span> <span class="dv">0</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                         ship_data<span class="sc">$</span>Profit_USD <span class="sc">/</span> ship_data<span class="sc">$</span>Cargo_Weight_tons, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="cn">NA</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the new variable</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ship_data<span class="sc">$</span>Profit_per_Cargo_ton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-5656.77    38.84   251.55   475.64   553.79 13435.92 </code></pre>
+</div>
+</div>
+</section>
+<section id="data-type-conversion" class="level3">
+<h3 class="anchored" data-anchor-id="data-type-conversion">2.3.3 Data Type Conversion</h3>
+<p>The data table below shows the current data type of each of the 19 columns, along with the proposed data type for conversion. To improve data handling and ensure accurate analysis, the proposed data type for each column should align with the nature of the data.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Current Data Type</th>
+<th>Proposed Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Date</td>
+<td>Date</td>
+<td>Date</td>
+</tr>
+<tr class="even">
+<td>Ship_Type</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="odd">
+<td>Route_Type</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="even">
+<td>Engine_Type</td>
+<td>Character</td>
+<td>Factor</td>
+</tr>
+<tr class="odd">
+<td>Maintenance_Status</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+<tr class="even">
+<td>Speed_Over_Ground_knots</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Engine_Power_kW</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Distance_Traveled_nm</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Draft_meters</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Weather_Condition</td>
+<td>Character</td>
+<td>Ordered Factor</td>
+</tr>
+<tr class="odd">
+<td>Cargo_Weight_tons</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Operational_Cost_USD</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Revenue_per_Voyage_USD</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Turnaround_Time_hours</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Efficiency_nm_per_kWh</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Seasonal_Impact_Score</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Weekly_Voyage_Count</td>
+<td>Double</td>
+<td>Integer</td>
+</tr>
+<tr class="even">
+<td>Average_Load_Percentage</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="odd">
+<td>Profit_USD</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+<tr class="even">
+<td>Profit_per_Cargo_ton</td>
+<td>Double</td>
+<td>Double</td>
+</tr>
+</tbody>
+</table>
+<p>The following code chunk is used to implement the proposed data type conversions:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Ship_Type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(ship_data<span class="sc">$</span>Ship_Type)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Route_Type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(ship_data<span class="sc">$</span>Route_Type)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Engine_Type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(ship_data<span class="sc">$</span>Engine_Type)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Maintenance_Status <span class="ot">&lt;-</span> <span class="fu">factor</span>(ship_data<span class="sc">$</span>Maintenance_Status, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Critical"</span>, <span class="st">"Fair"</span>, <span class="st">"Good"</span>,<span class="st">"None"</span>), </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Weather_Condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(ship_data<span class="sc">$</span>Weather_Condition, </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Calm"</span>, <span class="st">"Moderate"</span>, <span class="st">"Rough"</span>, <span class="st">"Severe"</span>,<span class="st">"None"</span>), </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Weekly_Voyage_Count <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(ship_data<span class="sc">$</span>Weekly_Voyage_Count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,736
+Columns: 20
+$ Date                    &lt;date&gt; 2023-06-04, 2023-06-11, 2023-06-18, 2023-06-2…
+$ Ship_Type               &lt;fct&gt; Container Ship, Fish Carrier, Container Ship, …
+$ Route_Type              &lt;fct&gt; None, Short-haul, Long-haul, Transoceanic, Tra…
+$ Engine_Type             &lt;fct&gt; Heavy Fuel Oil (HFO), Steam Turbine, Diesel, S…
+$ Maintenance_Status      &lt;ord&gt; Critical, Good, Fair, Fair, Fair, Fair, Critic…
+$ Speed_Over_Ground_knots &lt;dbl&gt; 12.59756, 10.38758, 20.74975, 21.05510, 13.742…
+$ Engine_Power_kW         &lt;dbl&gt; 2062.9840, 1796.0574, 1648.5567, 915.2618, 108…
+$ Distance_Traveled_nm    &lt;dbl&gt; 1030.9436, 1060.4864, 658.8741, 1126.8225, 144…
+$ Draft_meters            &lt;dbl&gt; 14.132284, 14.653083, 7.199261, 11.789063, 9.7…
+$ Weather_Condition       &lt;ord&gt; Moderate, Rough, Moderate, Moderate, Moderate,…
+$ Cargo_Weight_tons       &lt;dbl&gt; 1959.0179, 162.3947, 178.0409, 1737.3853, 260.…
+$ Operational_Cost_USD    &lt;dbl&gt; 483832.35, 483388.00, 448543.40, 261349.61, 28…
+$ Revenue_per_Voyage_USD  &lt;dbl&gt; 292183.27, 883765.79, 394018.75, 87551.38, 676…
+$ Turnaround_Time_hours   &lt;dbl&gt; 25.86708, 63.24820, 49.41815, 22.40911, 64.158…
+$ Efficiency_nm_per_kWh   &lt;dbl&gt; 1.4551789, 0.2903614, 0.4995945, 0.7029057, 1.…
+$ Seasonal_Impact_Score   &lt;dbl&gt; 1.4156533, 0.8856478, 1.4058132, 1.3707043, 0.…
+$ Weekly_Voyage_Count     &lt;int&gt; 1, 6, 9, 1, 8, 7, 3, 6, 8, 2, 9, 4, 3, 7, 7, 3…
+$ Average_Load_Percentage &lt;dbl&gt; 93.76925, 93.89537, 96.21824, 66.19370, 80.008…
+$ Profit_USD              &lt;dbl&gt; -191649.081, 400377.787, -54524.657, -173798.2…
+$ Profit_per_Cargo_ton    &lt;dbl&gt; -97.829164, 2465.460747, -306.247902, -100.034…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-of-columns" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-of-columns">2.3.1 Filtering of Columns</h3>
+<p>From the output generated in Section 2.3, the dataset includes 15 columns labelled from <code>Extra_Column_1</code> to <code>Extra_Column_15</code> . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.</p>
+<p>After filtering out the irrelevant columns, the dataset now comprises of 17 columns as shown in the <em>Results</em> tab below:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+
+</div>
+</div>
+</div>
+</section>
+<section id="recoding-variables" class="level3">
+<h3 class="anchored" data-anchor-id="recoding-variables">2.3.3 Recoding Variables</h3>
+<p><strong>Recoding BMI</strong></p>
+<p>Raw BMI values alone do not provide an intuitive interpretation of body weight, making interpretation difficult for both technical and non-technical audiences. As such, there is a need to recode the BMI values into meaningful groups.</p>
+<p>In this exercise, the BMI values were categorised into four distinct groups in accordance to the World Health Organisation’s International BMI Classification. Applying this classification would simplify the interpretation of BMI values, allowing readers of the article to easily determine whether an individual falls within a healthy range or an at-risk category, and the potential relationship with heart attack incidence.</p>
+<p>The categories used are as follows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>BMI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Underweight</td>
+<td>&lt;18.5</td>
+</tr>
+<tr class="even">
+<td>Normal Weight</td>
+<td>18.5 - 24.9</td>
+</tr>
+<tr class="odd">
+<td>Pre-Obese</td>
+<td>25.0 - 29.9</td>
+</tr>
+<tr class="even">
+<td>Obese</td>
+<td>&gt;=30</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>cut</code> function in R was employed to implement this classification. This function assigns each BMI value to one of the specified categories, creating a new column, <code>BMI_Category</code>, in the dataset.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorizing BMI according to WHO standards</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+
+</div>
+</div>
+</div>
+<p><strong>Recoding Age</strong></p>
+<p>In epidemiological studies, age is often grouped into categories rather than analysed as a continuous variable. While age is a key determinant of health risks, raw age variables do not immediately provide clear insights. Binning age into meaningful categories simplifies interpretation, making it easier to identify trends across different life stages.</p>
+<p>The <code>age</code> variable was binned into the following categories:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>Age Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Youth</td>
+<td>0 - 17</td>
+</tr>
+<tr class="even">
+<td>Young Adult</td>
+<td>18 - 35</td>
+</tr>
+<tr class="odd">
+<td>Middle-Aged Adults</td>
+<td>36 - 64</td>
+</tr>
+<tr class="even">
+<td>Elderly</td>
+<td>&gt;= 65</td>
+</tr>
+</tbody>
+</table>
+<p>The code chunk below uses the <code>cut()</code> function in R to categorise the <code>age</code> variable into the aforementioned groupings. A new variable called <code>age_group</code> would be created:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p>Ohira, T., Eguchi, E., Hayashi, F., Kinuta, M., &amp; Imano, H. (2023). Epidemiology of cardiovascular disease in Japan: An overview study. <em>Journal of Cardiology, 81</em>(5), 379-387. https://doi.org/10.1016/j.jjcc.2023.07.007</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

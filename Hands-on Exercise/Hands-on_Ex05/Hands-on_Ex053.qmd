@@ -1,0 +1,222 @@
+---
+title: "Hands-on Exercise 5.3: Heatmap for Visualising and Analysing Multivariate Data"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-02-08"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Getting Started
+
+Heatmaps are generally good at:
+
+1.  Showing **variances** across multiple variables,
+
+2.  Revealing patterns,
+
+3.  Displaying whether any variables are similar to each other, and
+
+4.  Detecting if any correlations exist between them.
+
+## 1.1 Installing and Launching R Packages
+
+```{r}
+pacman::p_load(seriation, dendextend, heatmaply, tidyverse)
+```
+
+## 1.2 Importing the Dataset
+
+The code chunk below uses `read_csv()` of `readr` to import *WHData-2018.csv* into R:
+
+```{r}
+wh <- read_csv("data/WHData-2018.csv")
+```
+
+## 1.3 Preparing the Data
+
+The code chunk below changes the rows by country name instead of row numbers:
+
+```{r}
+row.names(wh) <- wh$Country
+```
+
+## 1.4 Transforming the Data Frame into a Matrix
+
+The data needs to be transformed into a data matrix in order to create the heatmap:
+
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+```
+
+# 2.0 Static Heatmap
+
+## 2.1 `heatmap()` of R Stats
+
+The code chunk below uses `heatmap()` of base stats to plot a heatmap:
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv=NA, Colv=NA)
+```
+
+Indicating **NA** in the `Rowv` and `Colv` switches off the plotting the row and column dendrograms. The code chunk below removes the argument to show how the heatmap looks like with the dendrograms plotted:
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix)
+```
+
+The Happiness Score variable has relatively higher values than the other variables (which are mostly below 1.0). Hence, there is a need to normalise the matrix via the `scale` argument. The `margins` argument is used to ensure that the x-axis labels are displayed completely while `cexRow` and `cexCol` are used to define the font size:
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      scale="column",
+                      cexRow = 0.6, 
+                      cexCol = 0.8,
+                      margins = c(10, 4))
+```
+
+# 3.0 Creating Interactive Heatmap
+
+## 3.1 Working with `heatmaply`
+
+```{r}
+heatmaply(mtcars)
+```
+
+The code chunk uses `-c(1, 2, 3, 4, 5)` to create a vector that lists the columns to be excluded from the `wh_matrix` data frame when plotting the heatmap:
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+```
+
+## 3.2 Data Transformation
+
+In multivariate data sets, variables in the data sets include variables that reflect different types of measurements, which have their own individual ranges.
+
+To ensure that all variables have comparable values, data transformation is often used before clustering.
+
+### 3.2.1 Scaling Method
+
+If all variables are assumed to be **normally distributed**, then scaling would bring them closer to the standard normal distribution. The `scale` column supports column and row scaling.
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          scale = "column")
+```
+
+### 3.2.2 Normalising Method
+
+When variables come from different (non-normal) distributions, use the normalise function to bring the data to 0 - 1 scale.
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+### 3.2.3 Percentising Method
+
+Similar to ranking the variables. However, instead of keeping the rank variables, they are divided by the maximal rank. Interpretation is generally clearer as each value is a percent of observation that has its value or less:
+
+```{r}
+heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+# 4.0 Clustering Algorithm
+
+## 4.1 Manual Approach
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "ward.D")
+```
+
+## 4.2 Statistical Approach
+
+To determine the best clustering method and number of clusters, the `dend_expend()` and `find_k()` functions would be used.
+
+`dend_expend()`:
+
+```{r}
+wh_d <- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = "euclidean")
+dend_expend(wh_d)[[3]]
+```
+
+The **average** method should be used since it has the highest optimum value of 0.67.
+
+`find_k()`:
+
+```{r}
+wh_clust <- hclust(wh_d, method = "average")
+num_k <- find_k(wh_clust)
+plot(num_k)
+```
+
+The number of clusters = 3.
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "average",
+          k_row = 3)
+```
+
+## 4.3 Seriation
+
+**Optimal Leaf Ordering (OLO):**
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "OLO")
+```
+
+**Gruvaeus and Wainer:**
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "GW")
+```
+
+**Mean\
+**
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "mean")
+```
+
+**None**:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none")
+```
+
+## 4.4 Working with Colour Palettes
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none",
+          colors = Blues)
+```
+
+## 4.5 The Finishing Touch
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          Colv=NA,
+          seriate = "none",
+          colors = Blues,
+          k_row = 5,
+          margins = c(NA,200,60,NA),
+          fontsize_row = 4,
+          fontsize_col = 5,
+          main="World Happiness Score and Variables by Country, 2018 \nDataTransformation using Normalise Method",
+          xlab = "World Happiness Indicators",
+          ylab = "World Countries"
+          )
+```

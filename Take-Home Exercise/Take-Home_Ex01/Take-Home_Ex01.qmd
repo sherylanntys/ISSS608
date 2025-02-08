@@ -40,7 +40,7 @@ This dataset provides the opportunity to perform a comprehensive analysis of hea
 
 -   **Behavioural Factors** including physical activity levels and levels of alcohol consumption.
 
-# 2.0 Data Pre-Processing
+# 2.0 Data Preparation
 
 ## 2.1 Loading R Packages
 
@@ -178,7 +178,9 @@ The output indicates the count of missing values for each variable in the datase
 
 **Recoding BMI**
 
-The World Health Organisation's International BMI Classification was applied to the dataset to categorise the BMI values into four distinct groups. Applying this classification would simplify the interpretation of BMI values, making it easier to understand how the different weight categories impact heart attacks.
+Raw BMI values alone do not provide an intuitive interpretation of body weight, making interpretation difficult for both technical and non-technical audiences. As such, there is a need to recode the BMI values into meaningful groups.
+
+In this exercise, the BMI values were categorised into four distinct groups in accordance to the World Health Organisation's International BMI Classification. Applying this classification would simplify the interpretation of BMI values, allowing readers of the article to easily determine whether an individual falls within a healthy range or an at-risk category, and the potential relationship with heart attack incidence.
 
 The categories used are as follows:
 
@@ -189,7 +191,7 @@ The categories used are as follows:
 | Pre-Obese      | 25.0 - 29.9 |
 | Obese          | \>=30       |
 
-To implement this categorisation in our dataset, the `cut` function in R was utilised. This function assigns each BMI value to one of the specified categories, creating a new column, `BMI_Category`, in the dataset.
+The `cut` function in R was employed to implement this classification. This function assigns each BMI value to one of the specified categories, creating a new column, `BMI_Category`, in the dataset.
 
 ::: panel-tabset
 #### Code
@@ -209,24 +211,58 @@ heartattack_data_filtered$BMI_Category <- cut(
 
 ```{r, echo=FALSE}
 # Categorizing BMI according to WHO standards
-heartattack_data_filtered$BMI_Category <- cut(
-  heartattack_data_filtered$BMI,
-  breaks = c(-Inf, 18.5, 24.9, 29.9, Inf),
-  labels = c("Underweight", "Normal Weight", "Pre-Obese", "Obese"),
+table(heartattack_data_filtered$BMI_Category)
+```
+:::
+
+**Recoding Age**
+
+In epidemiological studies, age is often grouped into categories rather than analysed as a continuous variable. While age is a key determinant of health risks, raw age variables do not immediately provide clear insights. Binning age into meaningful categories simplifies interpretation, making it easier to identify trends across different life stages.
+
+The `age` variable was binned into the following categories:
+
+| Classification     | Age Range |
+|--------------------|-----------|
+| Youth              | 0 - 17    |
+| Young Adult        | 18 - 35   |
+| Middle-Aged Adults | 36 - 64   |
+| Elderly            | \>= 65    |
+
+The code chunk below uses the `cut()` function in R to categorise the `age` variable into the aforementioned groupings. A new variable called `age_group` would be created:
+
+::: panel-tabset
+#### Code
+
+```{r, results='hide'}
+
+heartattack_data_filtered$Age_Group <- cut(
+  heartattack_data_filtered$Age,
+  breaks = c(-Inf, 17, 35, 64, Inf), 
+  labels = c("Youth", "Young Adult", "Middle-Aged Adult", "Elderly"),
   right = TRUE
 )
 
-head(heartattack_data_filtered$BMI_Category)
+# Verify the new categories
+table(heartattack_data_filtered$Age_Group)
+
+
+```
+
+#### Results
+
+```{r, echo=FALSE}
+# Categorizing BMI according to WHO standards
+table(heartattack_data_filtered$Age_Group)
 ```
 :::
 
 ### 2.3.4 Data Type Conversion
 
-The data table below shows the current data type of each of the 17 columns, along with the proposed data type for conversion. To improve data handling, the proposed data type for each column should align with the nature of the data.
+The data table below shows the current data type of each of the 17 columns, along with the proposed data type for conversion. To improve data handling and ensure accurate analysis, the proposed data type for each column should align with the nature of the data.
 
 | Variable                | Current Data Type | Proposed Data Type |
 |-------------------------|-------------------|--------------------|
-| Age                     | Double            | Integer            |
+| Age_Group               | Character         | Ordered Factor     |
 | Cholesterol_Level       | Double            | Double             |
 | Stress_Levels           | Double            | Double             |
 | Heart_Rate              | Double            | Double             |
@@ -282,7 +318,10 @@ heartattack_data_filtered <- heartattack_data_filtered %>%
                                  ordered = TRUE),
     BMI_Category = factor(BMI_Category, 
                           levels = c("Underweight", "Normal Weight", "Pre-Obese", "Obese"), 
-                          ordered = TRUE)
+                          ordered = TRUE),
+    Age_Group = factor(Age_Group, 
+                       levels = c("Youth", "Young Adult", "Middle-Aged Adult", "Elderly"), 
+                       ordered = TRUE)
   )
 ```
 
@@ -292,6 +331,165 @@ heartattack_data_filtered <- heartattack_data_filtered %>%
 glimpse(heartattack_data_filtered)
 ```
 :::
+
+# 3.0 Data Visualisation
+
+```{r}
+library(ggplot2)
+library(scales)  # For percentage formatting
+
+# Create a stacked bar chart with percentages
+ggplot(heartattack_data_filtered, aes(x = Age_Group, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "fill") +  # "fill" makes it a proportional stacked chart
+  scale_y_continuous(labels = percent_format()) +  # Convert y-axis to percentages
+  labs(title = "Proportion of Heart Attack Occurrences by Age Group",
+       x = "Age Group",
+       y = "Percentage",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+```
+
+```{r}
+library(ggplot2)
+library(ggridges)  # For ridgeline plots
+
+# Create ridgeline plot for Systolic BP by Heart Attack Occurrence
+ggplot(heartattack_data_filtered, aes(x = Systolic_BP, y = Heart_Attack_Occurrence, fill = Heart_Attack_Occurrence)) +
+  geom_density_ridges(alpha = 0.7, scale = 1.2) +
+  labs(title = "Ridgeline Plot: Systolic Blood Pressure by Heart Attack Occurrence",
+       x = "Systolic Blood Pressure",
+       y = "Heart Attack Occurrence") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+library(ggplot2)
+library(ggridges)  # For ridgeline plots
+
+# Create ridgeline plot for Diastolic BP by Heart Attack Occurrence
+ggplot(heartattack_data_filtered, aes(x = Diastolic_BP, y = Heart_Attack_Occurrence, fill = Heart_Attack_Occurrence)) +
+  geom_density_ridges(alpha = 0.7, scale = 1.2) +
+  labs(title = "Ridgeline Plot: Diastolic Blood Pressure by Heart Attack Occurrence",
+       x = "Diastolic Blood Pressure",
+       y = "Heart Attack Occurrence") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+library(ggplot2)
+library(ggridges)  # For ridgeline plots
+
+# Create ridgeline plot for Stress Levels by Heart Attack Occurrence
+ggplot(heartattack_data_filtered, aes(x = Stress_Levels, y = Heart_Attack_Occurrence, fill = Heart_Attack_Occurrence)) +
+  geom_density_ridges(alpha = 0.7, scale = 1.2) +
+  labs(title = "Ridgeline Plot: Stress Levels by Heart Attack Occurrence",
+       x = "Stress Levels",
+       y = "Heart Attack Occurrence") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+library(ggplot2)
+library(scales)  # For percentage formatting
+
+# Create a stacked bar chart with percentages
+ggplot(heartattack_data_filtered, aes(x = BMI_Category, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "fill") +  # "fill" makes it a proportional stacked chart
+  scale_y_continuous(labels = percent_format()) +  # Convert y-axis to percentages
+  labs(title = "Proportion of Heart Attack Occurrences by BMI Category",
+       x = "BMI Category",
+       y = "Percentage",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+```
+
+```{r}
+library(ggplot2)
+
+# Create a grouped bar chart for Heart Attack Occurrence by BMI Category
+ggplot(heartattack_data_filtered, aes(x = BMI_Category, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "dodge") +  # "dodge" separates the bars instead of stacking them
+  labs(title = "Heart Attack Occurrences by BMI Category",
+       x = "BMI Category",
+       y = "Count",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+```
+
+```{r}
+ggplot(heartattack_data_filtered, aes(x = Age_Group, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "stack") +  # Stacked to show total cases per group
+  labs(title = "Total Heart Attack Cases by Age Group",
+       x = "Age Group",
+       y = "Count",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+```
+
+```{r}
+library(ggplot2)
+
+# Create a grouped bar chart for Heart Attack Occurrence by Gender
+ggplot(heartattack_data_filtered, aes(x = Gender, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "dodge") +  # "dodge" separates the bars for easy comparison
+  labs(title = "Heart Attack Occurrences by Gender",
+       x = "Gender",
+       y = "Count",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+```
+
+```{r}
+library(ggplot2)
+library(ggridges)  # For ridgeline plots
+
+# Create ridgeline plot for Heart Rate by Heart Attack Occurrence
+ggplot(heartattack_data_filtered, aes(x = Heart_Rate, y = Heart_Attack_Occurrence, fill = Heart_Attack_Occurrence)) +
+  geom_density_ridges(alpha = 0.7, scale = 1.2) +
+  labs(title = "Ridgeline Plot: Heart Rate by Heart Attack Occurrence",
+       x = "Heart Rate",
+       y = "Heart Attack Occurrence") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+```
+
+```{r}
+ggplot(heartattack_data_filtered, aes(x = Physical_Activity, fill = Heart_Attack_Occurrence)) +
+  geom_bar(position = "fill") +  # "fill" makes it a proportional stacked chart
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Proportion of Heart Attack Occurrences by Physical Activity Level",
+       x = "Physical Activity Level",
+       y = "Percentage",
+       fill = "Heart Attack Occurrence") +
+  theme_minimal()
+
+
+```
+
+```{r}
+ggplot(heartattack_data_filtered, aes(x = Smoking_History, y = Systolic_BP, 
+                                      fill = Heart_Attack_Occurrence)) +
+  geom_violin(alpha = 0.7) +
+  labs(title = "Violin Plot: Systolic BP by Smoking History & Heart Attack Occurrence",
+       x = "Smoking History",
+       y = "Systolic BP") +
+  theme_minimal()
+
+
+```
 
 # 7.0 References
 
