@@ -49,8 +49,8 @@ The following R packages were used:
 |             |             |
 
 ```{r}
-pacman::p_load(ggiraph, plotly, gifski, gganimate,
-               patchwork, DT, tidyverse, dplyr, lubridate) 
+pacman::p_load(ggiraph, plotly, gifski, gganimate, ggthemes, ggridges,
+               patchwork, DT, tidyverse, dplyr, lubridate, ggdist) 
 ```
 
 ## 2.2 Importing the Data
@@ -105,14 +105,15 @@ if (duplicate_count > 0) {
 #### Results
 
 ```{r, echo=FALSE}
+duplicate_count <- sum(duplicated(ship_data))
+cat("Number of duplicate rows:", duplicate_count, "\n")
 
-duplicate_rows <- ship_data %>%
-  dplyr::group_by(across(everything())) %>%
-  dplyr::summarise(count = n(), .groups = 'drop') %>%
-
-  dplyr::filter(count > 1)
-
-print(duplicate_rows)
+if (duplicate_count > 0) {
+  duplicate_rows <- ship_data[duplicated(ship_data), ]
+  print(duplicate_rows)
+} else {
+  cat("No duplicate rows found.\n")
+}
 ```
 :::
 
@@ -139,7 +140,6 @@ for (col in categorical_columns) {
   cat("\nUnique values in", col, ":\n")
   print(unique(ship_data[[col]]))
 }
-
 ```
 
 #### Results
@@ -154,7 +154,7 @@ for (col in categorical_columns) {
 ```
 :::
 
-From the results, we observe that some categorical columns contain the value ***None***, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of ***None*** values in the affected categorical columns:
+From the results, it was observed that some of the columns containing categorical data contained the value ***None***, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of ***None*** values in the affected categorical columns:
 
 ::: panel-tabset
 #### Code
@@ -164,7 +164,6 @@ categorical_columns <- names(ship_data)[sapply(ship_data, is.character)]
 
 missing_categorical_counts <- data.frame(Column = categorical_columns, 
                                          Missing_Count = sapply(ship_data[categorical_columns], function(x) sum(is.na(x) | x == "None")))
-
 ```
 
 #### Results
@@ -178,22 +177,15 @@ Based on the results obtained above, each affected column contains 136 ***None**
 
 ### 2.3.2 Creating New Variables
 
-The dataset covers the following time period: 4 June 2023 to 30 June 2024. To facilitate time-based analysis, the dates have been grouped into two new variables:
-
--   **Month**: Represents the month of each record in `"MM-YYYY"` format.
-
--   **Quarter**: Categorizes each record into **Q1, Q2, Q3, or Q4** based on the calendar year.
+The dataset covers the following time period: 4 June 2023 to 30 June 2024. To facilitate time-based analysis, the dates have been grouped into a new variable called ***Month***, which will represent the month of each record in a `"MM-YYYY"` format.
 
 The following code was used to generate these variables:
 
 ```{r}
 
 ship_data$Month <- format(ship_data$Date, "%Y-%m")  
-ship_data$Quarter <- paste0("Q", quarter(ship_data$Date))  
-ship_data$Quarter <- factor(ship_data$Quarter, levels = c("Q1", "Q2", "Q3", "Q4"))
 
 head(ship_data$Month)
-head(ship_data$Quarter)
 ```
 
 **Profit (USD)**
@@ -206,19 +198,7 @@ ship_data$Profit_USD <- ship_data$Revenue_per_Voyage_USD - ship_data$Operational
 summary(ship_data$Profit_USD)
 ```
 
-Based on the summary statistics of the newly created `Profit_USD`, we can observe that some of the ships are loss-making.
-
-**Profit per Cargo Weight (USD per Ton)**
-
-This metric evaluates how efficiently a ship generates profit relative to the amount of cargo it transports. It helps in understanding which ships or routes are most profitable in terms of cargo handling.
-
-```{r}
-ship_data$Profit_per_Cargo_ton <- ifelse(ship_data$Cargo_Weight_tons != 0, 
-                                         ship_data$Profit_USD / ship_data$Cargo_Weight_tons, 
-                                         NA)
-
-summary(ship_data$Profit_per_Cargo_ton)
-```
+Based on the summary statistics of the newly created `Profit_USD`, we can observe that some of the ships are loss-making, as shown by the **minimum** value.
 
 ### 2.3.3 Data Type Conversion
 
@@ -244,10 +224,8 @@ The data table below shows the current data type of each of the 19 columns, alon
 | Seasonal_Impact_Score   | Double            | Double             |
 | Weekly_Voyage_Count     | Double            | Integer            |
 | Average_Load_Percentage | Double            | Double             |
-| Month                   | Character         | Ordered Factor     |
-| Quarter                 | Character         | Ordered Factor     |
+| Month                   | Character         | Date               |
 | Profit_USD              | Double            | Double             |
-| Profit_per_Cargo_ton    | Double            | Double             |
 
 The following code chunk is used to implement the proposed data type conversions:
 
@@ -266,7 +244,8 @@ ship_data$Maintenance_Status <- factor(ship_data$Maintenance_Status,
 ship_data$Weather_Condition <- factor(ship_data$Weather_Condition, 
                                       levels = c("Calm", "Moderate", "Rough", "Severe","None"), 
                                       ordered = TRUE)
-ship_data$Month <- factor(ship_data$Month, levels = sort(unique(ship_data$Month)), ordered = TRUE)
+
+ship_data$Month <- as.Date(paste0(ship_data$Month, "-01"), format="%Y-%m-%d")
 
 ship_data$Weekly_Voyage_Count <- as.integer(ship_data$Weekly_Voyage_Count)
 ```
@@ -280,110 +259,454 @@ glimpse(ship_data)
 
 # 3.0 Data Visualisation
 
-# 3.1 Financial
+## 3.1 Overall Revenue, Cost and Cargo Weight Trend by Month
 
-```{r}
-# Aggregate data: Exclude "None" Ship Types & Sum Total Profit
-aggregated_data <- ship_data %>%
-  filter(Ship_Type != "None") %>%  # Exclude "None" Ship Type
-  group_by(Month, Ship_Type) %>%
-  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
-  ungroup()
+::: panel-tabset
+#### Plot
 
-# Create the Line Chart
-ggplot(aggregated_data, aes(x = Month, y = Total_Profit / 1e6, color = Ship_Type, group = Ship_Type)) +
-  geom_line(size = 1.2) +
-  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Profit in Thousands
-  labs(title = "Seasonal Impact on Profitability",
-       x = "Month",
-       y = "Total Profit (USD Million)",
-       color = "Ship Type") +
+```{r, echo=FALSE}
+monthly_summary <- ship_data %>%
+  group_by(Month) %>%
+  summarise(
+    Total_Revenue = sum(Revenue_per_Voyage_USD, na.rm = TRUE),
+    Total_Cost = sum(Operational_Cost_USD, na.rm = TRUE),
+    Total_Cargo_Weight = sum(Cargo_Weight_tons, na.rm = TRUE)
+  )
+
+monthly_summary$Month <- as.Date(paste0(monthly_summary$Month, "-01"), format="%Y-%m-%d")
+
+max_revenue <- max(monthly_summary$Total_Revenue/1e6, na.rm = TRUE)
+max_cargo <- max(monthly_summary$Total_Cargo_Weight/1e6, na.rm = TRUE)
+scaling_factor <- max_revenue / max_cargo  
+
+
+ggplot(monthly_summary, aes(x = Month)) +
+  geom_col(aes(y = Total_Cargo_Weight/1e6*scaling_factor, fill = "Cargo Weight (Million Tons)"), alpha = 0.6) + 
+  geom_line(aes(y = Total_Revenue/1e6, color = "Revenue (in USD Million)"), size = 1.2) + 
+  geom_line(aes(y = Total_Cost/1e6, color = "Operational Cost (in USD Million)"), size = 1.2, linetype = "dashed") +
+  scale_y_continuous(
+    name = "Revenue & Cost (Million USD)", 
+    labels = scales::dollar_format(suffix = "M", prefix = ""),
+    sec.axis = sec_axis(~ ./scaling_factor, name = "Cargo Weight (Million Tons)")  
+  ) +
+  scale_x_date(
+    date_labels = "%b %Y",
+    breaks = seq(min(monthly_summary$Month), max(monthly_summary$Month), by = "1 month")
+  ) +
+  labs(
+    title = "Revenue, Cost, and Cargo Weight by Month",
+    x = "Month",
+    fill = "Metric",
+    color = "Metric"
+  ) +
+  scale_fill_manual(values = c("Cargo Weight (Million Tons)" = "lightblue")) +  
+  scale_color_manual(values = c(
+    "Revenue (in USD Million)" = "black",
+    "Operational Cost (in USD Million)" = "darkred"
+  )) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90))
-
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
 ```
 
-```{r}
-# Aggregate data: Exclude "None" Ship Types & Sum Total Profit
-aggregated_data <- ship_data %>%
-  filter(Route_Type != "None") %>%  # Exclude "None" Ship Type
-  group_by(Month, Route_Type) %>%
-  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
-  ungroup()
+#### Code
 
-# Create the Line Chart
-ggplot(aggregated_data, aes(x = Month, y = Total_Profit / 1e6, color = Route_Type, group = Route_Type)) +
-  geom_line(size = 1.2) +
-  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Profit in Thousands
-  labs(title = "Seasonal Impact on Profitability",
-       x = "Month",
-       y = "Total Profit (USD Million)",
-       color = "Route Type") +
+```{r, eval=FALSE, results="hide"}
+monthly_summary <- ship_data %>%
+  group_by(Month) %>%
+  summarise(
+    Total_Revenue = sum(Revenue_per_Voyage_USD, na.rm = TRUE),
+    Total_Cost = sum(Operational_Cost_USD, na.rm = TRUE),
+    Total_Cargo_Weight = sum(Cargo_Weight_tons, na.rm = TRUE)
+  )
+
+monthly_summary$Month <- as.Date(paste0(monthly_summary$Month, "-01"), format="%Y-%m-%d")
+
+max_revenue <- max(monthly_summary$Total_Revenue/1e6, na.rm = TRUE)
+max_cargo <- max(monthly_summary$Total_Cargo_Weight/1e6, na.rm = TRUE)
+scaling_factor <- max_revenue / max_cargo  
+
+
+ggplot(monthly_summary, aes(x = Month)) +
+  geom_col(aes(y = Total_Cargo_Weight/1e6*scaling_factor, fill = "Cargo Weight (Million Tons)"), alpha = 0.6) + 
+  geom_line(aes(y = Total_Revenue/1e6, color = "Revenue (in USD Million)"), size = 1.2) + 
+  geom_line(aes(y = Total_Cost/1e6, color = "Operational Cost (in USD Million)"), size = 1.2, linetype = "dashed") +
+  scale_y_continuous(
+    name = "Revenue & Cost (Million USD)", 
+    labels = scales::dollar_format(suffix = "M", prefix = ""),
+    sec.axis = sec_axis(~ ./scaling_factor, name = "Cargo Weight (Million Tons)")  
+  ) +
+  scale_x_date(
+    date_labels = "%b %Y",
+    breaks = seq(min(monthly_summary$Month), max(monthly_summary$Month), by = "1 month")
+  ) +
+  labs(
+    title = "Revenue, Cost, and Cargo Weight by Month",
+    x = "Month",
+    fill = "Metric",
+    color = "Metric"
+  ) +
+  scale_fill_manual(values = c("Cargo Weight (Million Tons)" = "lightblue")) +  
+  scale_color_manual(values = c(
+    "Revenue (in USD Million)" = "black",
+    "Operational Cost (in USD Million)" = "darkred"
+  )) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
 ```
+:::
 
-```{r}
-# Aggregate data: Exclude "None" Ship Types & Summarize Profit and Revenue
-aggregated_data <- ship_data %>%
-  filter(Ship_Type != "None") %>%  # Exclude "None" Ship Type
+::: {.callout-note icon="false"}
+#### Insights
+
+1.  Revenue consistently exceeds operational costs, indicating profitability across all months.
+2.  Revenue, operational cost and cargo weight exhibit the same trend. As cargo weight increases, revenue and costs increase accordingly. This potentially suggests that higher cargo volumes drive revenue and cost.
+:::
+
+## 3.2 Profitability by Ship Types
+
+In this section, we will analyze the profit distribution across different ship types to gain insights into their profitability trends and variability.
+
+The code chunk below utilizes the patchwork package to combine both boxplots and ridgeline plots, allowing for a comprehensive visualization of profit distributions across ship types.
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+
+# Filtering out "None" values from the Ship_Type Column:
+filtered_ship_data <- ship_data %>%   filter(Ship_Type != "None")
+
+medians <- filtered_ship_data %>%
   group_by(Ship_Type) %>%
-  summarize(Total_Profit = sum(Profit_USD, na.rm = TRUE),
-            Total_Revenue = sum(Revenue_per_Voyage_USD, na.rm = TRUE)) %>%
-  ungroup()
+  summarize(Median_Profit = median(Profit_USD/1e6))
 
-# Create the Bubble Plot
-ggplot(aggregated_data, aes(x = Total_Revenue / 1e6,  # Convert to millions
-                            y = Total_Profit / 1e6,  # Convert to millions
-                            size = abs(Total_Profit) / 1e6,  # Bubble size in millions
-                            color = Ship_Type)) +
-  geom_point(alpha = 0.7) +
-  scale_size_continuous(range = c(3, 15)) +  # Adjust bubble sizes
-  scale_x_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Format x-axis
-  scale_y_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "M", scale = 1)) +  # Format y-axis
-  coord_fixed() +  # Ensures equal scaling for X and Y axes
-  labs(title = "Total Profit vs. Total Revenue by Ship Type",
-       x = "Total Revenue (USD Million)",
-       y = "Total Profit (USD Million)",
-       size = "Total Profit (USD Million)",
-       color = "Ship Type") +
-  theme_minimal()
+filtered_ship_data <- filtered_ship_data %>%
+  left_join(medians, by = "Ship_Type")
+
+
+p1 <- ggplot(data=filtered_ship_data,
+       aes(y=Profit_USD/1e6, x=Ship_Type, fill = Ship_Type)) +
+  geom_boxplot(notch=TRUE, show.legend = FALSE) +
+  
+   geom_text(
+    data = medians,
+    aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
+    nudge_y = 0.1,
+    size = 2.5
+  ) +
+  
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) + 
+  labs(
+    x = "Ship Type", 
+    y = "Profit (in USD Million)"  
+  ) +
+  coord_flip() +
+  theme_classic()
+
+
+p2 <- ggplot(data = filtered_ship_data, aes(x = Profit_USD / 1e6, y = Ship_Type)) +
+  geom_density_ridges(aes(group = Ship_Type, fill = Ship_Type), alpha = 0.8, show.legend = FALSE) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) +
+  labs(
+    x = "Profit (in USD Million)",  # Custom x-axis title
+    y = "Ship Type"
+  ) +
+  theme_classic() +
+  theme(axis.text.y = element_text(angle = 0))
+
+
+combined_plot <- (p1 / p2) +
+  plot_layout(guides = "collect") + 
+  plot_annotation(
+    title = "Profitability by Ship Types",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+    )
+  )
+
+
+combined_plot
+
 ```
 
-```{r}
-# Filter out "None" ship types
-filtered_data <- ship_data %>%
-  filter(Ship_Type != "None")
+#### Code
 
-# Create the Ridgeline Plot
-ggplot(filtered_data, aes(x = Profit_per_Cargo_ton / 1e3, y = Ship_Type, fill = Ship_Type)) +
-  geom_density_ridges(scale = 1.5, alpha = 0.7) +
-  scale_x_continuous(labels = scales::dollar_format(prefix = "USD ", suffix = "K", scale = 1)) +  # Profit in Thousands
-  labs(title = "Profit Distribution by Ship Type",
-       x = "Profit (USD Thousand)",
-       y = "Ship Type",
-       fill = "Ship Type") +
+```{r, eval=FALSE, results="hide"}
+
+# Filtering out "None" values from the Ship_Type Column:
+filtered_ship_data <- ship_data %>%   filter(Ship_Type != "None")
+
+medians <- filtered_ship_data %>%
+  group_by(Ship_Type) %>%
+  summarize(Median_Profit = median(Profit_USD/1e6))
+
+filtered_ship_data <- filtered_ship_data %>%
+  left_join(medians, by = "Ship_Type")
+
+
+p1 <- ggplot(data=filtered_ship_data,
+       aes(y=Profit_USD/1e6, x=Ship_Type, fill = Ship_Type)) +
+  geom_boxplot(notch=TRUE, show.legend = FALSE) +
+  
+   geom_text(
+    data = medians,
+    aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
+    nudge_y = 0.1,
+    size = 2.5
+  ) +
+  
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) + 
+  labs(
+    x = "Ship Type", 
+    y = "Profit (in USD Million)"  
+  ) +
+  coord_flip() +
+  theme_classic()
+
+
+p2 <- ggplot(data = filtered_ship_data, aes(x = Profit_USD / 1e6, y = Ship_Type)) +
+  geom_density_ridges(aes(group = Ship_Type, fill = Ship_Type), alpha = 0.8, show.legend = FALSE) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) +
+  labs(
+    x = "Profit (in USD Million)",  # Custom x-axis title
+    y = "Ship Type"
+  ) +
+  theme_classic() +
+  theme(axis.text.y = element_text(angle = 0))
+
+
+combined_plot <- (p1 / p2) +
+  plot_layout(guides = "collect") + 
+  plot_annotation(
+    title = "Profitability by Ship Types",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+    )
+  )
+
+```
+:::
+
+::: {.callout-note icon="false"}
+#### Insights
+
+1.  **Tankers** have the lowest median profit at US\$0.23M amongst all ship types, as indicated by the boxplot and further supported by the peak of the ridgeline plot being closer to zero.
+
+2.  Although the median profits for **Fish Carriers, Container Ships** and **Bulk Carriers** appear relatively similar (as indicated by the boxplot), the distribution of profits differ across all ship types.
+
+    \(a\) **Bulk Carriers** display a bimodal profit distribution, strongly suggesting two distinct groups within this category. It implies that some Bulk Carriers are highly profitable while others struggle.
+
+    \(b\) Both **Fish Carriers** and **Container Ships** exhibit unimodal distributions. However, **Container Ships** appear to have a higher profit variability as indicated by the greater range and IQR in the boxplot.
+:::
+
+## 3.3 Sales and Profit by Route Types
+
+In this section, we will analyse the sales and profitability by route types based on quarterly trends. However, as June 2023 represents an incomplete quarter, we will exclude it from our analysis to ensure consistency in our quarterly comparisons.
+
+The analysis assumes that the fiscal year starts in July. Hence, we will define the quarters as follows:
+
+-   **Q1** = July 2023 - September 2023
+
+-   **Q2** = October 2023 - December 2023
+
+-   **Q3 =** January 2024 - March 2024
+
+-   **Q4** = April 2024 - June 2024.
+
+Each chart is divided into four quadrants:
+
+-   **High Sales, High Profit** (Top Right)
+
+-   **High Sales, Low Profit** (Top Left): This could indicate potential issues with cost management or pricing.
+
+-   **Low Sales, High Profit** (Bottom Right)
+
+-   **Low Sales, Low Profit** (Bottom Left): Potentially requires attention.
+
+The code chunk below generates a facet gird consisting of bubble charts, with each panel representing a quarterly breakdown of sales and profitability by route type. The bubble size reflects total weekly voyages to further aid in understanding how different route types perform over time.
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+
+route_summary <- ship_data %>%
+  filter(Route_Type != "None") %>%  # Exclude Route_Type = "None"
+  filter(!(year(Month) == 2023 & month(Month) == 6)) %>%  # Exclude June 2023
+  mutate(Quarter = case_when(
+    month(Month) %in% 7:9  ~ "Q1",  # July - September
+    month(Month) %in% 10:12 ~ "Q2", # October - December
+    month(Month) %in% 1:3  ~ "Q3",  # January - March
+    month(Month) %in% 4:6  ~ "Q4"   # April - June
+  )) %>%
+  filter(!is.na(Quarter)) %>% 
+  group_by(Quarter, Route_Type) %>%
+  summarise(
+    Total_Sales = sum(Revenue_per_Voyage_USD, na.rm = TRUE),
+    Total_Profit = sum(Profit_USD, na.rm = TRUE),
+    Total_Weekly_Voyages = sum(Weekly_Voyage_Count, na.rm = TRUE) 
+  ) %>%
+  mutate(
+    Sales_Percentile = percent_rank(Total_Sales), 
+    Profit_Percentile = percent_rank(Total_Profit)
+  )
+
+
+p3 <- ggplot(route_summary, aes(x = Sales_Percentile, y = Profit_Percentile, 
+                          size = Total_Weekly_Voyages, color = Route_Type)) +
+  geom_point(alpha = 0.7) + 
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "black") +  
+  scale_size(range = c(3, 15), name = "Total Weekly Voyages") + 
+  scale_x_continuous(labels = scales::percent_format()) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    title = "Sales and Profit by Route Types",
+    x = "Sales Percentile",
+    y = "Profit Percentile",
+    color = "Route Type",
+    size = "Total Weekly Voyages"
+  ) +
   theme_minimal() +
-  theme(legend.position = "none")  # Hide legend for cleaner visualization
-```
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    legend.position = "right"
+  ) +
+  facet_wrap(~ Quarter, ncol = 2)
 
-```{r}
-library(ggplot2)
-library(dplyr)
-
-# Filter out ship type 'None'
-ship_data_filtered <- ship_data %>%
-  filter(Ship_Type != "None")
-
-# Create the dot plot using geom_dotplot
-ggplot(ship_data_filtered, aes(x = Profit_USD, fill = Ship_Type)) +
-  geom_dotplot(binwidth = 50000, stackdir = "up", dotsize = 0.6, position = "dodge") +
-  labs(title = "Distribution of Ships by Profit",
-       x = "Profit (USD)",
-       y = "Count of Ships",
-       fill = "Ship Type") +
-  theme_minimal()
+p3
 
 ```
 
-# 3.2 Operational
+#### Code
+
+```{r, eval=FALSE, results="hide"}
+
+route_summary <- ship_data %>%
+  filter(Route_Type != "None") %>%  # Exclude Route_Type = "None"
+  filter(!(year(Month) == 2023 & month(Month) == 6)) %>%  # Exclude June 2023
+  mutate(Quarter = case_when(
+    month(Month) %in% 7:9  ~ "Q1",  # July - September
+    month(Month) %in% 10:12 ~ "Q2", # October - December
+    month(Month) %in% 1:3  ~ "Q3",  # January - March
+    month(Month) %in% 4:6  ~ "Q4"   # April - June
+  )) %>%
+  filter(!is.na(Quarter)) %>% 
+  group_by(Quarter, Route_Type) %>%
+  summarise(
+    Total_Sales = sum(Revenue_per_Voyage_USD, na.rm = TRUE),
+    Total_Profit = sum(Profit_USD, na.rm = TRUE),
+    Total_Weekly_Voyages = sum(Weekly_Voyage_Count, na.rm = TRUE) 
+  ) %>%
+  mutate(
+    Sales_Percentile = percent_rank(Total_Sales), 
+    Profit_Percentile = percent_rank(Total_Profit)
+  )
+
+
+p3 <- ggplot(route_summary, aes(x = Sales_Percentile, y = Profit_Percentile, 
+                          size = Total_Weekly_Voyages, color = Route_Type)) +
+  geom_point(alpha = 0.7) + 
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "black") +  
+  scale_size(range = c(3, 15), name = "Total Weekly Voyages") + 
+  scale_x_continuous(labels = scales::percent_format()) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    title = "Sales and Profit by Route Types",
+    x = "Sales Percentile",
+    y = "Profit Percentile",
+    color = "Route Type",
+    size = "Total Weekly Voyages"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    legend.position = "right"
+  ) +
+  facet_wrap(~ Quarter, ncol = 2)
+
+```
+:::
+
+::: {.callout-note icon="false"}
+#### Insights
+
+1.  With the exception of Q2, **Long-Haul Routes** predominantly occupy the top-right quadrant, indicating strong performance in both sales and profit across most quarters.
+
+2.  **Coastal Routes** consistently rank above 50th percentile in profitability across all quarters, suggesting their high-margin nature. However, their sales performance fluctuates.
+
+3.  **Transoceanic Routes** consistently rank below the 50th percentile in profitability across all quarters. In terms of sales, they exhibit the lowest sales in Q1 and Q2 but show improvements in Q3 and Q4.
+
+4.  With the exception of Q2, **Short-Haul** **Routes** exhibit both low profitability and sales in Q3 and Q4, thus positioning them as an under-performing route. In addition, they record the lowest number of voyages in Q3.
+:::
+
+## 3.4 Maintenance Status by Ship Types
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+
+# Filter out Ship_Type = "None" and Maintenance_Status = "None"
+filtered_ship_data2 <- ship_data %>%
+  filter(Ship_Type != "None", Maintenance_Status != "None")
+
+# Create stacked bar chart with Brewer Palette
+ggplot(filtered_ship_data2, aes(x = Ship_Type, fill = Maintenance_Status)) +
+  geom_bar(position = "fill", color="black") +  # Stacked proportionally
+  scale_y_continuous(labels = scales::percent_format()) +  # Convert to percentage
+  scale_fill_brewer(palette = "Pastel1") +  # Change color palette
+  labs(
+    title = "Maintenance Status by Ship Type",
+    x = "Ship Type",
+    y = "Percentage",
+    fill = "Maintenance Status"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"))
+
+
+```
+
+#### Code
+
+```{r, results='hide'}
+
+# Filter out Ship_Type = "None" and Maintenance_Status = "None"
+filtered_ship_data2 <- ship_data %>%
+  filter(Ship_Type != "None", Maintenance_Status != "None")
+
+# Create stacked bar chart with Brewer Palette
+ggplot(filtered_ship_data2, aes(x = Ship_Type, fill = Maintenance_Status)) +
+  geom_bar(position = "fill", color="black") +  # Stacked proportionally
+  scale_y_continuous(labels = scales::percent_format()) +  # Convert to percentage
+  scale_fill_brewer(palette = "Pastel1") +  # Change color palette
+  labs(
+    title = "Maintenance Status by Ship Type",
+    x = "Ship Type",
+    y = "Percentage",
+    fill = "Maintenance Status"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"))
+
+
+```
+:::
+
+::: {.callout-note icon="false"}
+#### Insights
+
+\[WRITE INSIGHTS HEREEEE\]
+:::

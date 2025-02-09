@@ -268,10 +268,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#duplicate-and-missing-value-checks" id="toc-duplicate-and-missing-value-checks" class="nav-link" data-scroll-target="#duplicate-and-missing-value-checks">2.3.1 Duplicate and Missing Value Checks</a></li>
   <li><a href="#creating-new-variables" id="toc-creating-new-variables" class="nav-link" data-scroll-target="#creating-new-variables">2.3.2 Creating New Variables</a></li>
   <li><a href="#data-type-conversion" id="toc-data-type-conversion" class="nav-link" data-scroll-target="#data-type-conversion">2.3.3 Data Type Conversion</a></li>
-  <li><a href="#filtering-of-columns" id="toc-filtering-of-columns" class="nav-link" data-scroll-target="#filtering-of-columns">2.3.1 Filtering of Columns</a></li>
-  <li><a href="#recoding-variables" id="toc-recoding-variables" class="nav-link" data-scroll-target="#recoding-variables">2.3.3 Recoding Variables</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#data-visualisation" id="toc-data-visualisation" class="nav-link" data-scroll-target="#data-visualisation">3.0 Data Visualisation</a>
+  <ul class="collapse">
+  <li><a href="#overall-revenue-cost-and-cargo-weight-trend-by-month" id="toc-overall-revenue-cost-and-cargo-weight-trend-by-month" class="nav-link" data-scroll-target="#overall-revenue-cost-and-cargo-weight-trend-by-month">3.1 Overall Revenue, Cost and Cargo Weight Trend by Month</a></li>
+  <li><a href="#profitability-by-ship-types" id="toc-profitability-by-ship-types" class="nav-link" data-scroll-target="#profitability-by-ship-types">3.2 Profitability by Ship Types</a></li>
+  <li><a href="#sales-and-profit-by-route-types" id="toc-sales-and-profit-by-route-types" class="nav-link" data-scroll-target="#sales-and-profit-by-route-types">3.3 Sales and Profit by Route Types</a></li>
+  <li><a href="#maintenance-status-by-ship-types" id="toc-maintenance-status-by-ship-types" class="nav-link" data-scroll-target="#maintenance-status-by-ship-types">3.4 Maintenance Status by Ship Types</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -305,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 5, 2025</p>
+      <p class="date-modified">February 9, 2025</p>
     </div>
   </div>
     
@@ -329,11 +333,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Heart Attack in Japan</p></li>
 <li><p>Ship Performance in the Gulf of Guinea</p></li>
 </ul>
-<p>For the purposes of this take-home exercise, the theme, <strong><em>Ship Performance in the Gulf of Guinea</em></strong>, was selected for the preparation of data visualizations for the article.</p>
+<p>The selected theme for this task is <strong><em>Ship Performance in the Gulf of Guinea</em></strong> and the objective is to prepare data visualisation for the article.</p>
 </section>
 <section id="about-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-dataset">1.3 About the Dataset</h2>
-<p>The dataset used in this exercise is sourced from Kaggle and can be accessed via this <a href="https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset/data">link</a>.</p>
+<p>The dataset used in this exercise is sourced from Kaggle. It can be accessed via this <a href="https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset/data">link</a>.</p>
 <p>This dataset contains information on key operational metrics and attributes of various ship types in the Gulf of Guinea. The dataset includes numerical (e.g.&nbsp;<code>speed_over_ground_knots</code>, <code>revenue_per_voyage_usd</code>) and categorical variables (e.g.&nbsp;<code>ship_type</code>, <code>maintenance_status</code>) relevant to ship performance evaluation.</p>
 </section>
 </section>
@@ -359,7 +363,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td></td>
 </tr>
 <tr class="odd">
-<td></td>
+<td><code>lubridate</code></td>
 <td></td>
 </tr>
 <tr class="even">
@@ -381,8 +385,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggiraph, plotly, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse, dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggiraph, plotly, gifski, gganimate, ggthemes, ggridges,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse, dplyr, lubridate, ggdist) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-the-data" class="level2">
@@ -464,7 +468,7 @@ $ Average_Load_Percentage &lt;dbl&gt; 93.76925, 93.89537, 96.21824, 66.19370, 80
 </div>
 </div>
 </div>
-<p>Based on the output, there are no duplicate records in the dataset</p>
+<p>Based on the output, there are no duplicate records in the dataset.</p>
 <p><strong>Missing Value Check</strong></p>
 <p>Missing values in a dataset can introduce bias and affect the accuracy of subsequent analysis, potentially leading to misleading results. The following code chunk counts the number of missing values (<code>NA)</code> in the dataset:</p>
 <div class="cell">
@@ -474,7 +478,7 @@ $ Average_Load_Percentage &lt;dbl&gt; 93.76925, 93.89537, 96.21824, 66.19370, 80
 <pre><code>Number of rows with missing values: 0 </code></pre>
 </div>
 </div>
-<p>AAlthough the output indicates that there are no missing values (<code>NA</code>) in the dataset, a further assessment of categorical columns is required to check for unrecorded data. The following code chunk generates the unique values for each categorical column in the dataset:</p>
+<p>Although the output indicates that there are no missing values (<code>NA</code>) in the dataset, a further assessment of categorical columns is required to check for unrecorded data. The following code chunk generates the unique values for each categorical column in the dataset:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Results</a></li></ul>
 <div class="tab-content">
@@ -513,18 +517,16 @@ Unique values in Weather_Condition :
 </div>
 </div>
 </div>
-<p>From the results, we observe that some categorical columns contain the value <strong><em>None</em></strong>, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of <strong><em>None</em></strong> values in the affected categorical columns:</p>
+<p>From the results, it was observed that some of the columns containing categorical data contained the value <strong><em>None</em></strong>, which may indicate missing or unrecorded data rather than an actual category. To quantify this, the following code counts the occurrences of <strong><em>None</em></strong> values in the affected categorical columns:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Results</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categorical columns</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>categorical_columns <span class="ot">&lt;-</span> <span class="fu">names</span>(ship_data)[<span class="fu">sapply</span>(ship_data, is.character)]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store missing counts</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>missing_categorical_counts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Column =</span> categorical_columns, </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">Missing_Count =</span> <span class="fu">sapply</span>(ship_data[categorical_columns], <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x) <span class="sc">|</span> x <span class="sc">==</span> <span class="st">"None"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>categorical_columns <span class="ot">&lt;-</span> <span class="fu">names</span>(ship_data)[<span class="fu">sapply</span>(ship_data, is.character)]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>missing_categorical_counts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Column =</span> categorical_columns, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">Missing_Count =</span> <span class="fu">sapply</span>(ship_data[categorical_columns], <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x) <span class="sc">|</span> x <span class="sc">==</span> <span class="st">"None"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
@@ -545,34 +547,28 @@ Weather_Condition   Weather_Condition           136</code></pre>
 </section>
 <section id="creating-new-variables" class="level3">
 <h3 class="anchored" data-anchor-id="creating-new-variables">2.3.2 Creating New Variables</h3>
+<p>The dataset covers the following time period: 4 June 2023 to 30 June 2024. To facilitate time-based analysis, the dates have been grouped into a new variable called <strong><em>Month</em></strong>, which will represent the month of each record in a <code>"MM-YYYY"</code> format.</p>
+<p>The following code was used to generate these variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">format</span>(ship_data<span class="sc">$</span>Date, <span class="st">"%Y-%m"</span>)  </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ship_data<span class="sc">$</span>Month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2023-06" "2023-06" "2023-06" "2023-06" "2023-07" "2023-07"</code></pre>
+</div>
+</div>
 <p><strong>Profit (USD)</strong></p>
 <p>Profit is a key financial metric that reflects the overall economic performance of a ship’s operation. To incorporate profit into the dataset, a new variable was created based on the difference between <code>Revenue_per_Voyage_USD</code> and <code>Operational_Cost_USD</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Profit_USD <span class="ot">&lt;-</span> ship_data<span class="sc">$</span>Revenue_per_Voyage_USD <span class="sc">-</span> ship_data<span class="sc">$</span>Operational_Cost_USD</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the new Profit variable</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ship_data<span class="sc">$</span>Profit_USD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Profit_USD <span class="ot">&lt;-</span> ship_data<span class="sc">$</span>Revenue_per_Voyage_USD <span class="sc">-</span> ship_data<span class="sc">$</span>Operational_Cost_USD</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ship_data<span class="sc">$</span>Profit_USD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 -444584   40885  262716  266219  492216  977168 </code></pre>
 </div>
 </div>
-<p>Based on the summary statistics of the newly created <code>Profit_USD</code>, we can observe that some of the ships are loss-making.</p>
-<p><strong>Profit per Cargo Weight (USD per Ton)</strong></p>
-<p>This metric evaluates how efficiently a ship generates profit relative to the amount of cargo it transports. It helps in understanding which ships or routes are most profitable in terms of cargo handling.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Avoid division by zero errors</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Profit_per_Cargo_ton <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ship_data<span class="sc">$</span>Cargo_Weight_tons <span class="sc">!=</span> <span class="dv">0</span>, </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                         ship_data<span class="sc">$</span>Profit_USD <span class="sc">/</span> ship_data<span class="sc">$</span>Cargo_Weight_tons, </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="cn">NA</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the new variable</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ship_data<span class="sc">$</span>Profit_per_Cargo_ton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--5656.77    38.84   251.55   475.64   553.79 13435.92 </code></pre>
-</div>
-</div>
+<p>Based on the summary statistics of the newly created <code>Profit_USD</code>, we can observe that some of the ships are loss-making, as shown by the <strong>minimum</strong> value.</p>
 </section>
 <section id="data-type-conversion" class="level3">
 <h3 class="anchored" data-anchor-id="data-type-conversion">2.3.3 Data Type Conversion</h3>
@@ -677,12 +673,12 @@ Weather_Condition   Weather_Condition           136</code></pre>
 <td>Double</td>
 </tr>
 <tr class="odd">
-<td>Profit_USD</td>
-<td>Double</td>
-<td>Double</td>
+<td>Month</td>
+<td>Character</td>
+<td>Date</td>
 </tr>
 <tr class="even">
-<td>Profit_per_Cargo_ton</td>
+<td>Profit_USD</td>
 <td>Double</td>
 <td>Double</td>
 </tr>
@@ -706,7 +702,9 @@ Weather_Condition   Weather_Condition           136</code></pre>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Calm"</span>, <span class="st">"Moderate"</span>, <span class="st">"Rough"</span>, <span class="st">"Severe"</span>,<span class="st">"None"</span>), </span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Weekly_Voyage_Count <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(ship_data<span class="sc">$</span>Weekly_Voyage_Count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(ship_data<span class="sc">$</span>Month, <span class="st">"-01"</span>), <span class="at">format=</span><span class="st">"%Y-%m-%d"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>ship_data<span class="sc">$</span>Weekly_Voyage_Count <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(ship_data<span class="sc">$</span>Weekly_Voyage_Count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
@@ -732,124 +730,357 @@ $ Efficiency_nm_per_kWh   &lt;dbl&gt; 1.4551789, 0.2903614, 0.4995945, 0.7029057
 $ Seasonal_Impact_Score   &lt;dbl&gt; 1.4156533, 0.8856478, 1.4058132, 1.3707043, 0.…
 $ Weekly_Voyage_Count     &lt;int&gt; 1, 6, 9, 1, 8, 7, 3, 6, 8, 2, 9, 4, 3, 7, 7, 3…
 $ Average_Load_Percentage &lt;dbl&gt; 93.76925, 93.89537, 96.21824, 66.19370, 80.008…
-$ Profit_USD              &lt;dbl&gt; -191649.081, 400377.787, -54524.657, -173798.2…
-$ Profit_per_Cargo_ton    &lt;dbl&gt; -97.829164, 2465.460747, -306.247902, -100.034…</code></pre>
+$ Month                   &lt;date&gt; 2023-06-01, 2023-06-01, 2023-06-01, 2023-06-0…
+$ Profit_USD              &lt;dbl&gt; -191649.081, 400377.787, -54524.657, -173798.2…</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="filtering-of-columns" class="level3">
-<h3 class="anchored" data-anchor-id="filtering-of-columns">2.3.1 Filtering of Columns</h3>
-<p>From the output generated in Section 2.3, the dataset includes 15 columns labelled from <code>Extra_Column_1</code> to <code>Extra_Column_15</code> . These columns do not have clear descriptions nor apparent relevance to the study. Hence, in order to streamline the dataset, these columns were removed. This would allow us to focus on variables that would be more relevant to the analysis.</p>
-<p>After filtering out the irrelevant columns, the dataset now comprises of 17 columns as shown in the <em>Results</em> tab below:</p>
+</section>
+</section>
+<section id="data-visualisation" class="level1">
+<h1>3.0 Data Visualisation</h1>
+<section id="overall-revenue-cost-and-cargo-weight-trend-by-month" class="level2">
+<h2 class="anchored" data-anchor-id="overall-revenue-cost-and-cargo-weight-trend-by-month">3.1 Overall Revenue, Cost and Cargo Weight Trend by Month</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Results</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01b_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>monthly_summary <span class="ot">&lt;-</span> ship_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Month) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Revenue =</span> <span class="fu">sum</span>(Revenue_per_Voyage_USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Cost =</span> <span class="fu">sum</span>(Operational_Cost_USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Cargo_Weight =</span> <span class="fu">sum</span>(Cargo_Weight_tons, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>monthly_summary<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(monthly_summary<span class="sc">$</span>Month, <span class="st">"-01"</span>), <span class="at">format=</span><span class="st">"%Y-%m-%d"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>max_revenue <span class="ot">&lt;-</span> <span class="fu">max</span>(monthly_summary<span class="sc">$</span>Total_Revenue<span class="sc">/</span><span class="fl">1e6</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>max_cargo <span class="ot">&lt;-</span> <span class="fu">max</span>(monthly_summary<span class="sc">$</span>Total_Cargo_Weight<span class="sc">/</span><span class="fl">1e6</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>scaling_factor <span class="ot">&lt;-</span> max_revenue <span class="sc">/</span> max_cargo  </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(monthly_summary, <span class="fu">aes</span>(<span class="at">x =</span> Month)) <span class="sc">+</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total_Cargo_Weight<span class="sc">/</span><span class="fl">1e6</span><span class="sc">*</span>scaling_factor, <span class="at">fill =</span> <span class="st">"Cargo Weight (Million Tons)"</span>), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total_Revenue<span class="sc">/</span><span class="fl">1e6</span>, <span class="at">color =</span> <span class="st">"Revenue (in USD Million)"</span>), <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span> </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total_Cost<span class="sc">/</span><span class="fl">1e6</span>, <span class="at">color =</span> <span class="st">"Operational Cost (in USD Million)"</span>), <span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Revenue &amp; Cost (Million USD)"</span>, </span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>(<span class="at">suffix =</span> <span class="st">"M"</span>, <span class="at">prefix =</span> <span class="st">""</span>),</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> .<span class="sc">/</span>scaling_factor, <span class="at">name =</span> <span class="st">"Cargo Weight (Million Tons)"</span>)  </span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_labels =</span> <span class="st">"%b %Y"</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(monthly_summary<span class="sc">$</span>Month), <span class="fu">max</span>(monthly_summary<span class="sc">$</span>Month), <span class="at">by =</span> <span class="st">"1 month"</span>)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Revenue, Cost, and Cargo Weight by Month"</span>,</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Month"</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Metric"</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Metric"</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Cargo Weight (Million Tons)"</span> <span class="ot">=</span> <span class="st">"lightblue"</span>)) <span class="sc">+</span>  </span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Revenue (in USD Million)"</span> <span class="ot">=</span> <span class="st">"black"</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Operational Cost (in USD Million)"</span> <span class="ot">=</span> <span class="st">"darkred"</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"top"</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Revenue consistently exceeds operational costs, indicating profitability across all months.</li>
+<li>Revenue, operational cost and cargo weight exhibit the same trend. As cargo weight increases, revenue and costs increase accordingly. This potentially suggests that higher cargo volumes drive revenue and cost.</li>
+</ol>
 </div>
 </div>
 </section>
-<section id="recoding-variables" class="level3">
-<h3 class="anchored" data-anchor-id="recoding-variables">2.3.3 Recoding Variables</h3>
-<p><strong>Recoding BMI</strong></p>
-<p>Raw BMI values alone do not provide an intuitive interpretation of body weight, making interpretation difficult for both technical and non-technical audiences. As such, there is a need to recode the BMI values into meaningful groups.</p>
-<p>In this exercise, the BMI values were categorised into four distinct groups in accordance to the World Health Organisation’s International BMI Classification. Applying this classification would simplify the interpretation of BMI values, allowing readers of the article to easily determine whether an individual falls within a healthy range or an at-risk category, and the potential relationship with heart attack incidence.</p>
-<p>The categories used are as follows:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Classification</th>
-<th>BMI</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Underweight</td>
-<td>&lt;18.5</td>
-</tr>
-<tr class="even">
-<td>Normal Weight</td>
-<td>18.5 - 24.9</td>
-</tr>
-<tr class="odd">
-<td>Pre-Obese</td>
-<td>25.0 - 29.9</td>
-</tr>
-<tr class="even">
-<td>Obese</td>
-<td>&gt;=30</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>cut</code> function in R was employed to implement this classification. This function assigns each BMI value to one of the specified categories, creating a new column, <code>BMI_Category</code>, in the dataset.</p>
+<section id="profitability-by-ship-types" class="level2">
+<h2 class="anchored" data-anchor-id="profitability-by-ship-types">3.2 Profitability by Ship Types</h2>
+<p>In this section, we will analyze the profit distribution across different ship types to gain insights into their profitability trends and variability.</p>
+<p>The code chunk below utilizes the patchwork package to combine both boxplots and ridgeline plots, allowing for a comprehensive visualization of profit distributions across ship types.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Results</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorizing BMI according to WHO standards</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01b_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering out "None" values from the Ship_Type Column:</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>filtered_ship_data <span class="ot">&lt;-</span> ship_data <span class="sc">%&gt;%</span>   <span class="fu">filter</span>(Ship_Type <span class="sc">!=</span> <span class="st">"None"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>medians <span class="ot">&lt;-</span> filtered_ship_data <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Ship_Type) <span class="sc">%&gt;%</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Median_Profit =</span> <span class="fu">median</span>(Profit_USD<span class="sc">/</span><span class="fl">1e6</span>))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>filtered_ship_data <span class="ot">&lt;-</span> filtered_ship_data <span class="sc">%&gt;%</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(medians, <span class="at">by =</span> <span class="st">"Ship_Type"</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>filtered_ship_data,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">y=</span>Profit_USD<span class="sc">/</span><span class="fl">1e6</span>, <span class="at">x=</span>Ship_Type, <span class="at">fill =</span> Ship_Type)) <span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">notch=</span><span class="cn">TRUE</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_text</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> medians,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.2fM"</span>, Median_Profit), <span class="at">y =</span> Median_Profit),</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fl">0.1</span>,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>(<span class="at">suffix =</span> <span class="st">"M"</span>, <span class="at">prefix =</span> <span class="st">""</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span> </span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Ship Type"</span>, </span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Profit (in USD Million)"</span>  </span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> filtered_ship_data, <span class="fu">aes</span>(<span class="at">x =</span> Profit_USD <span class="sc">/</span> <span class="fl">1e6</span>, <span class="at">y =</span> Ship_Type)) <span class="sc">+</span></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="fu">aes</span>(<span class="at">group =</span> Ship_Type, <span class="at">fill =</span> Ship_Type), <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>(<span class="at">suffix =</span> <span class="st">"M"</span>, <span class="at">prefix =</span> <span class="st">""</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Profit (in USD Million)"</span>,  <span class="co"># Custom x-axis title</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Ship Type"</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>))</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> (p1 <span class="sc">/</span> p2) <span class="sc">+</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>) <span class="sc">+</span> </span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Profitability by Ship Types"</span>,</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<p><strong>Recoding Age</strong></p>
-<p>In epidemiological studies, age is often grouped into categories rather than analysed as a continuous variable. While age is a key determinant of health risks, raw age variables do not immediately provide clear insights. Binning age into meaningful categories simplifies interpretation, making it easier to identify trends across different life stages.</p>
-<p>The <code>age</code> variable was binned into the following categories:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Classification</th>
-<th>Age Range</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Youth</td>
-<td>0 - 17</td>
-</tr>
-<tr class="even">
-<td>Young Adult</td>
-<td>18 - 35</td>
-</tr>
-<tr class="odd">
-<td>Middle-Aged Adults</td>
-<td>36 - 64</td>
-</tr>
-<tr class="even">
-<td>Elderly</td>
-<td>&gt;= 65</td>
-</tr>
-</tbody>
-</table>
-<p>The code chunk below uses the <code>cut()</code> function in R to categorise the <code>age</code> variable into the aforementioned groupings. A new variable called <code>age_group</code> would be created:</p>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p><strong>Tankers</strong> have the lowest median profit at US$0.23M amongst all ship types, as indicated by the boxplot and further supported by the peak of the ridgeline plot being closer to zero.</p></li>
+<li><p>Although the median profits for <strong>Fish Carriers, Container Ships</strong> and <strong>Bulk Carriers</strong> appear relatively similar (as indicated by the boxplot), the distribution of profits differ across all ship types.</p>
+<p>(a) <strong>Bulk Carriers</strong> display a bimodal profit distribution, strongly suggesting two distinct groups within this category. It implies that some Bulk Carriers are highly profitable while others struggle.</p>
+<p>(b) Both <strong>Fish Carriers</strong> and <strong>Container Ships</strong> exhibit unimodal distributions. However, <strong>Container Ships</strong> appear to have a higher profit variability as indicated by the greater range and IQR in the boxplot.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="sales-and-profit-by-route-types" class="level2">
+<h2 class="anchored" data-anchor-id="sales-and-profit-by-route-types">3.3 Sales and Profit by Route Types</h2>
+<p>In this section, we will analyse the sales and profitability by route types based on quarterly trends. However, as June 2023 represents an incomplete quarter, we will exclude it from our analysis to ensure consistency in our quarterly comparisons.</p>
+<p>The analysis assumes that the fiscal year starts in July. Hence, we will define the quarters as follows:</p>
+<ul>
+<li><p><strong>Q1</strong> = July 2023 - September 2023</p></li>
+<li><p><strong>Q2</strong> = October 2023 - December 2023</p></li>
+<li><p><strong>Q3 =</strong> January 2024 - March 2024</p></li>
+<li><p><strong>Q4</strong> = April 2024 - June 2024.</p></li>
+</ul>
+<p>Each chart is divided into four quadrants:</p>
+<ul>
+<li><p><strong>High Sales, High Profit</strong> (Top Right)</p></li>
+<li><p><strong>High Sales, Low Profit</strong> (Top Left): This could indicate potential issues with cost management or pricing.</p></li>
+<li><p><strong>Low Sales, High Profit</strong> (Bottom Right)</p></li>
+<li><p><strong>Low Sales, Low Profit</strong> (Bottom Left): Potentially requires attention.</p></li>
+</ul>
+<p>The code chunk below generates a facet gird consisting of bubble charts, with each panel representing a quarterly breakdown of sales and profitability by route type. The bubble size reflects total weekly voyages to further aid in understanding how different route types perform over time.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Results</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01b_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
-
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>route_summary <span class="ot">&lt;-</span> ship_data <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Route_Type <span class="sc">!=</span> <span class="st">"None"</span>) <span class="sc">%&gt;%</span>  <span class="co"># Exclude Route_Type = "None"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">year</span>(Month) <span class="sc">==</span> <span class="dv">2023</span> <span class="sc">&amp;</span> <span class="fu">month</span>(Month) <span class="sc">==</span> <span class="dv">6</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Exclude June 2023</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Quarter =</span> <span class="fu">case_when</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">month</span>(Month) <span class="sc">%in%</span> <span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>  <span class="sc">~</span> <span class="st">"Q1"</span>,  <span class="co"># July - September</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">month</span>(Month) <span class="sc">%in%</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">12</span> <span class="sc">~</span> <span class="st">"Q2"</span>, <span class="co"># October - December</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">month</span>(Month) <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>  <span class="sc">~</span> <span class="st">"Q3"</span>,  <span class="co"># January - March</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">month</span>(Month) <span class="sc">%in%</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>  <span class="sc">~</span> <span class="st">"Q4"</span>   <span class="co"># April - June</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Quarter)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Quarter, Route_Type) <span class="sc">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Sales =</span> <span class="fu">sum</span>(Revenue_per_Voyage_USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Profit =</span> <span class="fu">sum</span>(Profit_USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Weekly_Voyages =</span> <span class="fu">sum</span>(Weekly_Voyage_Count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sales_Percentile =</span> <span class="fu">percent_rank</span>(Total_Sales), </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Profit_Percentile =</span> <span class="fu">percent_rank</span>(Total_Profit)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(route_summary, <span class="fu">aes</span>(<span class="at">x =</span> Sales_Percentile, <span class="at">y =</span> Profit_Percentile, </span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>                          <span class="at">size =</span> Total_Weekly_Voyages, <span class="at">color =</span> Route_Type)) <span class="sc">+</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  </span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">15</span>), <span class="at">name =</span> <span class="st">"Total Weekly Voyages"</span>) <span class="sc">+</span> </span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Sales and Profit by Route Types"</span>,</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Sales Percentile"</span>,</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Profit Percentile"</span>,</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Route Type"</span>,</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="st">"Total Weekly Voyages"</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Quarter, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>With the exception of Q2, <strong>Long-Haul Routes</strong> predominantly occupy the top-right quadrant, indicating strong performance in both sales and profit across most quarters.</p></li>
+<li><p><strong>Coastal Routes</strong> consistently rank above 50th percentile in profitability across all quarters, suggesting their high-margin nature. However, their sales performance fluctuates.</p></li>
+<li><p><strong>Transoceanic Routes</strong> consistently rank below the 50th percentile in profitability across all quarters. In terms of sales, they exhibit the lowest sales in Q1 and Q2 but show improvements in Q3 and Q4.</p></li>
+<li><p>With the exception of Q2, <strong>Short-Haul</strong> <strong>Routes</strong> exhibit both low profitability and sales in Q3 and Q4, thus positioning them as an under-performing route. In addition, they record the lowest number of voyages in Q3.</p></li>
+</ol>
 </div>
 </div>
 </section>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
-<p>Ohira, T., Eguchi, E., Hayashi, F., Kinuta, M., &amp; Imano, H. (2023). Epidemiology of cardiovascular disease in Japan: An overview study. <em>Journal of Cardiology, 81</em>(5), 379-387. https://doi.org/10.1016/j.jjcc.2023.07.007</p>
+<section id="maintenance-status-by-ship-types" class="level2">
+<h2 class="anchored" data-anchor-id="maintenance-status-by-ship-types">3.4 Maintenance Status by Ship Types</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01b_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out Ship_Type = "None" and Maintenance_Status = "None"</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>filtered_ship_data2 <span class="ot">&lt;-</span> ship_data <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Ship_Type <span class="sc">!=</span> <span class="st">"None"</span>, Maintenance_Status <span class="sc">!=</span> <span class="st">"None"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create stacked bar chart with Brewer Palette</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(filtered_ship_data2, <span class="fu">aes</span>(<span class="at">x =</span> Ship_Type, <span class="at">fill =</span> Maintenance_Status)) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span>  <span class="co"># Stacked proportionally</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span>  <span class="co"># Convert to percentage</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Pastel1"</span>) <span class="sc">+</span>  <span class="co"># Change color palette</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Maintenance Status by Ship Type"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Ship Type"</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Maintenance Status"</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01b_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>[WRITE INSIGHTS HEREEEE]</p>
+</div>
+</div>
 
 
-</section>
 </section>
 </section>
 
