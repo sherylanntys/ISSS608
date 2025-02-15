@@ -7,7 +7,7 @@ listing:
   - id: recent-posts
     contents:
       - "Hands-on Exercise/Hands-on_Ex*/*.qmd"
-      - "lab-notes/*reports.qmd"
+
     sort: "title desc"
     type: grid
     max-items: 3
