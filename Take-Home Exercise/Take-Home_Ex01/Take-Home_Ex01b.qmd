@@ -259,7 +259,9 @@ glimpse(ship_data)
 
 # 3.0 Data Visualisation
 
-## 3.1 Overall Revenue, Cost and Cargo Weight Trend by Month
+## 3.1 Financial Metrics
+
+### 3.1.1 Overview of Revenue, Cost and Cargo Weight Trending by Month
 
 This section provides a time-series analysis of revenue, cost, and cargo weight trends across the observed period to identify key patterns and insights.
 
@@ -379,144 +381,211 @@ ggplot(monthly_summary, aes(x = Month)) +
 3.  There is no clear growth trend over the observed period, as fluctuations in cargo weight, revenue, and costs occur over time. Further research could be undertaken to understand if these variations could be attributed to seasonal demand shifts or external factors such as global economic conditions affecting shipping volumes.
 :::
 
-## 3.2 Profitability by Ship Types
+### 3.1.2 Understanding Profitability by Ship Types
 
-In this section, we will analyze the profit distribution across different ship types to gain insights into their profitability trends and variability.
+In this section, we will analyze the profitability across different ship types to gain insights into their profitability trends and variability.
 
-The code chunk below utilizes the patchwork package to combine both boxplots and ridgeline plots, allowing for a comprehensive visualization of profit distributions across ship types.
+The code chunk below generates three plots to explore the profitability of different ship types. Firstly, the bar chart presents the total profit across ship types, ranking them from highest to lowest profit. Next, the boxplot provides insight into the distribution of profit, highlighting the variability and median values across ship types. Lastly, the ridgeline plot illustrates the profit distribution across ship types. The `patchwork` function is then used to combine these plots together.
 
 ::: panel-tabset
 #### Plot
 
 ```{r, echo=FALSE}
+#| fig-width: 12
+#| fig-height: 8
 
-# Filtering out "None" values from the Ship_Type Column:
-filtered_ship_data1 <- ship_data %>%   filter(Ship_Type != "None")
+filtered_ship_data1 <- ship_data %>% filter(Ship_Type != "None")
+
+
 
 medians <- filtered_ship_data1 %>%
   group_by(Ship_Type) %>%
-  summarize(Median_Profit = median(Profit_USD/1e6))
+  summarize(Median_Profit = median(Profit_USD/1e6, na.rm = TRUE))
 
 filtered_ship_data1 <- filtered_ship_data1 %>%
   left_join(medians, by = "Ship_Type")
 
 
-p1 <- ggplot(data=filtered_ship_data1,
-       aes(y=Profit_USD/1e6, x=Ship_Type, fill = Ship_Type)) +
+
+p1 <- ggplot(data=filtered_ship_data1, aes(y=Profit_USD/1e6, x=reorder(Ship_Type, Median_Profit), fill = Ship_Type)) +
   geom_boxplot(notch=TRUE, show.legend = FALSE) +
-  
-   geom_text(
-    data = medians,
-    aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
-    nudge_y = 0.1,
-    size = 2.5
-  ) +
-  
-  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) + 
+  geom_text(data = medians,
+            aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
+            nudge_y = 0.1, size = 3.5) +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = "$"), limits = c(-1.0,1.5)) + 
   labs(
-    x = "Ship Type", 
-    y = "Profit (in USD Million)"  
+    title = "Profit Distribution by Ship Type",
+    x = NULL,  
+    y = "Profit (in USD Million)"
   ) +
   coord_flip() +
-  theme_classic()
-
-
-p2 <- ggplot(data = filtered_ship_data1, aes(x = Profit_USD / 1e6, y = Ship_Type)) +
-  geom_density_ridges(aes(group = Ship_Type, fill = Ship_Type), alpha = 0.8, show.legend = FALSE) +
-  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) +
-  labs(
-    x = "Profit (in USD Million)",
-    y = "Ship Type"
-  ) +
   theme_classic() +
-  theme(axis.text.y = element_text(angle = 0))
-
-
-combined_plot <- (p1 / p2) +
-  plot_layout(guides = "collect") + 
-  plot_annotation(
-    title = "Profitability by Ship Types",
-    theme = theme(
-      plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
-    )
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 12)
   )
 
 
-combined_plot
 
+p2 <- ggplot(data = filtered_ship_data1, aes(x = Profit_USD / 1e6, y = reorder(Ship_Type, Median_Profit), fill = Ship_Type)) +
+  geom_density_ridges(aes(group = Ship_Type, fill = Ship_Type), alpha = 0.8, show.legend = FALSE) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = "$"), limits = c(-1.0,1.5)) +
+  labs(
+    x = "Profit (in USD Million)",
+    y = NULL
+  ) +
+  theme_classic() + 
+  theme(
+    axis.text.y = element_text(size = 12)
+  )
+
+
+
+profit_summary <- ship_data %>%
+  filter(Ship_Type != "None") %>%
+  group_by(Ship_Type) %>%
+  summarise(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
+  arrange(desc(Total_Profit)) 
+
+
+
+p3 <- ggplot(profit_summary, aes(x = reorder(Ship_Type, Total_Profit), y = Total_Profit, fill = Ship_Type)) +
+  geom_col(show.legend = FALSE) + 
+  geom_text(aes(label = sprintf("%.2fM", Total_Profit / 1e6)), 
+            hjust = 1.5, size = 3.5) +
+  coord_flip() + 
+  scale_y_continuous(labels = scales::dollar_format(prefix = "$", suffix = "M", scale = 1e-6)) +
+  labs(
+    title = "Total Profit by Ship Type",
+    x = NULL, 
+    y = "Profit (in USD Million)"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    plot.margin = margin(10, 40, 10, 10),
+    axis.text.y = element_text(size = 12))
+
+
+combined_plot <- (p3 | (p1 / p2)) + 
+  plot_layout(widths = c(1, 2.5)) +
+  plot_annotation(
+    title = "Profitability by Ship Types",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, size = 18, face = "bold")
+    )
+  )
+
+combined_plot
 ```
 
 #### Code
 
 ```{r, eval=FALSE, results="hide"}
+#| fig-width: 12
+#| fig-height: 8
 
-# Filtering out "None" values from the Ship_Type Column:
-filtered_ship_data1 <- ship_data %>%   filter(Ship_Type != "None")
+filtered_ship_data1 <- ship_data %>% filter(Ship_Type != "None")
+
+
 
 medians <- filtered_ship_data1 %>%
   group_by(Ship_Type) %>%
-  summarize(Median_Profit = median(Profit_USD/1e6))
+  summarize(Median_Profit = median(Profit_USD/1e6, na.rm = TRUE))
 
 filtered_ship_data1 <- filtered_ship_data1 %>%
   left_join(medians, by = "Ship_Type")
 
 
-p1 <- ggplot(data=filtered_ship_data1,
-       aes(y=Profit_USD/1e6, x=Ship_Type, fill = Ship_Type)) +
+
+p1 <- ggplot(data=filtered_ship_data1, aes(y=Profit_USD/1e6, x=reorder(Ship_Type, Median_Profit), fill = Ship_Type)) +
   geom_boxplot(notch=TRUE, show.legend = FALSE) +
-  
-   geom_text(
-    data = medians,
-    aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
-    nudge_y = 0.1,
-    size = 2.5
-  ) +
-  
-  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) + 
+  geom_text(data = medians,
+            aes(label = sprintf("%.2fM", Median_Profit), y = Median_Profit),
+            nudge_y = 0.1, size = 3.5) +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M", prefix = "$"), limits = c(-1.0,1.5)) + 
   labs(
-    x = "Ship Type", 
-    y = "Profit (in USD Million)"  
+    title = "Profit Distribution by Ship Type",
+    x = NULL,  
+    y = "Profit (in USD Million)"
   ) +
   coord_flip() +
-  theme_classic()
+  theme_classic() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 12)
+  )
 
 
-p2 <- ggplot(data = filtered_ship_data1, aes(x = Profit_USD / 1e6, y = Ship_Type)) +
+
+p2 <- ggplot(data = filtered_ship_data1, aes(x = Profit_USD / 1e6, y = reorder(Ship_Type, Median_Profit), fill = Ship_Type)) +
   geom_density_ridges(aes(group = Ship_Type, fill = Ship_Type), alpha = 0.8, show.legend = FALSE) +
-  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = ""), limits = c(-1.0,1.5)) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "M", prefix = "$"), limits = c(-1.0,1.5)) +
   labs(
-    x = "Profit (in USD Million)",  # Custom x-axis title
-    y = "Ship Type"
+    x = "Profit (in USD Million)",
+    y = NULL
+  ) +
+  theme_classic() + 
+  theme(
+    axis.text.y = element_text(size = 12)
+  )
+
+
+
+profit_summary <- ship_data %>%
+  filter(Ship_Type != "None") %>%
+  group_by(Ship_Type) %>%
+  summarise(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
+  arrange(desc(Total_Profit)) 
+
+
+
+p3 <- ggplot(profit_summary, aes(x = reorder(Ship_Type, Total_Profit), y = Total_Profit, fill = Ship_Type)) +
+  geom_col(show.legend = FALSE) + 
+  geom_text(aes(label = sprintf("%.2fM", Total_Profit / 1e6)), 
+            hjust = 1.5, size = 3.5) +
+  coord_flip() + 
+  scale_y_continuous(labels = scales::dollar_format(prefix = "$", suffix = "M", scale = 1e-6)) +
+  labs(
+    title = "Total Profit by Ship Type",
+    x = NULL, 
+    y = "Profit (in USD Million)"
   ) +
   theme_classic() +
-  theme(axis.text.y = element_text(angle = 0))
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    plot.margin = margin(10, 40, 10, 10),
+    axis.text.y = element_text(size = 12))
 
 
-combined_plot <- (p1 / p2) +
-  plot_layout(guides = "collect") + 
+combined_plot <- (p3 | (p1 / p2)) + 
+  plot_layout(widths = c(1, 2.5)) +
   plot_annotation(
     title = "Profitability by Ship Types",
     theme = theme(
-      plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+      plot.title = element_text(hjust = 0.5, size = 18, face = "bold")
     )
   )
 
+combined_plot
 ```
 :::
 
 ::: {.callout-note icon="false"}
 #### Insights
 
-1.  **Tankers** have the lowest median profit at US\$0.23M amongst all ship types, as indicated by the boxplot and further supported by the peak of the ridgeline plot being closer to zero.
+1.  **Fish Carriers** generated the highest total profit while **Tankers** generated the lowest. This pattern is also reflected in median profits, with **Tankers** having the lowest median profit at US\$0.23M. Furthermore, the notch of the boxplot for **Tankers** does not overlap with the notches of the other ship types, suggesting that the median profit for **Tankers** is significantly lower.
 
-2.  Although the median profits for **Fish Carriers, Container Ships** and **Bulk Carriers** appear relatively similar (as indicated by the boxplot), the distribution of profits differ across all ship types.
+2.  Although the median profits for **Fish Carriers, Container Ships** and **Bulk Carriers** are similar (indicated by their overlapping boxplot notches), their profit distributions differ:
 
-    \(a\) **Bulk Carriers** display a bimodal profit distribution, strongly suggesting two distinct groups within this category. It implies that some Bulk Carriers are highly profitable while others struggle.
+    \(a\) **Bulk Carriers** display a bimodal distribution, indicating two distinct groups - some Bulk Carriers are highly profitable while others operate at lower margins.
 
-    \(b\) Both **Fish Carriers** and **Container Ships** exhibit unimodal distributions. However, **Container Ships** appear to have a higher profit variability as indicated by the greater range and IQR in the boxplot.
+    \(b\) **Fish Carriers** and **Container Ships** exhibit unimodal distributions. However, **Container Ships** appear to have a higher profit variability as indicated by the greater range and IQR in the boxplot.
 :::
 
-## 3.3 Sales and Profit by Route Types
+### 3.1.3 Understanding Sales and Profitability by Route Types
 
 In this section, we will analyse the sales and profitability by route types based on quarterly trends. However, as June 2023 represents an incomplete quarter, we will exclude it from our analysis to ensure consistency in our quarterly comparisons.
 
@@ -656,7 +725,9 @@ ggplot(route_summary, aes(x = Sales_Percentile, y = Profit_Percentile,
 4.  With the exception of Q2, **Short-Haul** **Routes** exhibit both low profitability and sales in Q3 and Q4 (replacing Transoceanic Routes), thus positioning it as an under-performing route. In addition, they record the lowest number of voyages in Q3.
 :::
 
-## 3.4 Average Load Percentage by Ship Type and Route Types
+## 3.2 Operational Metrics
+
+### 3.2.1 Understanding Average Load Percentage by Ship Types Across Route Types
 
 This section examines the distribution of average load percentage across different ship types and routes types. By visualising the density distribution of load percentage, this section aims to understand how efficiently different ship types utilise their cargo capacity on various routes.
 
@@ -1665,6 +1736,104 @@ ggplot(summary_data, aes(x = Cargo_Weight_Percentile,
     legend.position = "top"
   )
 
+
+
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+# Prepare Data: Exclude "None" Weather Condition and Summarize Profit by Month
+summary_data <- ship_data %>%
+  filter(Weather_Condition != "None") %>%  # Exclude "None" weather conditions
+  filter(!(year(Month) == 2023 & month(Month) == 6)) %>%  # Exclude June 2023
+  group_by(Month, Weather_Condition) %>%
+  summarise(Total_Profit = sum(Profit_USD, na.rm = TRUE) / 1e6, .groups = "drop")  # Convert to million USD
+
+# Compute Average Profit for Each Weather Condition
+avg_profit_by_weather <- summary_data %>%
+  group_by(Weather_Condition) %>%
+  summarise(Avg_Profit = mean(Total_Profit, na.rm = TRUE), .groups = "drop")
+
+# Merge with summary_data for Reference Line
+summary_data <- left_join(summary_data, avg_profit_by_weather, by = "Weather_Condition")
+
+# Plot: Sum of Monthly Profits, Faceted by Weather Condition
+ggplot(summary_data, aes(x = Month, y = Total_Profit, fill = Weather_Condition)) +
+  geom_col(alpha = 0.8, show.legend = FALSE) +  
+  geom_hline(aes(yintercept = Avg_Profit), linetype = "dashed", color = "black", size = 0.8) +  # Reference Line per Weather Condition
+  geom_text(aes(x = min(Month), y = Avg_Profit, label = sprintf("Avg: %.2fM", Avg_Profit)), 
+            hjust = 0, vjust = -1, size = 4, color = "black") +  # Add labels for avg profit per weather condition
+  labs(
+    title = "Total Monthly Profits by Weather Condition",
+    x = "Month",
+    y = "Total Profit (Million USD)"
+  ) +
+  facet_grid(rows = vars(Weather_Condition), scales = "free_y") +  # 3x1 facet grid by Weather Condition
+  scale_x_date(date_labels = "%b %Y", breaks = "1 month") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Filter out "None" weather conditions
+filtered_data <- ship_data %>%
+  filter(Weather_Condition != "None")
+
+# Create the boxplot
+ggplot(filtered_data, aes(x = Weather_Condition, y = Profit_USD, fill = Weather_Condition)) +
+  geom_boxplot(alpha = 0.7, outlier.shape = NA) +
+  stat_summary(fun = median, geom = "point", shape = 23, size = 3, fill = "black") + 
+  labs(
+    title = "Profit Distribution by Weather Condition",
+    x = "Weather Condition",
+    y = "Profit (USD)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    legend.position = "none"
+  )
+
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Summarize total profit by ship type, excluding "None"
+profit_summary <- ship_data %>%
+  filter(Ship_Type != "None") %>%
+  group_by(Ship_Type) %>%
+  summarise(Total_Profit = sum(Profit_USD, na.rm = TRUE)) %>%
+  arrange(desc(Total_Profit))  # Sort from largest to smallest profit
+
+# Plot horizontal bar chart
+ggplot(profit_summary, aes(x = reorder(Ship_Type, Total_Profit), y = Total_Profit, fill = Ship_Type)) +
+  geom_col(show.legend = FALSE) +  # Bar chart
+  coord_flip() +  # Horizontal orientation
+  scale_y_continuous(labels = scales::dollar_format(prefix = "$", suffix = "M", scale = 1e-6)) +  # Convert to Million USD
+  labs(
+    title = "Total Profit by Ship Type",
+    x = "Ship Type",
+    y = "Total Profit (in Million USD)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
+  )
+```
+
+```{r}
 
 
 ```
