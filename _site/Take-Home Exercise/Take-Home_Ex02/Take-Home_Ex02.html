@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sheryl Ann Tan Yi-Shi">
+<meta name="dcterms.date" content="2025-03-01">
+
+<title>Take-Home Exercise 2.0: Be Tradewise or Otherwise – ISSS608 Coursework</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS608 Coursework</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex00/Hands-on_Ex00.html">
+ <span class="dropdown-text">Hands-On Exercise 0.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex01/Hands-on_Ex01.html">
+ <span class="dropdown-text">Hands-On Exercise 1.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex02/Hands-on_Ex02.html">
+ <span class="dropdown-text">Hands-On Exercise 2.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03.html">
+ <span class="dropdown-text">Hands-On Exercise 3.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex03/Hands-on_Ex03b.html">
+ <span class="dropdown-text">Hands-On Exercise 3.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex041.html">
+ <span class="dropdown-text">Hands-On Exercise 4.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex042.html">
+ <span class="dropdown-text">Hands-On Exercise 4.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex043.html">
+ <span class="dropdown-text">Hands-On Exercise 4.3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex04/Hands-on_Ex044.html">
+ <span class="dropdown-text">Hands-On Exercise 4.4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex051.html">
+ <span class="dropdown-text">Hands-On Exercise 5.1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex052.html">
+ <span class="dropdown-text">Hands-On Exercise 5.2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex053.html">
+ <span class="dropdown-text">Hands-On Exercise 5.3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex054.html">
+ <span class="dropdown-text">Hands-On Exercise 5.4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex055.html">
+ <span class="dropdown-text">Hands-On Exercise 5.5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17377898729330/Dashboard1">
+ <span class="dropdown-text">In-class Exercise 1.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/sherylanntys/viz/In-class_Ex01_17371867514480/Dashboard2">
+ <span class="dropdown-text">In-class Exercise 2.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class Exercise/In-class_Ex04/In-class_Ex04.html">
+ <span class="dropdown-text">In-class Exercise 4.0</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class Exercise/In-class_Ex05/In-class_Ex05.html">
+ <span class="dropdown-text">In-class Exercise 5.0</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/sherylanntan"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/sherylanntys"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1.0 Introduction</a>
+  <ul class="collapse">
+  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">1.1 The Task</a></li>
+  </ul></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.0 Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-required-libraries" id="toc-loading-the-required-libraries" class="nav-link" data-scroll-target="#loading-the-required-libraries">2.1 Loading the Required Libraries</a></li>
+  </ul></li>
+  <li><a href="#data-visualisation-make-over" id="toc-data-visualisation-make-over" class="nav-link" data-scroll-target="#data-visualisation-make-over">3.0 Data Visualisation Make-over</a>
+  <ul class="collapse">
+  <li><a href="#overall-exports-and-imports-of-services-2020---2024" id="toc-overall-exports-and-imports-of-services-2020---2024" class="nav-link" data-scroll-target="#overall-exports-and-imports-of-services-2020---2024">3.1 Overall Exports and Imports of Services, 2020 - 2024</a>
+  <ul class="collapse">
+  <li><a href="#critique---quadrant-iii-ugly-confusing" id="toc-critique---quadrant-iii-ugly-confusing" class="nav-link" data-scroll-target="#critique---quadrant-iii-ugly-confusing">3.1.1 Critique - Quadrant III: Ugly &amp; Confusing</a></li>
+  <li><a href="#proposed-make-over" id="toc-proposed-make-over" class="nav-link" data-scroll-target="#proposed-make-over">3.1.2 Proposed Make-over</a></li>
+  <li><a href="#revised-data-visualisation" id="toc-revised-data-visualisation" class="nav-link" data-scroll-target="#revised-data-visualisation">3.1.3 Revised Data Visualisation</a></li>
+  </ul></li>
+  <li><a href="#total-merchandise-trade-at-current-prices-2020---2024" id="toc-total-merchandise-trade-at-current-prices-2020---2024" class="nav-link" data-scroll-target="#total-merchandise-trade-at-current-prices-2020---2024">3.2 Total Merchandise Trade At Current Prices, 2020 - 2024</a>
+  <ul class="collapse">
+  <li><a href="#critique---quadrant-iv-confusing-yet-beautiful" id="toc-critique---quadrant-iv-confusing-yet-beautiful" class="nav-link" data-scroll-target="#critique---quadrant-iv-confusing-yet-beautiful">3.2.1 Critique - Quadrant IV: Confusing yet Beautiful</a></li>
+  <li><a href="#proposed-make-over-1" id="toc-proposed-make-over-1" class="nav-link" data-scroll-target="#proposed-make-over-1">3.2.2 Proposed Make-over</a></li>
+  <li><a href="#revised-data-visualisation-1" id="toc-revised-data-visualisation-1" class="nav-link" data-scroll-target="#revised-data-visualisation-1">3.2.3 Revised Data Visualisation</a></li>
+  </ul></li>
+  <li><a href="#non-oil-domestic-exports-by-major-commodity-sections-2024" id="toc-non-oil-domestic-exports-by-major-commodity-sections-2024" class="nav-link" data-scroll-target="#non-oil-domestic-exports-by-major-commodity-sections-2024">3.3 Non-Oil Domestic Exports By Major Commodity Sections, 2024</a>
+  <ul class="collapse">
+  <li><a href="#critique---quadrant-iii-ugly-and-confusing" id="toc-critique---quadrant-iii-ugly-and-confusing" class="nav-link" data-scroll-target="#critique---quadrant-iii-ugly-and-confusing">3.3.1 Critique - Quadrant III: Ugly and Confusing</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">3.3.2</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">6.0 References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-Home Exercise 2.0: Be Tradewise or Otherwise</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sheryl Ann Tan Yi-Shi </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 1, 2025</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">February 22, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>1.0 Introduction</h1>
+<section id="the-task" class="level2">
+<h2 class="anchored" data-anchor-id="the-task">1.1 The Task</h2>
+</section>
+</section>
+<section id="data-preparation" class="level1">
+<h1>2.0 Data Preparation</h1>
+<section id="loading-the-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-required-libraries">2.1 Loading the Required Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(plotly, ggthemes, ggridges,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, ggplot2, tidyverse, dplyr, lubridate, ggdist) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="data-visualisation-make-over" class="level1">
+<h1>3.0 Data Visualisation Make-over</h1>
+<p>This assignment involves selecting three data visualisations from <a href="https://www.singstat.gov.sg/modules/infographics/singapore-international-trade">this page</a>. Each visualisation will be critique and redesigned. The assessment will be based on the framework from <a href="https://dataremixed.com/2012/05/data-visualization-clarity-or-aesthetics/">DataRemixed.com</a>, which evaluates visualisations along two primary dimensions: clarity and aesthetics.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-891094182.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<section id="overall-exports-and-imports-of-services-2020---2024" class="level2">
+<h2 class="anchored" data-anchor-id="overall-exports-and-imports-of-services-2020---2024">3.1 Overall Exports and Imports of Services, 2020 - 2024</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-4104274913.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<section id="critique---quadrant-iii-ugly-confusing" class="level3">
+<h3 class="anchored" data-anchor-id="critique---quadrant-iii-ugly-confusing">3.1.1 Critique - Quadrant III: Ugly &amp; Confusing</h3>
+<p>✅ The y-axis starts at 0, which makes it easier to gauge and assess the data’s scale.</p>
+<p>❌ Using dollar bill icons to represent data in the bar chart adds visual confusion as we do not know the specific value each icon represents.</p>
+<p>❌ Alternating exports and imports makes it difficult to visually track the growth trends of each category independently, thus disrupting the understanding of CAGR for exports and imports as there is no continuous visual path that readers can follow easily.</p>
+<p>❌ The CAGR figures are positioned away from the main chart and are represented in a separate element at the bottom. The spatial separation may cause viewers to overlook these figures or fail to connect them with the corresponding data in the chart.</p>
+<p>❌ The visualisation contains too much information such as yearly totals, individual exports and imports and trade balance. This might overwhelm the viewer, especially when trying to extract specific insights quickly.</p>
+<p>❌ The visualisation lacks a lead-in paragraph that could set the context, making it difficult to immediately understand the message or the intent of the graph (e.g.&nbsp;whether exports are growing at a faster rate than imports or whether the service trade balance is increasing).</p>
+</section>
+<section id="proposed-make-over" class="level3">
+<h3 class="anchored" data-anchor-id="proposed-make-over">3.1.2 Proposed Make-over</h3>
+<p>Assuming that the intent of the visualisation was to highlight the CAGR of exports and imports, we will simplify the visualisation via:</p>
+</section>
+<section id="revised-data-visualisation" class="level3">
+<h3 class="anchored" data-anchor-id="revised-data-visualisation">3.1.3 Revised Data Visualisation</h3>
+</section>
+</section>
+<section id="total-merchandise-trade-at-current-prices-2020---2024" class="level2">
+<h2 class="anchored" data-anchor-id="total-merchandise-trade-at-current-prices-2020---2024">3.2 Total Merchandise Trade At Current Prices, 2020 - 2024</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-1781260504.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<section id="critique---quadrant-iv-confusing-yet-beautiful" class="level3">
+<h3 class="anchored" data-anchor-id="critique---quadrant-iv-confusing-yet-beautiful">3.2.1 Critique - Quadrant IV: Confusing yet Beautiful</h3>
+<p>✅ Elements are well-aligned and spaced effectively.</p>
+<p>✅ Bars are represented as a single container, instead of disjointed units like the dollar bills in Section 3.1, making it easier to interpret values.</p>
+<p>❌ The visualisation aims to present the total merchandise trade, yet it splits the data into separate bars for exports and imports. This division makes it misleading as readers may focus on the differences between exports and imports rather than on the aggregate trade figures. It also makes it harder to quickly assess the overall trade performance year-on-year.</p>
+<p>❌ Tick marks were omitted from the y-axis despite the value of merchandise trade being a continuous variable. This makes it difficult to interpret the scale of the data and estimate values.</p>
+<p>❌ The years are not labeled directly on the y-axis or associated clearly with the corresponding data bars (which are in various hues of colour, adding more visual confusion). Instead, they are indicated in separate text boxes that state the total merchandise trade for each year. The disjointed presentation can confuse readers as it requires them to match the data visually across different parts of the chart.</p>
+<p>❌ The % increase in merchandise trade in 2024 is placed separately at the bottom of the chart, detached from the visual data representation. Furthermore, the total trade values for each year are in separate text boxes and does not visually represent the percentage growth. Readers would not be able to intuitively interpret the growth rate without doing mental calculations.</p>
+</section>
+<section id="proposed-make-over-1" class="level3">
+<h3 class="anchored" data-anchor-id="proposed-make-over-1">3.2.2 Proposed Make-over</h3>
+</section>
+<section id="revised-data-visualisation-1" class="level3">
+<h3 class="anchored" data-anchor-id="revised-data-visualisation-1">3.2.3 Revised Data Visualisation</h3>
+</section>
+</section>
+<section id="non-oil-domestic-exports-by-major-commodity-sections-2024" class="level2">
+<h2 class="anchored" data-anchor-id="non-oil-domestic-exports-by-major-commodity-sections-2024">3.3 Non-Oil Domestic Exports By Major Commodity Sections, 2024</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-75365197.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="550"></p>
+</figure>
+</div>
+<section id="critique---quadrant-iii-ugly-and-confusing" class="level3">
+<h3 class="anchored" data-anchor-id="critique---quadrant-iii-ugly-and-confusing">3.3.1 Critique - Quadrant III: Ugly and Confusing</h3>
+<p>❌ The visualisation uses a stacked bar chart to represent data that does not seem to focus primarily on proportionate contributions of each category. The small font size used for percentages alongside the large emphasis on dollar values suggests that the actual values are more important than their relative proportions.</p>
+<p>❌ The segments within the stacked bar chart are not arranged in descending order of value, making it challenging to quickly assess which sectors are more significant based on size.</p>
+<p>❌ The visualisation highlights the top three commodities based on the text box at the bottom. However, presenting the data via a stacked bar chart makes it difficult for viewers to relate the text to specific segments of the chart.</p>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section">3.3.2</h3>
+</section>
+</section>
+</section>
+<section id="references" class="level1">
+<h1>6.0 References</h1>
+<p>Kam, T. S. (2023). <em>R for Visual Analytics</em>. Retrieved from <a href="https://r4va.netlify.app" class="uri">https://r4va.netlify.app</a></p>
+<p><a href="https://dataremixed.com/2012/05/clarity-or-aesthetics-part-2-a-tale-of-four-quadrants/" class="uri">https://dataremixed.com/2012/05/clarity-or-aesthetics-part-2-a-tale-of-four-quadrants/</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

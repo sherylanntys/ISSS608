@@ -44,6 +44,8 @@ website:
           href: Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex054.html
         - text: "Hands-On Exercise 5.5"
           href: Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex055.html
+        - text: "Hands-On Exercise 7.0"
+          href: Hands-on Exercise/Hands-on_Ex07/Hands-on_Ex07.html
           
       - text: "In-class Exercise"
         menu:
@@ -60,7 +62,9 @@ website:
       
       - text: "Take-home Exercise"
         menu: 
-        - text: "Take-home Exercise 1"
+        - text: "Take-home Exercise 1.0"
+          href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html
+        - text: "Take-home Exercise 2.0"
           href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html
 
 
