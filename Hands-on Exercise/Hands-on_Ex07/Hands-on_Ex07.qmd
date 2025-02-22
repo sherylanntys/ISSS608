@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Exercise 7.0: Visualising and Analysing Time-Oriented DAta"
+title: "Hands-on Exercise 7.0: Visualising and Analysing Time-Oriented Data"
 author: "Sheryl Ann Tan Yi-Shi"
 date: "2025-02-22"
 date-modified: "last-modified"
