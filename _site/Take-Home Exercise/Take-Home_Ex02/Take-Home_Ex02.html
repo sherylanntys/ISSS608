@@ -272,12 +272,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">2.0 Data Preparation</a>
   <ul class="collapse">
   <li><a href="#loading-the-required-libraries" id="toc-loading-the-required-libraries" class="nav-link" data-scroll-target="#loading-the-required-libraries">2.1 Loading the Required Libraries</a></li>
-  <li><a href="#overall-exports-and-imports-of-services-2020---2024" id="toc-overall-exports-and-imports-of-services-2020---2024" class="nav-link" data-scroll-target="#overall-exports-and-imports-of-services-2020---2024">2.2 Overall Exports and Imports of Services, 2020 - 2024</a></li>
+  <li><a href="#overall-exports-and-imports-of-services-2020---2024" id="toc-overall-exports-and-imports-of-services-2020---2024" class="nav-link" data-scroll-target="#overall-exports-and-imports-of-services-2020---2024">2.2 Overall Exports and Imports of Services, 2020 - 2024</a>
+  <ul class="collapse">
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">2.2.1 Data Import</a></li>
+  <li><a href="#understanding-the-data" id="toc-understanding-the-data" class="nav-link" data-scroll-target="#understanding-the-data">2.2.2 Understanding the Data</a></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">2.2.3 Data Wrangling</a></li>
+  </ul></li>
   <li><a href="#total-merchandise-trade-at-current-prices-2020---2024" id="toc-total-merchandise-trade-at-current-prices-2020---2024" class="nav-link" data-scroll-target="#total-merchandise-trade-at-current-prices-2020---2024">2.3 Total Merchandise Trade At Current Prices, 2020 - 2024</a>
   <ul class="collapse">
-  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">2.3.1 Data Import</a></li>
-  <li><a href="#understanding-the-data" id="toc-understanding-the-data" class="nav-link" data-scroll-target="#understanding-the-data">2.3.2 Understanding the Data</a></li>
-  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">2.3.3 Data Wrangling</a></li>
+  <li><a href="#data-import-1" id="toc-data-import-1" class="nav-link" data-scroll-target="#data-import-1">2.3.1 Data Import</a></li>
+  <li><a href="#understanding-the-data-1" id="toc-understanding-the-data-1" class="nav-link" data-scroll-target="#understanding-the-data-1">2.3.2 Understanding the Data</a></li>
+  <li><a href="#data-wrangling-1" id="toc-data-wrangling-1" class="nav-link" data-scroll-target="#data-wrangling-1">2.3.3 Data Wrangling</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#data-visualisation-make-over" id="toc-data-visualisation-make-over" class="nav-link" data-scroll-target="#data-visualisation-make-over">3.0 Data Visualisation Make-over</a>
@@ -362,21 +367,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="overall-exports-and-imports-of-services-2020---2024" class="level2">
 <h2 class="anchored" data-anchor-id="overall-exports-and-imports-of-services-2020---2024">2.2 Overall Exports and Imports of Services, 2020 - 2024</h2>
-</section>
-<section id="total-merchandise-trade-at-current-prices-2020---2024" class="level2">
-<h2 class="anchored" data-anchor-id="total-merchandise-trade-at-current-prices-2020---2024">2.3 Total Merchandise Trade At Current Prices, 2020 - 2024</h2>
 <section id="data-import" class="level3">
-<h3 class="anchored" data-anchor-id="data-import">2.3.1 Data Import</h3>
-<p>The data for <strong>Total Merchandise Trade At Current Prices, 2020 - 2024</strong> can be found <a href="https://tablebuilder.singstat.gov.sg/table/TS/M451001">here</a>. The follow code chunk uses the <code>read_csv()</code> function to import the <em>merchandisetrade.csv</em> file into R.</p>
+<h3 class="anchored" data-anchor-id="data-import">2.2.1 Data Import</h3>
+<p>The data for <strong>Overall Exports and Imports of Services, 2020 - 2024</strong> can be found <a href="https://tablebuilder.singstat.gov.sg/table/TS/M060251">here</a>. The following code chunk uses the <code>read_csv()</code> function to import the <em>servicestrade.csv</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>merchandisetrade <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/merchandisetrade.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>servicetrade <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/servicestrade.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="understanding-the-data" class="level3">
-<h3 class="anchored" data-anchor-id="understanding-the-data">2.3.2 Understanding the Data</h3>
+<h3 class="anchored" data-anchor-id="understanding-the-data">2.2.2 Understanding the Data</h3>
 <p>After loading the data was loaded, the <code>glimpse()</code> function was then used to understand its structure and the type of data it contains.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(servicetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -389,6 +391,242 @@ Expand to See the Code Output
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 84
+Columns: 26
+$ ...1  &lt;chr&gt; "Theme: Trade &amp; Investment", "Subject: Trade in Services (TIS)",…
+$ ...2  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2024.0, 997749.8, 528568.3, …
+$ ...3  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2023.0, 919117.0, 481009.2, …
+$ ...4  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2022.0, 877252.5, 468190.5, …
+$ ...5  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2021.0, 715093.5, 382492.4, …
+$ ...6  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2020.0, 590035.1, 300004.6, …
+$ ...7  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2019.0, 592824.3, 307215.9, …
+$ ...8  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2018.0, 561271.0, 287141.4, …
+$ ...9  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2017.0, 493353.8, 241568.0, …
+$ ...10 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2016.0, 431109.3, 211835.8, …
+$ ...11 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2015.0, 432922.3, 210622.7, …
+$ ...12 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2014.0, 406020.8, 194843.2, …
+$ ...13 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2013.0, 365055.0, 177719.3, …
+$ ...14 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2012.0, 327866.3, 161769.2, …
+$ ...15 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2011.0, 298227.8, 150013.0, …
+$ ...16 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2010.0, 273929.7, 136872.3, …
+$ ...17 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2009.0, 238962.6, 117832.0, …
+$ ...18 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2008.0, 254282.0, 126155.0, …
+$ ...19 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2007.0, 223936.4, 110796.6, …
+$ ...20 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2006.0, 195966.0, 92674.8, 5…
+$ ...21 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2005.0, 167532.8, 75904.8, 3…
+$ ...22 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2004.0, 150911.1, 66795.8, 3…
+$ ...23 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2003.0, 122427.9, 52966.2, 3…
+$ ...24 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2002.0, 109710.5, 49936.3, 3…
+$ ...25 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2001.0, 102892.5, 46286.1, 1…
+$ ...26 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, "Million Dollars", "2000", "9645…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The output of the <code>glimpse()</code> function indicates that there are 84 rows and 26 columns. The first few rows appear to serve as a document header, with entries such as “Theme: Trade &amp; Investment” and “Subject: Trade in Services (TIS)”, followed by several <code>NA</code> cells. The actual data beings in subsequent rows with each column representing a specific year and each row representing various trade-related variables.</p>
+</section>
+<section id="data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling">2.2.3 Data Wrangling</h3>
+<p><strong>Removing Non-Relevant Rows</strong></p>
+<p>Given the structure of our dataset, particularly the presence of non-data rows at the beginning with a large number of <code>NA</code> values, we will use <code>na.omit()</code> to remove rows containing <code>NA</code> values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cleaned_servicetrade <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(servicetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After removing the rows containing the <code>NA</code> entries, we used the <code>glimpse()</code> function once again to review the structure of the cleaned dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleaned_servicetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Expand to See the Code Output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 52
+Columns: 26
+$ ...1  &lt;chr&gt; "Data Series", "Total Trade In Services", "Exports Of Services",…
+$ ...2  &lt;dbl&gt; 2024.0, 997749.8, 528568.3, 471.0, 10820.1, 172971.1, 145993.3, …
+$ ...3  &lt;dbl&gt; 2023.0, 919117.0, 481009.2, 490.7, 10981.0, 149537.4, 124222.5, …
+$ ...4  &lt;dbl&gt; 2022.0, 877252.5, 468190.5, 685.5, 10117.9, 189649.0, 167209.2, …
+$ ...5  &lt;dbl&gt; 2021.0, 715093.5, 382492.4, 489.9, 8833.5, 144220.0, 130499.3, 1…
+$ ...6  &lt;dbl&gt; 2020.0, 590035.1, 300004.6, 236.8, 8172.9, 93560.0, 79857.9, 137…
+$ ...7  &lt;dbl&gt; 2019.0, 592824.3, 307215.9, 266.9, 9663.3, 94272.1, 76545.7, 177…
+$ ...8  &lt;dbl&gt; 2018.0, 561271.0, 287141.4, 370.3, 9410.0, 88888.8, 71746.4, 171…
+$ ...9  &lt;dbl&gt; 2017.0, 493353.8, 241568.0, 247.1, 7712.0, 69993.5, 54547.9, 154…
+$ ...10 &lt;dbl&gt; 2016.0, 431109.3, 211835.8, 284.8, 8418.5, 59213.4, 45873.0, 133…
+$ ...11 &lt;dbl&gt; 2015.0, 432922.3, 210622.7, 346.5, 9315.2, 64097.1, 50798.1, 132…
+$ ...12 &lt;dbl&gt; 2014.0, 406020.8, 194843.2, 424.4, 9853.1, 63918.8, 50917.2, 130…
+$ ...13 &lt;dbl&gt; 2013.0, 365055.0, 177719.3, 283.2, 10767.2, 57830.9, 45929.4, 11…
+$ ...14 &lt;dbl&gt; 2012.0, 327866.3, 161769.2, 249.6, 9053.1, 55586.3, 42864.3, 127…
+$ ...15 &lt;dbl&gt; 2011.0, 298227.8, 150013.0, 260.4, 9342.9, 53523.0, 41416.7, 121…
+$ ...16 &lt;dbl&gt; 2010.0, 273929.7, 136872.3, 289.5, 8648.4, 52606.6, 41214.6, 113…
+$ ...17 &lt;dbl&gt; 2009.0, 238962.6, 117832.0, 323.4, 9128.1, 43365.7, 33042.6, 103…
+$ ...18 &lt;dbl&gt; 2008.0, 254282.0, 126155.0, 452.1, 8354.6, 51108.8, 38561.9, 125…
+$ ...19 &lt;dbl&gt; 2007.0, 223936.4, 110796.6, 492.6, 6605.6, 43642.8, 31104.6, 125…
+$ ...20 &lt;dbl&gt; 2006.0, 195966.0, 92674.8, 534.7, 5701.0, 35877.1, 24748.0, 1112…
+$ ...21 &lt;dbl&gt; 2005.0, 167532.8, 75904.8, 315.0, 4797.7, 32435.1, 21286.1, 1114…
+$ ...22 &lt;dbl&gt; 2004.0, 150911.1, 66795.8, 353.2, 3450.5, 28630.3, 18702.3, 9928…
+$ ...23 &lt;dbl&gt; 2003.0, 122427.9, 52966.2, 303.1, 2883.1, 23343.2, 15022.2, 8321…
+$ ...24 &lt;dbl&gt; 2002.0, 109710.5, 49936.3, 369.5, 3071.8, 21539.3, 12656.8, 8882…
+$ ...25 &lt;dbl&gt; 2001.0, 102892.5, 46286.1, 195.0, 2099.5, 20497.9, 12079.2, 8418…
+$ ...26 &lt;chr&gt; "2000", "96452.4", "44854.8", "202.4", "1755.3", "20379.3", "115…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The output shows that we have successfully excluded non-relevant rows and retained only the actual trade-related data.</p>
+<p><strong>Transposing the Data</strong></p>
+<p>Next, since our columns year data, we need to transpose the dataset to improve its usability for subsequent data visualisation or time-series analysis. The years will be consolidated into a single column, transforming them into row identifiers, while trade-related variables will now be represented as columns.</p>
+<p>The code chunk uses the <code>t()</code> function for transposing and the <code>as.data.frame()</code> function to ensure that the transposed data remains in a dataframe format:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transposed_servicetrade <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(cleaned_servicetrade))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the first row as column names</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_servicetrade) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(transposed_servicetrade[<span class="dv">1</span>, ])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the first row from the data frame</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>transposed_servicetrade <span class="ot">&lt;-</span> transposed_servicetrade[<span class="sc">-</span><span class="dv">1</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After transposing, we examined the structure of the resulting data frame using the <code>glimpse()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(transposed_servicetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Expand to See the Code Output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 25
+Columns: 52
+$ `Data Series`                                               &lt;chr&gt; "  2024.0"…
+$ `Total Trade In Services`                                   &lt;chr&gt; "997749.8"…
+$ `Exports Of Services`                                       &lt;chr&gt; "528568.3"…
+$ `Manufacturing Services On Physical Inputs Owned By Others` &lt;chr&gt; "   471.0"…
+$ `Maintenance And Repair Services`                           &lt;chr&gt; " 10820.1"…
+$ Transport                                                   &lt;chr&gt; "172971.1"…
+$ Freight                                                     &lt;chr&gt; "145993.3"…
+$ Others                                                      &lt;chr&gt; " 26977.8"…
+$ Travel                                                      &lt;chr&gt; " 31867.3"…
+$ Insurance                                                   &lt;chr&gt; " 12649.8"…
+$ `Government Goods And Services`                             &lt;chr&gt; "   477.3"…
+$ Construction                                                &lt;chr&gt; "  2100.8"…
+$ Financial                                                   &lt;chr&gt; " 71582.7"…
+$ `Telecommunications, Computer &amp; Information`                &lt;chr&gt; " 41149.8"…
+$ `Charges For The Use Of Intellectual Property`              &lt;chr&gt; " 26255.8"…
+$ `Personal, Cultural And Recreational`                       &lt;chr&gt; "  4831.0"…
+$ `Other Business Services`                                   &lt;chr&gt; "153391.6"…
+$ Accounting                                                  &lt;chr&gt; "   828.1"…
+$ `Advertising And Market Research`                           &lt;chr&gt; " 67492.1"…
+$ Architectural                                               &lt;chr&gt; "   551.8"…
+$ `Business Management`                                       &lt;chr&gt; " 45864.5"…
+$ `Engineering And Technical`                                 &lt;chr&gt; " 12668.6"…
+$ Legal                                                       &lt;chr&gt; "  1743.4"…
+$ `Research And Development`                                  &lt;chr&gt; "  1712.3"…
+$ `Operating Leasing`                                         &lt;chr&gt; "  6722.5"…
+$ `Trade-Related`                                             &lt;chr&gt; " 13495.7"…
+$ Others                                                      &lt;chr&gt; "  2312.6"…
+$ `Imports Of Services`                                       &lt;chr&gt; "469181.5"…
+$ `Manufacturing Services On Physical Inputs Owned By Others` &lt;chr&gt; "  9865.1"…
+$ `Maintenance And Repair Services`                           &lt;chr&gt; "  1891.0"…
+$ Transport                                                   &lt;chr&gt; "162013.4"…
+$ Freight                                                     &lt;chr&gt; "116964.9"…
+$ Others                                                      &lt;chr&gt; " 45048.5"…
+$ Travel                                                      &lt;chr&gt; " 41790.5"…
+$ Insurance                                                   &lt;chr&gt; " 10605.2"…
+$ `Government Goods And Services`                             &lt;chr&gt; "   383.7"…
+$ Construction                                                &lt;chr&gt; "  1010.4"…
+$ Financial                                                   &lt;chr&gt; " 23225.3"…
+$ `Telecommunications, Computer &amp; Information`                &lt;chr&gt; " 43523.1"…
+$ `Charges For The Use Of Intellectual Property`              &lt;chr&gt; " 24062.5"…
+$ `Personal, Cultural And Recreational`                       &lt;chr&gt; "  1819.6"…
+$ `Other Business Services`                                   &lt;chr&gt; "148991.7"…
+$ Accounting                                                  &lt;chr&gt; "  1180.6"…
+$ `Advertising And Market Research`                           &lt;chr&gt; " 30918.1"…
+$ Architectural                                               &lt;chr&gt; "    57.8"…
+$ `Business Management`                                       &lt;chr&gt; " 50386.2"…
+$ `Engineering And Technical`                                 &lt;chr&gt; "  7910.0"…
+$ Legal                                                       &lt;chr&gt; "  1009.5"…
+$ `Research And Development`                                  &lt;chr&gt; " 30345.1"…
+$ `Operating Leasing`                                         &lt;chr&gt; "  7291.2"…
+$ `Trade-Related`                                             &lt;chr&gt; " 19117.6"…
+$ Others                                                      &lt;chr&gt; "   775.6"…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>From the output of <code>glimpse()</code>, the following issues were identified:</p>
+<ul>
+<li><p>The column that has the dates is now labelled as “Data Series”. We will rename this to “Date”.</p></li>
+<li><p>All data types are character strings (CHR). We will convert the “Date” column to date format and the remaining columns to numeric types for appropriate data handling.</p></li>
+</ul>
+<p>The following code chunk renames the “Data Series” column to “Date”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_servicetrade)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Date"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The following code chunk converts the data types into date and numeric formats accordingly. It also filter out entries from Jan 2015 onwards.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the locale to English for consistent date parsing</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="st">"LC_TIME"</span>, <span class="st">"C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "C"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>transposed_servicetrade<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(<span class="fu">as.integer</span>(transposed_servicetrade<span class="sc">$</span>Date), <span class="st">"-01-01"</span>), <span class="at">format =</span> <span class="st">"%Y-%m-%d"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for dates from 2015 onwards</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade <span class="ot">&lt;-</span> transposed_servicetrade[transposed_servicetrade<span class="sc">$</span>Date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Further data preparation and wrangling will be performed in the respective sections to prepare the data for the specific visualisation / analysis.</p>
+</section>
+</section>
+<section id="total-merchandise-trade-at-current-prices-2020---2024" class="level2">
+<h2 class="anchored" data-anchor-id="total-merchandise-trade-at-current-prices-2020---2024">2.3 Total Merchandise Trade At Current Prices, 2020 - 2024</h2>
+<section id="data-import-1" class="level3">
+<h3 class="anchored" data-anchor-id="data-import-1">2.3.1 Data Import</h3>
+<p>The data for <strong>Total Merchandise Trade At Current Prices, 2020 - 2024</strong> can be found <a href="https://tablebuilder.singstat.gov.sg/table/TS/M451001">here</a>. The follow code chunk uses the <code>read_csv()</code> function to import the <em>merchandisetrade.csv</em> file into R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>merchandisetrade <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/merchandisetrade.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="understanding-the-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-data-1">2.3.2 Understanding the Data</h3>
+<p>After loading the data was loaded, the <code>glimpse()</code> function was then used to understand its structure and the type of data it contains.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Expand to See the Code Output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1135,19 +1373,19 @@ $ ...734 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, "Thousand Dollars", "1964 J
 </div>
 <p>The output of the <code>glimpse()</code> function indicates that there are 105 rows and 734 columns. The first few rows appear to serve as a document header, with entries such as “Theme: Trade &amp; Investment” and “Subject: Merchandise Trade”, followed by numerous <code>NA</code> cells. The actual trade data likely begins in subsequent rows, with each column representing a specific month and year, and each row representing various trade-related variables.</p>
 </section>
-<section id="data-wrangling" class="level3">
-<h3 class="anchored" data-anchor-id="data-wrangling">2.3.3 Data Wrangling</h3>
+<section id="data-wrangling-1" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling-1">2.3.3 Data Wrangling</h3>
 <p><strong>Removing Non-Relevant Rows</strong></p>
 <p>Given the structure of our dataset, particularly the presence of non-data rows at the beginning with a large number of <code>NA</code> values, we will use <code>na.omit()</code> to remove rows containing <code>NA</code> values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cleaned_merchandisetrade <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cleaned_merchandisetrade <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After removing the rows containing the <code>NA</code> entries, we used the <code>glimpse()</code> function once again to review the structure of the cleaned dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleaned_merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cleaned_merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1156,7 +1394,7 @@ Expand to See the Code Output
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1906,20 +2144,20 @@ $ ...734 &lt;chr&gt; "1964 Jan", "564500", "91000", "78900", "12100", "473500", 
 <p>Next, since our columns represent month-year data, we need to transpose the dataset to improve its usability for subsequent data visualisation or time-series analysis. The month-year columns will be consolidated into a single column, transforming them into row identifiers, while trade-related variables will now be represented as columns.</p>
 <p>The code chunk uses the <code>t()</code> function for transposing and the <code>as.data.frame()</code> function to ensure that the transposed data remains in a dataframe format:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(cleaned_merchandisetrade))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the first row as column names</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_merchandisetrade) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(transposed_merchandisetrade[<span class="dv">1</span>, ])</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the first row from the data frame</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade <span class="ot">&lt;-</span> transposed_merchandisetrade[<span class="sc">-</span><span class="dv">1</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(cleaned_merchandisetrade))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the first row as column names</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_merchandisetrade) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(transposed_merchandisetrade[<span class="dv">1</span>, ])</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the first row from the data frame</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade <span class="ot">&lt;-</span> transposed_merchandisetrade[<span class="sc">-</span><span class="dv">1</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After transposing, we examined the structure of the resulting data frame using the <code>glimpse()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(transposed_merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(transposed_merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1928,7 +2166,7 @@ Expand to See the Code Output
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -2015,19 +2253,19 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </ul>
 <p>The following code chunk renames the “Data Series” column to “Date”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_merchandisetrade)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Date"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(transposed_merchandisetrade)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Date"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The following code chunk converts the data types into date and numeric formats accordingly. It also filter out entries from Jan 2015 onwards.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the locale to English for consistent date parsing</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="st">"LC_TIME"</span>, <span class="st">"C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the locale to English for consistent date parsing</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="st">"LC_TIME"</span>, <span class="st">"C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "C"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(transposed_merchandisetrade<span class="sc">$</span>Date, <span class="st">"-01"</span>), <span class="at">format=</span><span class="st">"%Y %b-%d"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out entries from January 2015 onwards</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade <span class="ot">&lt;-</span> transposed_merchandisetrade[transposed_merchandisetrade<span class="sc">$</span>Date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>transposed_merchandisetrade<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste0</span>(transposed_merchandisetrade<span class="sc">$</span>Date, <span class="st">"-01"</span>), <span class="at">format=</span><span class="st">"%Y %b-%d"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out entries from January 2015 onwards</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade <span class="ot">&lt;-</span> transposed_merchandisetrade[transposed_merchandisetrade<span class="sc">$</span>Date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Further data preparation and wrangling will be performed in the respective sections to prepare the data for the specific visualisation / analysis.</p>
 </section>
@@ -2065,6 +2303,141 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </section>
 <section id="revised-data-visualisation" class="level3">
 <h3 class="anchored" data-anchor-id="revised-data-visualisation">3.1.3 Revised Data Visualisation</h3>
+<p><strong>Additional Data Preparation for the Visualisation</strong></p>
+<p>Since we are only looking at the overall export and import of services from 2020 to 2024, we will filter the <em>filtered_servicetrade</em> from Section 2.2.3 to only contain these information: <em>Date,</em> <em>Exports of Services</em> and <em>Imports Of Services</em>.</p>
+<p>There is achieved via using the <code>select</code> function as shown in the code chunk below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade1 <span class="ot">&lt;-</span> filtered_servicetrade <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, <span class="st">`</span><span class="at">Exports Of Services</span><span class="st">`</span>, <span class="st">`</span><span class="at">Imports Of Services</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since we are looking at the total merchandise trade by year, we will extract the year from the following code chunk, and filter for the period 2020 - 2024:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade1<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(filtered_servicetrade1<span class="sc">$</span>Date, <span class="st">"%Y"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade1 <span class="ot">&lt;-</span> filtered_servicetrade1[filtered_servicetrade1<span class="sc">$</span>Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>, <span class="st">"2023"</span>, <span class="st">"2024"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will also convert <em>Exports of Services</em> and <em>Imports Of Services</em>. into numeric format via the following code chunk:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade1<span class="sc">$</span><span class="st">`</span><span class="at">Exports Of Services</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_servicetrade1<span class="sc">$</span><span class="st">`</span><span class="at">Exports Of Services</span><span class="st">`</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>filtered_servicetrade1<span class="sc">$</span><span class="st">`</span><span class="at">Imports Of Services</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_servicetrade1<span class="sc">$</span><span class="st">`</span><span class="at">Imports Of Services</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will also create two new variables that measures the growth in service exports and imports year-on-year. This is done by summing up the exports and imports by year, and computing the % difference.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>annual_servicetrade <span class="ot">&lt;-</span> filtered_servicetrade1 <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Date) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Exports Of Services</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Imports Of Services</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Date) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ((<span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ((<span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace NA growth rates (first year) with 0</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span>[<span class="fu">is.na</span>(annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span>[<span class="fu">is.na</span>(annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will also convert all numeric values into billions so that it’s easier for readers to interpret numeric values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>annual_servicetrade <span class="ot">&lt;-</span> annual_servicetrade <span class="sc">%&gt;%</span>   <span class="fu">mutate</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e3</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e3</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>annual_servicetrade <span class="ot">&lt;-</span> annual_servicetrade <span class="sc">%&gt;%</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">as.integer</span>(<span class="fu">format</span>(Date, <span class="st">"%Y"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We would also need to compute the CAGR for exports and imports of services from 2020 to 2024:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute CAGR for Exports and Imports</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>start_year <span class="ot">&lt;-</span> <span class="fu">min</span>(annual_servicetrade<span class="sc">$</span>Year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>end_year <span class="ot">&lt;-</span> <span class="fu">max</span>(annual_servicetrade<span class="sc">$</span>Year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>start_exports <span class="ot">&lt;-</span> annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>[annual_servicetrade<span class="sc">$</span>Year <span class="sc">==</span> start_year]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>end_exports <span class="ot">&lt;-</span> annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>[annual_servicetrade<span class="sc">$</span>Year <span class="sc">==</span> end_year]</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>CAGR_exports <span class="ot">&lt;-</span> ((end_exports <span class="sc">/</span> start_exports)<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> (end_year <span class="sc">-</span> start_year)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>start_imports <span class="ot">&lt;-</span> annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>[annual_servicetrade<span class="sc">$</span>Year <span class="sc">==</span> start_year]</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>end_imports <span class="ot">&lt;-</span> annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>[annual_servicetrade<span class="sc">$</span>Year <span class="sc">==</span> end_year]</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>CAGR_imports <span class="ot">&lt;-</span> ((end_imports <span class="sc">/</span> start_imports)<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> (end_year <span class="sc">-</span> start_year)) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>CAGR_text <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Exports CAGR ("</span>, start_year, <span class="st">"-"</span>, end_year, <span class="st">"): "</span>, <span class="fu">sprintf</span>(<span class="st">"%.1f"</span>, CAGR_exports), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports CAGR ("</span>, start_year, <span class="st">"-"</span>, end_year, <span class="st">"): "</span>, <span class="fu">sprintf</span>(<span class="st">"%.1f"</span>, CAGR_imports), <span class="st">"%"</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Data Visualisation</strong></p>
+<p>After all the data preparation has been completed, the following code chunk plots the revised data visualisation.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>y_max <span class="ot">&lt;-</span> <span class="fu">max</span>(annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>             annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(annual_servicetrade, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> <span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"mediumseagreen"</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(<span class="st">`</span><span class="at">Total Exports of Services</span><span class="st">`</span>, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"B"</span>)), </span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Overall Exports of Services, 2020-2024"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"S$ Billion"</span>) <span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, y_max <span class="sc">*</span> <span class="fl">1.1</span>) <span class="sc">+</span>  </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(annual_servicetrade, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> <span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(<span class="st">`</span><span class="at">Total Imports of Services</span><span class="st">`</span>, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"B"</span>)), </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Overall Imports of Services, 2020-2024"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"S$ Billion"</span>) <span class="sc">+</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, y_max <span class="sc">*</span> <span class="fl">1.1</span>) <span class="sc">+</span>  </span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(annual_servicetrade, <span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">"Exports Growth Rate"</span>), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">"Exports Growth Rate"</span>), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">"Imports Growth Rate"</span>), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">"Imports Growth Rate"</span>), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2020</span>, <span class="dv">2025</span>, <span class="dv">1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2025</span>)) <span class="sc">+</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Exports Growth Rate"</span> <span class="ot">=</span> <span class="st">"mediumseagreen"</span>, <span class="st">"Imports Growth Rate"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>)) <span class="sc">+</span></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">2022.5</span>, <span class="at">y =</span> <span class="fu">min</span>(annual_servicetrade<span class="sc">$</span><span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> CAGR_text, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, </span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">1.6</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Overall Growth Rate in Exports and Imports of Services"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Growth Rate (%)"</span>, <span class="at">color =</span> <span class="st">"Legend"</span>) <span class="sc">+</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>final_plot <span class="ot">&lt;-</span> ((plot1 <span class="sc">|</span> plot2) <span class="sc">/</span> plot3) <span class="sc">+</span> </span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.8</span>)) <span class="sc">+</span></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Growth in exports of services surpassed imports in 2024, </span><span class="sc">\n</span><span class="st">with a Compound Annual Growth Rate (CAGR) of 15.2% vs. 12.8% for imports."</span>,</span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>final_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="total-merchandise-trade-at-current-prices-2020---2024-1" class="level2">
@@ -2090,120 +2463,120 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </section>
 <section id="revised-data-visualisation-1" class="level3">
 <h3 class="anchored" data-anchor-id="revised-data-visualisation-1">3.2.3 Revised Data Visualisation</h3>
-<p><strong>Data Preparation for the Visualisation</strong></p>
+<p><strong>Additional Data Preparation for the Visualisation</strong></p>
 <p>Since we are only looking at <strong><em>Total Merchandise Trade, (At Current Prices)</em></strong>, we will filter out the <em>Date</em> and <em>Total Merchandise Trade, (At Current Prices)</em> from <em>filtered_merchandise trade</em>. This is achieved via the following code chunk:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade <span class="ot">&lt;-</span> filtered_merchandisetrade <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, <span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade <span class="ot">&lt;-</span> filtered_merchandisetrade <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, <span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will also convert <em>Total Merchandise Trade, (At Current Prices)</em> into numeric format and ensure that the <em>Date</em> column is in date format via the following code chunk:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>))</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>))</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(filtered_totalmerchandisetrade<span class="sc">$</span>Date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, filtered_totalmerchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>))</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(filtered_totalmerchandisetrade<span class="sc">$</span>Date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since we are looking at the total merchandise trade by year, we will extract the year from the following code chunk, and filter for the period 2020 - 2024:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(filtered_totalmerchandisetrade<span class="sc">$</span>Date, <span class="st">"%Y"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade <span class="ot">&lt;-</span> filtered_totalmerchandisetrade[filtered_totalmerchandisetrade<span class="sc">$</span>Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>, <span class="st">"2023"</span>, <span class="st">"2024"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(filtered_totalmerchandisetrade<span class="sc">$</span>Date, <span class="st">"%Y"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade <span class="ot">&lt;-</span> filtered_totalmerchandisetrade[filtered_totalmerchandisetrade<span class="sc">$</span>Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>, <span class="st">"2023"</span>, <span class="st">"2024"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will also create a new variable called “Growth Rate” that measures the growth in total merchandise trade year-on-year. This is done by summing up the total merchandise trade by year, and computing the % difference.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> filtered_totalmerchandisetrade <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">format</span>(Date, <span class="st">"%Y"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> annual_merchandisetrade <span class="sc">%&gt;%</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> ),</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> ),</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> )</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade[<span class="fu">is.na</span>(annual_merchandisetrade)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> filtered_totalmerchandisetrade <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">format</span>(Date, <span class="st">"%Y"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Trade, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Imports, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Total Merchandise Exports, (At Current Prices)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> annual_merchandisetrade <span class="sc">%&gt;%</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> ),</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Imports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> ),</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Exports Growth Rate</span><span class="st">`</span> <span class="ot">=</span> ( (<span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="sc">/</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span> )</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade[<span class="fu">is.na</span>(annual_merchandisetrade)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will also convert all the values into billions so that it’s easier for readers to interpret numeric values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> annual_merchandisetrade <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>annual_merchandisetrade <span class="ot">&lt;-</span> annual_merchandisetrade <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span>,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Imports</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Data Visualisation</strong></p>
 <p>After all the data preparation has been completed, the following code chunk plots the revised data visualisation.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Code</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Code</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>max_trade <span class="ot">&lt;-</span> <span class="fu">max</span>(annual_merchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>max_growth <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(annual_merchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_merchandisetrade, <span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">"Total Merchandise Trade"</span>), </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"B"</span>)), </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, <span class="at">color =</span> <span class="st">"Trade Growth Rate"</span>), </span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">1</span>, <span class="at">group =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, <span class="at">color =</span> <span class="st">"Trade Growth Rate"</span>), </span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, </span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span>)), </span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total Merchandise Trade (S$ Billion)"</span>,</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(x, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">0</span>), <span class="st">"B"</span>),</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">*</span> <span class="dv">40</span> <span class="sc">/</span> max_trade,</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                        <span class="at">name =</span> <span class="st">"Merchandise Trade Annual Growth Rate (%)"</span>, </span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                        <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10</span>),  </span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) </span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total merchandise trade rebounded and grew by 6.6% in 2024, </span><span class="sc">\n</span><span class="st"> reversing the contraction in 2023."</span>, </span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Legend"</span>, </span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Legend"</span>) <span class="sc">+</span> </span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>       </span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Total Merchandise Trade"</span> <span class="ot">=</span> <span class="st">"gold"</span>)) <span class="sc">+</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Trade Growth Rate"</span> <span class="ot">=</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>), </span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y.left =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">10</span>)),  </span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">10</span>)),</span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>max_trade <span class="ot">&lt;-</span> <span class="fu">max</span>(annual_merchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>max_growth <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(annual_merchandisetrade<span class="sc">$</span><span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_merchandisetrade, <span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">"Total Merchandise Trade"</span>), </span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, </span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(<span class="st">`</span><span class="at">Total Merchandise Trade</span><span class="st">`</span>, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"B"</span>)), </span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, <span class="at">color =</span> <span class="st">"Trade Growth Rate"</span>), </span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">1</span>, <span class="at">group =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, <span class="at">color =</span> <span class="st">"Trade Growth Rate"</span>), </span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span> <span class="sc">*</span> max_trade <span class="sc">/</span> <span class="dv">40</span>, </span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, <span class="st">`</span><span class="at">Trade Growth Rate</span><span class="st">`</span>)), </span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total Merchandise Trade (S$ Billion)"</span>,</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(x, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">0</span>), <span class="st">"B"</span>),</span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">*</span> <span class="dv">40</span> <span class="sc">/</span> max_trade,</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>                        <span class="at">name =</span> <span class="st">"Merchandise Trade Annual Growth Rate (%)"</span>, </span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>                        <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">40</span>, <span class="dv">40</span>, <span class="dv">10</span>),  </span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) </span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total merchandise trade rebounded and grew by 6.6% in 2024, </span><span class="sc">\n</span><span class="st"> reversing the contraction in 2023."</span>, </span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Legend"</span>, </span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Legend"</span>) <span class="sc">+</span> </span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a>       </span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Total Merchandise Trade"</span> <span class="ot">=</span> <span class="st">"gold"</span>)) <span class="sc">+</span></span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Trade Growth Rate"</span> <span class="ot">=</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size=</span><span class="dv">20</span>), </span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y.left =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">10</span>)),  </span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">10</span>)),</span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
