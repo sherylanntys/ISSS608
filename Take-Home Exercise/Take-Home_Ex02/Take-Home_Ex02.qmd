@@ -23,6 +23,118 @@ pacman::p_load(plotly, ggthemes, ggridges,
                patchwork, ggplot2, tidyverse, dplyr, lubridate, ggdist) 
 ```
 
+## 2.2 Overall Exports and Imports of Services, 2020 - 2024
+
+## 2.3 Total Merchandise Trade At Current Prices, 2020 - 2024
+
+### 2.3.1 Data Import
+
+The data for **Total Merchandise Trade At Current Prices, 2020 - 2024** can be found [here](https://tablebuilder.singstat.gov.sg/table/TS/M451001). The follow code chunk uses the `read_csv()` function to import the *merchandisetrade.csv* file into R.
+
+```{r}
+merchandisetrade <- read_csv("data/merchandisetrade.csv")
+```
+
+### 2.3.2 Understanding the Data
+
+After loading the data was loaded, the `glimpse()` function was then used to understand its structure and the type of data it contains.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(merchandisetrade)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(merchandisetrade)
+```
+:::
+
+The output of the `glimpse()` function indicates that there are 105 rows and 734 columns. The first few rows appear to serve as a document header, with entries such as "Theme: Trade & Investment" and "Subject: Merchandise Trade", followed by numerous `NA` cells. The actual trade data likely begins in subsequent rows, with each column representing a specific month and year, and each row representing various trade-related variables.
+
+### 2.3.3 Data Wrangling
+
+**Removing Non-Relevant Rows**
+
+Given the structure of our dataset, particularly the presence of non-data rows at the beginning with a large number of `NA` values, we will use `na.omit()` to remove rows containing `NA` values.
+
+```{r}
+cleaned_merchandisetrade <- na.omit(merchandisetrade)
+```
+
+After removing the rows containing the `NA` entries, we used the `glimpse()` function once again to review the structure of the cleaned dataset.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(cleaned_merchandisetrade)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(cleaned_merchandisetrade)
+```
+:::
+
+The output shows that we have successfully excluded non-relevant rows and retained only the actual trade-related data.
+
+**Transposing the Data**
+
+Next, since our columns represent month-year data, we need to transpose the dataset to improve its usability for subsequent data visualisation or time-series analysis. The month-year columns will be consolidated into a single column, transforming them into row identifiers, while trade-related variables will now be represented as columns.
+
+The code chunk uses the `t()` function for transposing and the `as.data.frame()` function to ensure that the transposed data remains in a dataframe format:
+
+```{r}
+transposed_merchandisetrade <- as.data.frame(t(cleaned_merchandisetrade))
+
+# Set the first row as column names
+colnames(transposed_merchandisetrade) <- as.character(transposed_merchandisetrade[1, ])
+
+# Remove the first row from the data frame
+transposed_merchandisetrade <- transposed_merchandisetrade[-1, ]
+```
+
+After transposing, we examined the structure of the resulting data frame using the `glimpse()` function.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(transposed_merchandisetrade)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(transposed_merchandisetrade)
+```
+:::
+
+From the output of `glimpse()`, the following issues were identified:
+
+-   The column that has the dates is now labelled as "Data Series". We will rename this to "Date".
+
+-   All data types are character strings (CHR). We will convert the "Date" column to date format and the remaining columns to numeric types for appropriate data handling.
+
+The following code chunk renames the "Data Series" column to "Date":
+
+```{r}
+colnames(transposed_merchandisetrade)[1] <- "Date"
+```
+
+The following code chunk converts the data types into date and numeric formats accordingly. It also filter out entries from Jan 2015 onwards.
+
+```{r}
+# Set the locale to English for consistent date parsing
+Sys.setlocale("LC_TIME", "C")
+
+transposed_merchandisetrade$Date <- as.Date(paste0(transposed_merchandisetrade$Date, "-01"), format="%Y %b-%d")
+
+# Filter out entries from January 2015 onwards
+filtered_merchandisetrade <- transposed_merchandisetrade[transposed_merchandisetrade$Date >= as.Date("2015-01-01"), ]
+```
+
+Further data preparation and wrangling will be performed in the respective sections to prepare the data for the specific visualisation / analysis.
+
 # 3.0 Data Visualisation Make-over
 
 This assignment involves selecting three data visualisations from [this page](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade). Each visualisation will be critique and redesigned. The assessment will be based on the framework from [DataRemixed.com](https://dataremixed.com/2012/05/data-visualization-clarity-or-aesthetics/), which evaluates visualisations along two primary dimensions: clarity and aesthetics.
@@ -82,6 +194,189 @@ The image below presents a general mock-up of the proposed data visualization ma
 ![](images/clipboard-329651265.png)
 
 ### 3.2.3 Revised Data Visualisation
+
+**Data Preparation for the Visualisation**
+
+Since we are only looking at ***Total Merchandise Trade, (At Current Prices)***, we will filter out the *Date* and *Total Merchandise Trade, (At Current Prices)* from *filtered_merchandise trade*. This is achieved via the following code chunk:
+
+```{r}
+filtered_totalmerchandisetrade <- filtered_merchandisetrade %>%
+  select(Date, `Total Merchandise Trade, (At Current Prices)`, `Total Merchandise Exports, (At Current Prices)`, `Total Merchandise Imports, (At Current Prices)`)
+```
+
+We will also convert *Total Merchandise Trade, (At Current Prices)* into numeric format and ensure that the *Date* column is in date format via the following code chunk:
+
+```{r}
+filtered_totalmerchandisetrade$`Total Merchandise Trade, (At Current Prices)` <- as.numeric(gsub(",", "", filtered_totalmerchandisetrade$`Total Merchandise Trade, (At Current Prices)`))
+filtered_totalmerchandisetrade$`Total Merchandise Exports, (At Current Prices)` <- as.numeric(gsub(",", "", filtered_totalmerchandisetrade$`Total Merchandise Exports, (At Current Prices)`))
+filtered_totalmerchandisetrade$`Total Merchandise Imports, (At Current Prices)` <- as.numeric(gsub(",", "", filtered_totalmerchandisetrade$`Total Merchandise Imports, (At Current Prices)`))
+
+filtered_totalmerchandisetrade$Date <- as.Date(filtered_totalmerchandisetrade$Date)
+```
+
+Since we are looking at the total merchandise trade by year, we will extract the year from the following code chunk, and filter for the period 2020 - 2024:
+
+```{r}
+filtered_totalmerchandisetrade$Year <- format(filtered_totalmerchandisetrade$Date, "%Y")
+
+filtered_totalmerchandisetrade <- filtered_totalmerchandisetrade[filtered_totalmerchandisetrade$Year %in% c("2020", "2021", "2022", "2023", "2024"), ]
+```
+
+We will also create a new variable called "Growth Rate" that measures the growth in total merchandise trade year-on-year. This is done by summing up the total merchandise trade by year, and computing the % difference.
+
+```{r}
+
+annual_merchandisetrade <- filtered_totalmerchandisetrade %>%
+  mutate(Year = format(Date, "%Y")) %>%
+  group_by(Year) %>%
+  summarise(
+    `Total Merchandise Trade` = sum(`Total Merchandise Trade, (At Current Prices)`, na.rm = TRUE),
+    `Total Merchandise Imports` = sum(`Total Merchandise Imports, (At Current Prices)`, na.rm = TRUE),
+    `Total Merchandise Exports` = sum(`Total Merchandise Exports, (At Current Prices)`, na.rm = TRUE)
+  )
+
+annual_merchandisetrade <- annual_merchandisetrade %>%
+  mutate(
+    `Trade Growth Rate` = ( (`Total Merchandise Trade` / lag(`Total Merchandise Trade`) - 1) * 100 ),
+    `Imports Growth Rate` = ( (`Total Merchandise Imports` / lag(`Total Merchandise Imports`) - 1) * 100 ),
+    `Exports Growth Rate` = ( (`Total Merchandise Exports` / lag(`Total Merchandise Exports`) - 1) * 100 )
+  )
+
+annual_merchandisetrade[is.na(annual_merchandisetrade)] <- 0
+```
+
+We will also convert all the values into billions so that it's easier for readers to interpret numeric values.
+
+```{r}
+
+annual_merchandisetrade <- annual_merchandisetrade %>%
+  mutate(
+    `Total Merchandise Trade` = `Total Merchandise Trade` / 1e6,
+    `Total Merchandise Imports` = `Total Merchandise Imports` / 1e6,
+    `Total Merchandise Exports` = `Total Merchandise Exports` / 1e6
+  )
+```
+
+**Data Visualisation**
+
+After all the data preparation has been completed, the following code chunk plots the revised data visualisation.
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+
+#| fig-width: 12
+#| fig-height: 8
+
+
+max_trade <- max(annual_merchandisetrade$`Total Merchandise Trade`, na.rm = TRUE)
+max_growth <- max(abs(annual_merchandisetrade$`Trade Growth Rate`), na.rm = TRUE) #
+
+ggplot(annual_merchandisetrade, aes(x = Year)) +
+  
+  geom_bar(aes(y = `Total Merchandise Trade`, fill = "Total Merchandise Trade"), 
+           stat = "identity") +
+  
+  geom_text(aes(y = `Total Merchandise Trade`, 
+                label = paste0("S$", formatC(`Total Merchandise Trade`, format = "f", big.mark = ",", digits = 1), "B")), 
+            vjust = -0.5, color = "black", size = 2.5) +
+  
+  geom_line(aes(y = `Trade Growth Rate` * max_trade / 40, color = "Trade Growth Rate"), 
+            size = 1, group = 1) +
+  geom_point(aes(y = `Trade Growth Rate` * max_trade / 40, color = "Trade Growth Rate"), 
+             size = 2) +
+  
+  geom_text(aes(y = `Trade Growth Rate` * max_trade / 40, 
+                label = sprintf("%.1f%%", `Trade Growth Rate`)), 
+            vjust = -2, color = "black", size = 2.5) +
+
+  scale_y_continuous(
+    name = "Total Merchandise Trade (S$ Billion)",
+    labels = function(x) paste0("S$", formatC(x, format = "f", big.mark = ",", digits = 0), "B"),
+    sec.axis = sec_axis(~ . * 40 / max_trade,
+                        name = "Merchandise Trade Annual Growth Rate (%)", 
+                        breaks = seq(-40, 40, 10),  
+                        labels = function(x) paste0(x, "%")) 
+  ) +
+
+  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023.", 
+       x = "Year",
+       fill = "Legend", 
+       color = "Legend") + 
+       
+  scale_fill_manual(values = c("Total Merchandise Trade" = "gold")) +
+  scale_color_manual(values = c("Trade Growth Rate" = "black")) +
+
+  theme_minimal() +
+  
+theme(
+  plot.title = element_text(hjust = 0.5), 
+  axis.title.y.left = element_text(margin = margin(r = 10)),  
+  axis.title.y.right = element_text(margin = margin(l = 10)),
+  legend.position = "top",
+  legend.title = element_blank()
+)
+
+
+```
+
+#### Code
+
+```{r, eval=FALSE, results="hide"}
+#| fig-width: 12
+#| fig-height: 8
+
+
+max_trade <- max(annual_merchandisetrade$`Total Merchandise Trade`, na.rm = TRUE)
+max_growth <- max(abs(annual_merchandisetrade$`Trade Growth Rate`), na.rm = TRUE) #
+
+ggplot(annual_merchandisetrade, aes(x = Year)) +
+  
+  geom_bar(aes(y = `Total Merchandise Trade`, fill = "Total Merchandise Trade"), 
+           stat = "identity") +
+  
+  geom_text(aes(y = `Total Merchandise Trade`, 
+                label = paste0("S$", formatC(`Total Merchandise Trade`, format = "f", big.mark = ",", digits = 1), "B")), 
+            vjust = -0.5, color = "black", size = 2.5) +
+  
+  geom_line(aes(y = `Trade Growth Rate` * max_trade / 40, color = "Trade Growth Rate"), 
+            size = 1, group = 1) +
+  geom_point(aes(y = `Trade Growth Rate` * max_trade / 40, color = "Trade Growth Rate"), 
+             size = 2) +
+  
+  geom_text(aes(y = `Trade Growth Rate` * max_trade / 40, 
+                label = sprintf("%.1f%%", `Trade Growth Rate`)), 
+            vjust = -2, color = "black", size = 2.5) +
+
+  scale_y_continuous(
+    name = "Total Merchandise Trade (S$ Billion)",
+    labels = function(x) paste0("S$", formatC(x, format = "f", big.mark = ",", digits = 0), "B"),
+    sec.axis = sec_axis(~ . * 40 / max_trade,
+                        name = "Merchandise Trade Annual Growth Rate (%)", 
+                        breaks = seq(-40, 40, 10),  
+                        labels = function(x) paste0(x, "%")) 
+  ) +
+
+  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023.", 
+       x = "Year",
+       fill = "Legend", 
+       color = "Legend") + 
+       
+  scale_fill_manual(values = c("Total Merchandise Trade" = "gold")) +
+  scale_color_manual(values = c("Trade Growth Rate" = "black")) +
+
+  theme_minimal() +
+  
+theme(
+  plot.title = element_text(hjust = 0.5), 
+  axis.title.y.left = element_text(margin = margin(r = 10)),  
+  axis.title.y.right = element_text(margin = margin(l = 10)),
+  legend.position = "top",
+  legend.title = element_blank()
+)
+```
+:::
 
 ## 3.3 Non-Oil Domestic Exports By Major Commodity Sections, 2024
 
