@@ -2303,7 +2303,8 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </section>
 <section id="revised-data-visualisation" class="level3">
 <h3 class="anchored" data-anchor-id="revised-data-visualisation">3.1.3 Revised Data Visualisation</h3>
-<p><strong>Additional Data Preparation for the Visualisation</strong></p>
+<section id="additional-data-preparation-for-the-visualisation" class="level4">
+<h4 class="anchored" data-anchor-id="additional-data-preparation-for-the-visualisation"><strong>Additional Data Preparation for the Visualisation</strong></h4>
 <p>Since we are only looking at the overall export and import of services from 2020 to 2024, we will filter the <em>filtered_servicetrade</em> from Section 2.2.3 to only contain these information: <em>Date,</em> <em>Exports of Services</em> and <em>Imports Of Services</em>.</p>
 <p>There is achieved via using the <code>select</code> function as shown in the code chunk below:</p>
 <div class="cell">
@@ -2368,7 +2369,9 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports CAGR ("</span>, start_year, <span class="st">"-"</span>, end_year, <span class="st">"): "</span>, <span class="fu">sprintf</span>(<span class="st">"%.1f"</span>, CAGR_imports), <span class="st">"%"</span></span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Data Visualisation</strong></p>
+</section>
+<section id="data-visualisation" class="level4">
+<h4 class="anchored" data-anchor-id="data-visualisation"><strong>Data Visualisation</strong></h4>
 <p>After all the data preparation has been completed, the following code chunk plots the revised data visualisation.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Code</a></li></ul>
@@ -2440,6 +2443,7 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </div>
 </section>
 </section>
+</section>
 <section id="total-merchandise-trade-at-current-prices-2020---2024-1" class="level2">
 <h2 class="anchored" data-anchor-id="total-merchandise-trade-at-current-prices-2020---2024-1">3.2 Total Merchandise Trade At Current Prices, 2020 - 2024</h2>
 <div class="quarto-figure quarto-figure-center">
@@ -2463,7 +2467,8 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </section>
 <section id="revised-data-visualisation-1" class="level3">
 <h3 class="anchored" data-anchor-id="revised-data-visualisation-1">3.2.3 Revised Data Visualisation</h3>
-<p><strong>Additional Data Preparation for the Visualisation</strong></p>
+<section id="additional-data-preparation-for-the-visualisation-1" class="level4">
+<h4 class="anchored" data-anchor-id="additional-data-preparation-for-the-visualisation-1"><strong>Additional Data Preparation for the Visualisation</strong></h4>
 <p>Since we are only looking at <strong><em>Total Merchandise Trade, (At Current Prices)</em></strong>, we will filter out the <em>Date</em> and <em>Total Merchandise Trade, (At Current Prices)</em> from <em>filtered_merchandise trade</em>. This is achieved via the following code chunk:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>filtered_totalmerchandisetrade <span class="ot">&lt;-</span> filtered_merchandisetrade <span class="sc">%&gt;%</span></span>
@@ -2512,7 +2517,9 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Total Merchandise Exports</span><span class="st">`</span> <span class="sc">/</span> <span class="fl">1e6</span></span>
 <span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Data Visualisation</strong></p>
+</section>
+<section id="data-visualisation-1" class="level4">
+<h4 class="anchored" data-anchor-id="data-visualisation-1"><strong>Data Visualisation</strong></h4>
 <p>After all the data preparation has been completed, the following code chunk plots the revised data visualisation.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Code</a></li></ul>
@@ -2583,6 +2590,7 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </div>
 </section>
 </section>
+</section>
 <section id="non-oil-domestic-exports-by-major-commodity-sections-2024" class="level2">
 <h2 class="anchored" data-anchor-id="non-oil-domestic-exports-by-major-commodity-sections-2024">3.3 Non-Oil Domestic Exports By Major Commodity Sections, 2024</h2>
 <div class="quarto-figure quarto-figure-center">
@@ -2605,6 +2613,227 @@ $ `Miscellaneous (Excluding Oil Bunkers)`          &lt;chr&gt; "841303.4", "1380
 </section>
 <section id="revised-data-visualisation-2" class="level3">
 <h3 class="anchored" data-anchor-id="revised-data-visualisation-2">3.3.3 Revised Data Visualisation</h3>
+<section id="additional-data-preparation" class="level4">
+<h4 class="anchored" data-anchor-id="additional-data-preparation"><strong>Additional Data Preparation</strong></h4>
+<p>Since we are only looking at <strong><em>Non-Oil Domestic Exports by Major Commodity Sections</em></strong>, we will filter out the following columns 48 to 56 from <em>filtered_merchadisetrade</em> obtained from Section 2.3. For reference, the column numbers and their respective names are shown in the code chunk below.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Expand to See Column Names
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(filtered_merchandisetrade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Date"                                          
+ [2] "Total Merchandise Trade, (At Current Prices)"  
+ [3] "Oil"                                           
+ [4] "Petroleum"                                     
+ [5] "Oil Bunkers"                                   
+ [6] "Non-Oil"                                       
+ [7] "Food &amp; Live Animals"                           
+ [8] "Beverages &amp; Tobacco"                           
+ [9] "Crude Materials (Excl Fuels)"                  
+[10] "Animal &amp; Vegetable Oils Fats &amp; Waxes"          
+[11] "Chemicals &amp; Chemical Products"                 
+[12] "Manufactured Goods"                            
+[13] "Machinery &amp; Transport Equipment"               
+[14] "Miscellaneous Manufactured Articles"           
+[15] "Miscellaneous (Excluding Oil Bunkers)"         
+[16] "Total Merchandise Imports, (At Current Prices)"
+[17] "Oil"                                           
+[18] "Petroleum"                                     
+[19] "Non-Oil"                                       
+[20] "Food &amp; Live Animals"                           
+[21] "Beverages &amp; Tobacco"                           
+[22] "Crude Materials (Excl Fuels)"                  
+[23] "Animal &amp; Vegetable Oils Fats &amp; Waxes"          
+[24] "Chemicals &amp; Chemical Products"                 
+[25] "Manufactured Goods"                            
+[26] "Machinery &amp; Transport Equipment"               
+[27] "Miscellaneous Manufactured Articles"           
+[28] "Miscellaneous (Excluding Oil Bunkers)"         
+[29] "Total Merchandise Exports, (At Current Prices)"
+[30] "Oil"                                           
+[31] "Petroleum"                                     
+[32] "Oil Bunkers"                                   
+[33] "Non-Oil"                                       
+[34] "Food &amp; Live Animals"                           
+[35] "Beverages &amp; Tobacco"                           
+[36] "Crude Materials (Excl Fuels)"                  
+[37] "Animal &amp; Vegetable Oils Fats &amp; Waxes"          
+[38] "Chemicals &amp; Chemical Products"                 
+[39] "Manufactured Goods"                            
+[40] "Machinery &amp; Transport Equipment"               
+[41] "Miscellaneous Manufactured Articles"           
+[42] "Miscellaneous (Excluding Oil Bunkers)"         
+[43] "Total Domestic Exports, (At Current Prices)"   
+[44] "Oil"                                           
+[45] "Petroleum"                                     
+[46] "Oil Bunkers"                                   
+[47] "Non-Oil"                                       
+[48] "Food &amp; Live Animals"                           
+[49] "Beverages &amp; Tobacco"                           
+[50] "Crude Materials (Excl Fuels)"                  
+[51] "Animal &amp; Vegetable Oils Fats &amp; Waxes"          
+[52] "Chemicals &amp; Chemical Products"                 
+[53] "Manufactured Goods"                            
+[54] "Machinery &amp; Transport Equipment"               
+[55] "Miscellaneous Manufactured Articles"           
+[56] "Miscellaneous (Excluding Oil Bunkers)"         
+[57] "Total Re-Exports, (At Current Prices)"         
+[58] "Oil"                                           
+[59] "Petroleum"                                     
+[60] "Non-Oil"                                       
+[61] "Food &amp; Live Animals"                           
+[62] "Beverages &amp; Tobacco"                           
+[63] "Crude Materials (Excl Fuels)"                  
+[64] "Animal &amp; Vegetable Oils Fats &amp; Waxes"          
+[65] "Chemicals &amp; Chemical Products"                 
+[66] "Manufactured Goods"                            
+[67] "Machinery &amp; Transport Equipment"               
+[68] "Miscellaneous Manufactured Articles"           
+[69] "Miscellaneous (Excluding Oil Bunkers)"         </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The following code chunk stores these filtered out columns into a new dataframe called <em>filtered_merchandisetrade2</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2 <span class="ot">&lt;-</span> filtered_merchandisetrade[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">48</span><span class="sc">:</span><span class="dv">56</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since we are only focusing on non-oil domestic exports in 2024, we will only retain 2024 records via the following code chunk:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(filtered_merchandisetrade2<span class="sc">$</span>Date)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(filtered_merchandisetrade2<span class="sc">$</span>Date, <span class="st">"%Y"</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(filtered_merchandisetrade2<span class="sc">$</span>Year)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2 <span class="ot">&lt;-</span> filtered_merchandisetrade2 <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2024</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will also aggregate the non-domestic exports for each commodity section for 2024 and convert them to billions for better readability via the following code chunk:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>filtered_merchandisetrade2[, <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(filtered_merchandisetrade2[, <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>], <span class="cf">function</span>(x) <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, x)))</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>domesticexport_2024 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">colSums</span>(filtered_merchandisetrade2[, <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)<span class="sc">/</span><span class="fl">1e6</span>))</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Year column to indicate that these totals belong to 2024</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>domesticexport_2024<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="dv">2024</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will tranpose <em>domesticexport_2024</em> for easier processing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>domesticexport_2024_long <span class="ot">&lt;-</span> domesticexport_2024 <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>Year, <span class="at">names_to =</span> <span class="st">"Category"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Category =</span> <span class="fu">str_replace_all</span>(Category, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">" "</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Replace dots with spaces</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Value))</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>domesticexport_2024_long<span class="sc">$</span>Category <span class="ot">&lt;-</span> <span class="fu">str_squish</span>(domesticexport_2024_long<span class="sc">$</span>Category)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>replacement_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Machinery Transport Equipment"</span> <span class="ot">=</span> <span class="st">"Machinery &amp; Transport Equipment"</span>,</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chemicals Chemical Products"</span> <span class="ot">=</span> <span class="st">"Chemicals &amp; Chemical Products"</span>,</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Miscellaneous Manufactured Articles"</span> <span class="ot">=</span> <span class="st">"Miscellaneous Manufactured Articles"</span>,</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Food Live Animals"</span> <span class="ot">=</span> <span class="st">"Food &amp; Live Animals"</span>,</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Miscellaneous Excluding Oil Bunkers"</span> <span class="ot">=</span> <span class="st">"Miscellaneous (Excluding Oil Bunkers)"</span>,</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Manufactured Goods"</span> <span class="ot">=</span> <span class="st">"Manufactured Goods"</span>,</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Crude Materials Excl Fuels"</span> <span class="ot">=</span> <span class="st">"Crude Materials (Excl Fuels)"</span>,</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Beverages Tobacco"</span> <span class="ot">=</span> <span class="st">"Beverages &amp; Tobacco"</span>,</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Animal Vegetable Oils Fats Waxes"</span> <span class="ot">=</span> <span class="st">"Animal &amp; Vegetable Oils Fats &amp; Waxes"</span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>domesticexport_2024_long <span class="ot">&lt;-</span> domesticexport_2024_long <span class="sc">%&gt;%</span></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Category =</span> <span class="fu">recode</span>(Category, <span class="sc">!!!</span>replacement_names))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualisation-2" class="level4">
+<h4 class="anchored" data-anchor-id="data-visualisation-2">Data Visualisation</h4>
+<p>After all the data preparation has been completed, the following code chunk plots the revised data visualisation.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>top_3_categories <span class="ot">&lt;-</span> domesticexport_2024_long<span class="sc">$</span>Category[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>domesticexport_2024_long <span class="ot">&lt;-</span> domesticexport_2024_long <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="fu">ifelse</span>(Category <span class="sc">%in%</span> top_3_categories, Category, <span class="st">"Others"</span>))</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>color_palette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#FFC000"</span>, <span class="st">"#70AD47"</span>, <span class="st">"#ED7D31"</span>, <span class="st">"#D9D9D9"</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>domesticexport_2024_long <span class="ot">&lt;-</span> domesticexport_2024_long <span class="sc">%&gt;%</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> Value <span class="sc">/</span> <span class="fu">sum</span>(Value))</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(domesticexport_2024_long, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Category, Value), <span class="at">y =</span> Value, <span class="at">fill =</span> Color)) <span class="sc">+</span></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"S$"</span>, <span class="fu">formatC</span>(Value, <span class="at">format =</span> <span class="st">"f"</span>, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">digits =</span> <span class="dv">1</span>), <span class="st">"B"</span>)),</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  <span class="co"># Data Labels</span></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">setNames</span>(color_palette, <span class="fu">c</span>(top_3_categories, <span class="st">"Others"</span>))) <span class="sc">+</span></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Non-Oil Domestic Exports </span><span class="sc">\n</span><span class="st"> by Commodity Sections (2024)"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"S$ Billion"</span>) <span class="sc">+</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>  </span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span>  </span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,  </span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(domesticexport_2024_long, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> Value, <span class="at">fill =</span> Color)) <span class="sc">+</span></span>
+<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">setNames</span>(color_palette, <span class="fu">c</span>(top_3_categories, <span class="st">"Others"</span>))) <span class="sc">+</span></span>
+<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="st">"y"</span>, <span class="at">start =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Proportion of Non-Oil Domestic Exports</span><span class="sc">\n</span><span class="st">by Commodity Sections (2024)"</span>) <span class="sc">+</span></span>
+<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb47-37"><a href="#cb47-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-38"><a href="#cb47-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb47-39"><a href="#cb47-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">1.3</span>, <span class="at">y =</span> <span class="fu">sum</span>(domesticexport_2024_long<span class="sc">$</span>Value) <span class="sc">*</span> <span class="fl">0.8</span>, </span>
+<span id="cb47-40"><a href="#cb47-40" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Machinery &amp; Transport Equipment: </span><span class="sc">\n</span><span class="st">                    40.5%"</span>, </span>
+<span id="cb47-41"><a href="#cb47-41" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">vjust=</span><span class="fl">4.5</span>, <span class="at">hjust=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb47-42"><a href="#cb47-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-43"><a href="#cb47-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">1.3</span>, <span class="at">y =</span> <span class="fu">sum</span>(domesticexport_2024_long<span class="sc">$</span>Value) <span class="sc">*</span> <span class="fl">0.5</span>, </span>
+<span id="cb47-44"><a href="#cb47-44" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Chemicals &amp; </span><span class="sc">\n</span><span class="st">         Chemical Products:</span><span class="sc">\n</span><span class="st">   25.6%"</span>, </span>
+<span id="cb47-45"><a href="#cb47-45" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">vjust=</span><span class="sc">-</span><span class="dv">3</span>, <span class="at">hjust=</span><span class="fl">1.3</span>) <span class="sc">+</span></span>
+<span id="cb47-46"><a href="#cb47-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-47"><a href="#cb47-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">1.3</span>, <span class="at">y =</span> <span class="fu">sum</span>(domesticexport_2024_long<span class="sc">$</span>Value) <span class="sc">*</span> <span class="fl">0.2</span>, </span>
+<span id="cb47-48"><a href="#cb47-48" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Miscellaneous </span><span class="sc">\n</span><span class="st">Manufactured Articles:</span><span class="sc">\n</span><span class="st">16.5%"</span>, </span>
+<span id="cb47-49"><a href="#cb47-49" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">vjust=</span><span class="fl">1.5</span>, <span class="at">hjust=</span><span class="fl">0.5</span>)</span>
+<span id="cb47-50"><a href="#cb47-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-51"><a href="#cb47-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-52"><a href="#cb47-52" aria-hidden="true" tabindex="-1"></a>final_plot <span class="ot">&lt;-</span> (plot1 <span class="sc">|</span> plot2) <span class="sc">+</span> </span>
+<span id="cb47-53"><a href="#cb47-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb47-54"><a href="#cb47-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Machinery &amp; Transport Equipment contributed the most </span><span class="sc">\n</span><span class="st"> to non-oil domestic exports in 2024."</span>,</span>
+<span id="cb47-55"><a href="#cb47-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) </span>
+<span id="cb47-56"><a href="#cb47-56" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb47-57"><a href="#cb47-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-58"><a href="#cb47-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-59"><a href="#cb47-59" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 </section>

@@ -278,7 +278,7 @@ The image below presents a general mock-up of the proposed data visualization ma
 
 ### 3.1.3 Revised Data Visualisation
 
-**Additional Data Preparation for the Visualisation**
+#### **Additional Data Preparation for the Visualisation**
 
 Since we are only looking at the overall export and import of services from 2020 to 2024, we will filter the *filtered_servicetrade* from Section 2.2.3 to only contain these information: *Date,* *Exports of Services* and *Imports Of Services*.
 
@@ -359,7 +359,7 @@ CAGR_text <- paste0(
 )
 ```
 
-**Data Visualisation**
+#### **Data Visualisation**
 
 After all the data preparation has been completed, the following code chunk plots the revised data visualisation.
 
@@ -503,7 +503,7 @@ The image below presents a general mock-up of the proposed data visualization ma
 
 ### 3.2.3 Revised Data Visualisation
 
-**Additional Data Preparation for the Visualisation**
+#### **Additional Data Preparation for the Visualisation**
 
 Since we are only looking at ***Total Merchandise Trade, (At Current Prices)***, we will filter out the *Date* and *Total Merchandise Trade, (At Current Prices)* from *filtered_merchandise trade*. This is achieved via the following code chunk:
 
@@ -565,7 +565,7 @@ annual_merchandisetrade <- annual_merchandisetrade %>%
   )
 ```
 
-**Data Visualisation**
+#### **Data Visualisation**
 
 After all the data preparation has been completed, the following code chunk plots the revised data visualisation.
 
@@ -707,6 +707,213 @@ The image below presents a general mock-up of the proposed data visualization ma
 ![](images/clipboard-2865888173.png)
 
 ### 3.3.3 Revised Data Visualisation
+
+#### **Additional Data Preparation**
+
+Since we are only looking at ***Non-Oil Domestic Exports by Major Commodity Sections***, we will filter out the following columns 48 to 56 from *filtered_merchadisetrade* obtained from Section 2.3. For reference, the column numbers and their respective names are shown in the code chunk below.
+
+::: {.callout-note collapse="true"}
+#### Expand to See Column Names
+
+```{r}
+colnames(filtered_merchandisetrade)
+```
+:::
+
+The following code chunk stores these filtered out columns into a new dataframe called *filtered_merchandisetrade2*:
+
+```{r}
+filtered_merchandisetrade2 <- filtered_merchandisetrade[, c(1, 48:56)]
+```
+
+Since we are only focusing on non-oil domestic exports in 2024, we will only retain 2024 records via the following code chunk:
+
+```{r}
+filtered_merchandisetrade2$Date <- as.Date(filtered_merchandisetrade2$Date)
+filtered_merchandisetrade2$Year <- format(filtered_merchandisetrade2$Date, "%Y")
+filtered_merchandisetrade2$Year <- as.numeric(filtered_merchandisetrade2$Year)
+filtered_merchandisetrade2 <- filtered_merchandisetrade2 %>%
+  filter(Year == 2024)
+```
+
+We will also aggregate the non-domestic exports for each commodity section for 2024 and convert them to billions for better readability via the following code chunk:
+
+```{r}
+filtered_merchandisetrade2[, 2:10] <- lapply(filtered_merchandisetrade2[, 2:10], function(x) as.numeric(gsub(",", "", x)))
+
+domesticexport_2024 <- data.frame(t(colSums(filtered_merchandisetrade2[, 2:10], na.rm = TRUE)/1e6))
+
+# Add Year column to indicate that these totals belong to 2024
+domesticexport_2024$Year <- 2024
+```
+
+We will tranpose *domesticexport_2024* for easier processing:
+
+```{r}
+domesticexport_2024_long <- domesticexport_2024 %>%
+  pivot_longer(cols = -Year, names_to = "Category", values_to = "Value") %>%
+  mutate(Category = str_replace_all(Category, "\\.", " ")) %>%  # Replace dots with spaces
+  arrange(desc(Value))
+
+domesticexport_2024_long$Category <- str_squish(domesticexport_2024_long$Category)
+
+replacement_names <- c(
+  "Machinery Transport Equipment" = "Machinery & Transport Equipment",
+  "Chemicals Chemical Products" = "Chemicals & Chemical Products",
+  "Miscellaneous Manufactured Articles" = "Miscellaneous Manufactured Articles",
+  "Food Live Animals" = "Food & Live Animals",
+  "Miscellaneous Excluding Oil Bunkers" = "Miscellaneous (Excluding Oil Bunkers)",
+  "Manufactured Goods" = "Manufactured Goods",
+  "Crude Materials Excl Fuels" = "Crude Materials (Excl Fuels)",
+  "Beverages Tobacco" = "Beverages & Tobacco",
+  "Animal Vegetable Oils Fats Waxes" = "Animal & Vegetable Oils Fats & Waxes"
+)
+
+domesticexport_2024_long <- domesticexport_2024_long %>%
+  mutate(Category = recode(Category, !!!replacement_names))
+
+```
+
+#### Data Visualisation
+
+After all the data preparation has been completed, the following code chunk plots the revised data visualisation.
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+#| fig-width: 12
+#| fig-height: 8
+
+top_3_categories <- domesticexport_2024_long$Category[1:3]
+
+domesticexport_2024_long <- domesticexport_2024_long %>%
+  mutate(Color = ifelse(Category %in% top_3_categories, Category, "Others"))
+
+color_palette <- c("#FFC000", "#70AD47", "#ED7D31", "#D9D9D9")
+
+
+domesticexport_2024_long <- domesticexport_2024_long %>%
+  mutate(Percentage = Value / sum(Value))
+
+
+plot1 <- ggplot(domesticexport_2024_long, aes(x = reorder(Category, Value), y = Value, fill = Color)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0("S$", formatC(Value, format = "f", big.mark = ",", digits = 1), "B")),
+            hjust = -0.1, size = 4, color = "black") +  # Data Labels
+  scale_fill_manual(values = setNames(color_palette, c(top_3_categories, "Others"))) +
+  labs(title = "Non-Oil Domestic Exports \n by Commodity Sections (2024)", x = NULL, y = "S$ Billion") +
+  coord_flip() +  
+  scale_y_continuous(limits = c(0, 100)) +  
+  theme_minimal() +
+  theme(
+    legend.position = "none",  
+    plot.title = element_text(size = 12, hjust = 0.5, face = "bold")
+  )
+
+plot2 <- ggplot(domesticexport_2024_long, aes(x = "", y = Value, fill = Color)) +
+  geom_bar(stat = "identity", width = 1) +
+  scale_fill_manual(values = setNames(color_palette, c(top_3_categories, "Others"))) +
+  coord_polar("y", start = 0) +
+  labs(title = "Proportion of Non-Oil Domestic Exports\nby Commodity Sections (2024)") +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 12, hjust = 0.5, face = "bold")
+  ) +
+
+  
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.8, 
+           label = "Machinery & Transport Equipment: \n                    40.5%", 
+           size = 4, fontface = "bold", color = "black", vjust=4.5, hjust=0.1) +
+
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.5, 
+           label = "Chemicals & \n         Chemical Products:\n   25.6%", 
+           size = 4, fontface = "bold", color = "black", vjust=-3, hjust=1.3) +
+
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.2, 
+           label = "Miscellaneous \nManufactured Articles:\n16.5%", 
+           size = 4, fontface = "bold", color = "black", vjust=1.5, hjust=0.5)
+
+
+final_plot <- (plot1 | plot2) + 
+  plot_annotation(
+    title = "Machinery & Transport Equipment contributed the most \n to non-oil domestic exports in 2024.",
+    theme = theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold")) 
+  )
+
+
+print(final_plot)
+
+```
+
+#### Code
+```{r, eval=FALSE, results="hide"}
+#| fig-width: 12
+#| fig-height: 8
+
+top_3_categories <- domesticexport_2024_long$Category[1:3]
+
+domesticexport_2024_long <- domesticexport_2024_long %>%
+  mutate(Color = ifelse(Category %in% top_3_categories, Category, "Others"))
+
+color_palette <- c("#FFC000", "#70AD47", "#ED7D31", "#D9D9D9")
+
+
+domesticexport_2024_long <- domesticexport_2024_long %>%
+  mutate(Percentage = Value / sum(Value))
+
+
+plot1 <- ggplot(domesticexport_2024_long, aes(x = reorder(Category, Value), y = Value, fill = Color)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0("S$", formatC(Value, format = "f", big.mark = ",", digits = 1), "B")),
+            hjust = -0.1, size = 4, color = "black") +  # Data Labels
+  scale_fill_manual(values = setNames(color_palette, c(top_3_categories, "Others"))) +
+  labs(title = "Non-Oil Domestic Exports \n by Commodity Sections (2024)", x = NULL, y = "S$ Billion") +
+  coord_flip() +  
+  scale_y_continuous(limits = c(0, 100)) +  
+  theme_minimal() +
+  theme(
+    legend.position = "none",  
+    plot.title = element_text(size = 12, hjust = 0.5, face = "bold")
+  )
+
+plot2 <- ggplot(domesticexport_2024_long, aes(x = "", y = Value, fill = Color)) +
+  geom_bar(stat = "identity", width = 1) +
+  scale_fill_manual(values = setNames(color_palette, c(top_3_categories, "Others"))) +
+  coord_polar("y", start = 0) +
+  labs(title = "Proportion of Non-Oil Domestic Exports\nby Commodity Sections (2024)") +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 12, hjust = 0.5, face = "bold")
+  ) +
+
+  
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.8, 
+           label = "Machinery & Transport Equipment: \n                    40.5%", 
+           size = 4, fontface = "bold", color = "black", vjust=4.5, hjust=0.1) +
+
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.5, 
+           label = "Chemicals & \n         Chemical Products:\n   25.6%", 
+           size = 4, fontface = "bold", color = "black", vjust=-3, hjust=1.3) +
+
+  annotate("text", x = 1.3, y = sum(domesticexport_2024_long$Value) * 0.2, 
+           label = "Miscellaneous \nManufactured Articles:\n16.5%", 
+           size = 4, fontface = "bold", color = "black", vjust=1.5, hjust=0.5)
+
+
+final_plot <- (plot1 | plot2) + 
+  plot_annotation(
+    title = "Machinery & Transport Equipment contributed the most \n to non-oil domestic exports in 2024.",
+    theme = theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold")) 
+  )
+
+
+print(final_plot)
+```
+:::
+
 
 # 6.0 References
 
