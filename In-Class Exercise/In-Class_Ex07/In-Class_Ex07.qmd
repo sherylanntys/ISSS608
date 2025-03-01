@@ -1,0 +1,435 @@
+---
+title: "In-class Exercise 5.0"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-02-15"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Getting Started
+
+The code chunk below installs the required R Packages for this exercise:
+
+```{r}
+pacman::p_load(tidyverse, tsibble, feasts, fable, seasonal)
+```
+
+## 1.1 Importing the Dataset
+
+```{r}
+ts_data <- read_csv(
+  "data/visitor_arrivals_by_air.csv")
+```
+
+In the code chunk below, dmy() of lubridate package is used to convert data type of Month-Year field from Character to Date.
+
+```{r}
+ts_data$`Month-Year` <- dmy(
+  ts_data$`Month-Year`)
+```
+
+The original data file uses '/' in the dates. However, upon seeing '/', R will automatically convert it to a chr field.
+
+We now want to convert a typical dataframe into a time-series tsibble function:
+
+```{r}
+ts_data_ts <- ts(ts_data)       
+head(ts_data_ts)
+```
+
+In R, it would be indicated as a "Time-Series" data frame:
+
+![](images/clipboard-452806436.png)
+
+The code chunk below converting ts_data from tibble object into tsibble object by using [`as_tsibble()`](https://tsibble.tidyverts.org/reference/as-tsibble.html) of **tsibble** R package.
+
+```{r}
+ts_tsibble <- ts_data %>%
+  mutate(Month = yearmonth(`Month-Year`)) %>%
+  as_tsibble(index = `Month`)
+```
+
+# 2.0 Visualising Time-Series Data
+
+In order to visualise the time-series data effectively, we need to organise the data frame from wide to long format by using [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) of **tidyr** package as shown below.
+
+```{r}
+ts_longer <- ts_data %>%
+  pivot_longer(cols = c(2:34), # Define the columns that you want to pivot.
+               names_to = "Country", # Categorical variable that you want to convert.
+               values_to = "Arrivals") # Cells that you want to convert to.
+```
+
+## 2.1 Visualising Single Time-Series
+
+```{r}
+ts_longer %>%
+  filter(Country == "Vietnam") %>%
+  ggplot(aes(x = `Month-Year`, 
+             y = Arrivals))+
+  geom_line(size = 0.5)
+```
+
+Creating a trellis plot to plot the time-series for the respective countries:
+
+```{r}
+#| fig-height: 12
+
+ggplot(data = ts_longer, 
+       aes(x = `Month-Year`, 
+           y = Arrivals))+
+  geom_line(size = 0.5) +
+  facet_wrap(~ Country, # Facet_wrap allows me to wrap for each line so I don't need to define the number of rows.
+             ncol = 3, # You can define the ncols and nrows.
+             scales = "free_y") +
+  theme_bw()
+```
+
+## 2.2 Visualising Seasonality with Cycle Plot
+
+```{r}
+tsibble_longer <- ts_tsibble %>%
+  pivot_longer(cols = c(2:34),
+               names_to = "Country",
+               values_to = "Arrivals")
+```
+
+```{r}
+tsibble_longer %>%
+  filter(Country == "Vietnam" |
+         Country == "Italy") %>% 
+  autoplot(Arrivals) + 
+  facet_grid(Country ~ ., scales = "free_y")
+```
+
+This plot is useful to show that the time series is not identical. If you want to see what is happening exactly, you can use the cycle plot as follows:
+
+```{r}
+#| fig-height: 6
+tsibble_longer %>%
+  filter(Country == "Vietnam" |
+         Country == "Italy") %>% 
+  gg_subseries(Arrivals) # Built-in function gg_subseries that allows you to create a cycle plot.
+```
+
+This shows the increase over the years by month. For example, for Italy, most of the months fluctuates at very low levels. Italy receives a large number of visitors in August. Vietnam, on the other hand, growth has increased significantly over the years.
+
+## 2.3 Time Series Decomposition
+
+**Creating an ACF Plot:**
+
+```{r}
+tsibble_longer %>%
+  filter(`Country` == "Vietnam" |
+         `Country` == "Italy" |
+         `Country` == "United Kingdom" |
+         `Country` == "China") %>%
+  ACF(Arrivals) %>%
+  autoplot()
+```
+
+For Vietnam: seasonal factor comes in every 12 months. For China, seasonality is every 6 months. The first spike = first lag.
+
+-   Seasonal vs Trend
+
+![](images/clipboard-3473698112.png)
+
+-   This does not have any trend because the spikes drop significantly. However, it has seasonality based on the spikes.
+
+![](images/clipboard-3687981096.png)
+
+-   This shows trend and seasonality since the spikes drop at a slower rate.
+
+```{r}
+tsibble_longer %>%
+  filter(`Country` == "Vietnam" |
+         `Country` == "Italy" |
+         `Country` == "United Kingdom" |
+         `Country` == "China") %>%
+  PACF(Arrivals) %>%
+  autoplot()
+```
+
+# 3.0 **Visual Forecasting**
+
+## 3.1 **Time Series Data Sampling**
+
+```{r}
+vietnam_ts <- tsibble_longer %>%
+  filter(Country == "Vietnam") %>% 
+  mutate(Type = if_else(
+    `Month-Year` >= "2019-01-01", 
+    "Hold-out", "Training"))
+
+
+```
+
+```{r}
+vietnam_train <- vietnam_ts %>%
+  filter(`Month-Year` < "2019-01-01")
+```
+
+```{r}
+vietnam_train %>%
+  model(stl = STL(Arrivals)) %>%
+  components() %>%
+  autoplot()
+```
+
+```{r}
+fit_ses <- vietnam_train %>%
+  model(ETS(Arrivals ~ error("A") 
+            + trend("N") 
+            + season("N")))
+fit_ses
+```
+
+```{r}
+gg_tsresiduals(fit_ses)
+```
+
+```{r}
+fit_ses %>%
+  report()
+```
+
+```{r}
+vietnam_H <- vietnam_train %>%
+  model(`Holt's method` = 
+          ETS(Arrivals ~ error("A") +
+                trend("A") + 
+                season("N")))
+vietnam_H %>% report()
+```
+
+```{r}
+vietnam_HAd <- vietnam_train %>%
+  model(`Holt's method` = 
+          ETS(Arrivals ~ error("A") +
+                trend("Ad") + 
+                season("N")))
+vietnam_HAd %>% report()
+```
+
+```{r}
+gg_tsresiduals(vietnam_H)
+```
+
+```{r}
+gg_tsresiduals(vietnam_HAd)
+```
+
+-   Residuals should follow a normal distribution (bottom right plot). These are used to check the diagnostics.
+
+```{r}
+Vietnam_WH <- vietnam_train %>%
+  model(
+    Additive = ETS(Arrivals ~ error("A") 
+                   + trend("A") 
+                   + season("A")),
+    Multiplicative = ETS(Arrivals ~ error("M") 
+                         + trend("A") 
+                         + season("M"))
+    )
+
+Vietnam_WH %>% report()
+```
+
+```{r}
+fit_ETS <- vietnam_train %>%
+  model(`SES` = ETS(Arrivals ~ error("A") + 
+                      trend("N") + 
+                      season("N")),
+        `Holt`= ETS(Arrivals ~ error("A") +
+                      trend("A") +
+                      season("N")),
+        `damped Holt` = 
+          ETS(Arrivals ~ error("A") +
+                trend("Ad") + 
+                season("N")),
+        `WH_A` = ETS(
+          Arrivals ~ error("A") + 
+            trend("A") + 
+            season("A")),
+        `WH_M` = ETS(Arrivals ~ error("M") 
+                         + trend("A") 
+                         + season("M"))
+  )
+```
+
+```{r}
+fit_ETS %>%
+  tidy()
+```
+
+```{r}
+fit_ETS %>% 
+  report()
+```
+
+```{r}
+fit_ETS %>%
+  forecast(h = "12 months") %>%
+  autoplot(vietnam_ts, 
+           level = NULL)
+```
+
+Plotting the forecasted values vs. observed values to visualise why certain models perform better.
+
+```{r}
+fit_autoETS <- vietnam_train %>%
+  model(ETS(Arrivals))
+fit_autoETS %>% report()
+```
+
+```{r}
+gg_tsresiduals(fit_autoETS)
+```
+
+```{r}
+fit_autoETS %>%
+  forecast(h = "12 months") %>%
+  autoplot(vietnam_train)
+```
+
+```{r}
+fc_autoETS <- fit_autoETS %>%
+  forecast(h = "12 months")
+
+vietnam_ts %>%
+  ggplot(aes(x=`Month`, 
+             y=Arrivals)) +
+  autolayer(fc_autoETS, 
+            alpha = 0.6) +
+  geom_line(aes(
+    color = Type), 
+    alpha = 0.8) + 
+  geom_line(aes(
+    y = .mean, 
+    colour = "Forecast"), 
+    data = fc_autoETS) +
+  geom_line(aes(
+    y = .fitted, 
+    colour = "Fitted"), 
+    data = augment(fit_autoETS))
+```
+
+When visualising the forecast plot, you can just show the last 2 cycles + the forecast portion.
+
+# 4.0 Differencing Fable Methods
+
+```{r}
+vietnam_train %>%
+  gg_tsdisplay(plot_type='partial')
+```
+
+```{r}
+tsibble_longer %>%
+  filter(Country == "Vietnam") %>%
+  gg_tsdisplay(difference(
+    Arrivals,
+    lag = 1), 
+    plot_type='partial')
+```
+
+```{r}
+tsibble_longer %>%
+  filter(Country == "Vietnam") %>%
+  gg_tsdisplay(difference(
+    Arrivals,
+    lag = 1), 
+    plot_type='partial')
+```
+
+```{r}
+tsibble_longer %>%
+  filter(Country == "Vietnam") %>%
+  gg_tsdisplay(difference(
+    Arrivals,
+    difference = 12), 
+    plot_type='partial')
+```
+
+```{r}
+fit_arima <- vietnam_train %>%
+  model(
+    arima200 = ARIMA(Arrivals ~ pdq(2,0,0)),
+    sarima210 = ARIMA(Arrivals ~ pdq(2,0,0) + 
+                        PDQ(2,1,0))
+    )
+report(fit_arima)
+```
+
+```{r}
+fit_autoARIMA <- vietnam_train %>%
+  model(ARIMA(Arrivals))
+report(fit_autoARIMA)
+```
+
+```{r}
+bind_rows(
+    fit_autoARIMA %>% accuracy(),
+    fit_autoETS %>% accuracy(),
+    fit_autoARIMA %>% 
+      forecast(h = 12) %>% 
+      accuracy(vietnam_ts),
+    fit_autoETS %>% 
+      forecast(h = 12) %>% 
+      accuracy(vietnam_ts)) %>%
+  select(-ME, -MPE, -ACF1)
+```
+
+```{r}
+ASEAN <- tsibble_longer %>%
+  filter(Country == "Vietnam" |
+         Country == "Malaysia" |
+         Country == "Indonesia" |
+         Country == "Thailand" |
+         Country == "Philippines")
+```
+
+```{r}
+ASEAN_train <- ASEAN %>%
+  mutate(Type = if_else(
+    `Month-Year` >= "2019-01-01", 
+    "Hold-out", "Training")) %>%
+  filter(Type == "Training")
+```
+
+```{r}
+ASEAN_fit <- ASEAN_train %>%
+  model(
+    ets = ETS(Arrivals),
+    arima = ARIMA(Arrivals)
+  )
+```
+
+```{r}
+ASEAN_fit %>%
+  glance()
+```
+
+```{r}
+ASEAN_fit %>%
+  augment()
+```
+
+```{r}
+ASEAN_fit %>%
+  accuracy() %>%
+  arrange(Country)
+```
+
+```{r}
+ASEAN_fc <- ASEAN_fit %>%
+  forecast(h = "12 months")
+```
+
+```{r}
+ASEAN_fc %>%
+  autoplot(ASEAN)
+```
