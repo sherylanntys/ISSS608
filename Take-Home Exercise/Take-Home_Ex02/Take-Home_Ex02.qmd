@@ -19,8 +19,7 @@ execute:
 ## 2.1 Loading the Required Libraries
 
 ```{r}
-pacman::p_load(plotly, ggthemes, ggridges,
-               patchwork, ggplot2, tidyverse, dplyr, lubridate, ggdist) 
+pacman::p_load(plotly, ggthemes, tsibble, feasts, fable, seasonal, patchwork, ggplot2, tidyverse, dplyr, lubridate) 
 ```
 
 ## 2.2 Overall Exports and Imports of Services, 2020 - 2024
@@ -244,6 +243,166 @@ filtered_merchandisetrade <- transposed_merchandisetrade[transposed_merchandiset
 
 Further data preparation and wrangling will be performed in the respective sections to prepare the data for the specific visualisation / analysis.
 
+## 2.4 Merchandise Trade By Region And Selected Market (Domestic Exports)
+
+### 2.4.1 Data Import
+
+For the purpose of the time-series analysis and forecasting (Section 4.0), we will be looking at the **Merchandise Trade By Region and Selected Market (Domestic Exports** ) dataset, which can be found [here](https://tablebuilder.singstat.gov.sg/table/TS/M451501). The follow code chunk uses the `read_csv()` function to import the *domesticexports.csv* file into R.
+
+```{r}
+domesticexports <- read_csv("data/domesticexports.csv")
+```
+
+### 2.4.2 Understanding the Data
+
+After loading the data was loaded, the `glimpse()` function was then used to understand its structure and the type of data it contains.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(domesticexports)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(domesticexports)
+```
+:::
+
+The output of the `glimpse()` function indicates that there are 191 rows and 266 columns. The first few rows appear to serve as a document header, with entries such as "Theme: Trade & Investment" and "Subject: Merchandise Trade", followed by numerous `NA` cells. The actual trade data likely begins in subsequent rows, with each column representing a specific month and year, and each row representing various trade-related variables.
+
+### 2.4.3 Data Wrangling
+
+**Removing Non-Relevant Rows**
+
+Given the structure of our dataset, particularly the presence of non-data rows at the beginning with a large number of `NA` values, we will use `na.omit()` to remove rows containing `NA` values.
+
+```{r}
+cleaned_domesticexports <- na.omit(domesticexports)
+```
+
+After removing the rows containing the `NA` entries, we used the `glimpse()` function once again to review the structure of the cleaned dataset.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(cleaned_domesticexports)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(cleaned_domesticexports)
+```
+:::
+
+The output shows that we have successfully excluded non-relevant rows and retained only the actual trade-related data.
+
+**Transposing the Data**
+
+Next, since our columns represent month-year data, we need to transpose the dataset to improve its usability for subsequent data visualisation or time-series analysis. The month-year columns will be consolidated into a single column, transforming them into row identifiers, while trade-related variables will now be represented as columns.
+
+The code chunk uses the `t()` function for transposing and the `as.data.frame()` function to ensure that the transposed data remains in a dataframe format:
+
+```{r}
+transposed_domesticexports <- as.data.frame(t(cleaned_domesticexports))
+
+# Set the first row as column names
+colnames(transposed_domesticexports) <- as.character(transposed_domesticexports[1, ])
+
+# Remove the first row from the data frame
+transposed_domesticexports <- transposed_domesticexports[-1, ]
+```
+
+After transposing, we examined the structure of the resulting data frame using the `glimpse()` function.
+
+```{r, eval=FALSE, results="hide"}
+glimpse(transposed_domesticexports)
+```
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Output
+
+```{r, echo=FALSE}
+glimpse(transposed_domesticexports)
+```
+:::
+
+From the output of `glimpse()`, the following issues were identified:
+
+-   The column that has the dates is now labelled as "Data Series". We will rename this to "Date".
+
+-   All data types are character strings (CHR). We will convert the "Date" column to date format and the remaining columns to numeric types for appropriate data handling.
+
+The following code chunk renames the "Data Series" column to "Date":
+
+```{r}
+colnames(transposed_domesticexports)[1] <- "Date"
+```
+
+The following code chunk converts the data types into date and numeric formats accordingly. It also filter out entries from Jan 2015 onwards.
+
+```{r}
+# Set the locale to English for consistent date parsing
+Sys.setlocale("LC_TIME", "C")
+
+transposed_domesticexports$Date <- as.Date(paste0(transposed_domesticexports$Date, "-01"), format="%Y %b-%d")
+
+# Filter out entries from January 2015 onwards
+filtered_domesticexports <- transposed_domesticexports[transposed_domesticexports$Date >= as.Date("2015-01-01"), ]
+
+# Convert remaining columns into numeric columns.
+filtered_domesticexports[,-1] <- sapply(filtered_domesticexports[,-1], function(x) as.numeric(as.character(x)))
+
+```
+
+Since we are planning to use the *filtered_domesticexports* for our time-series analysis and forecasting in Section 4.0, we will need to convert the dataframe into a *tsibble*, which provides a structured and consistent framework for handling temporal data in R:
+
+```{r}
+
+domesticexports_tsibble <- filtered_domesticexports %>%
+  mutate(YearMonth = yearmonth(as.Date(Date, format="%Y-%m-%d"))) %>%
+  as_tsibble(index = YearMonth) 
+
+
+head(domesticexports_tsibble)
+```
+
+In order to visualise the time-series data effectively, we need to organise the data frame from wide to long format by using [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) of **tidyr** package as shown below.
+
+```{r}
+
+ts_longer <- domesticexports_tsibble %>%
+  pivot_longer(
+    cols = where(is.numeric), 
+    names_to = "Country",
+    values_to = "Exports"
+  )
+
+head(ts_longer)
+```
+
+```{r}
+
+us_exports <- ts_longer %>%
+  filter(Country == "United States",
+         !(YearMonth == ymd("2025-01-01")))
+
+
+us_exports
+```
+
+We will also create a similar tsibble for continents:
+
+```{r}
+
+ts_continent <- ts_longer %>%
+  filter(Country %in% c("America", "Asia", "Europe", "Oceania", "Africa"),
+         YearMonth != ymd("2025-01-01")) %>%
+  rename(Continent = Country)
+
+head(ts_continent)
+```
+
 # 3.0 Data Visualisation Make-over
 
 This assignment involves selecting three data visualisations from [this page](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade). Each visualisation will be critique and redesigned. The assessment will be based on the framework from [DataRemixed.com](https://dataremixed.com/2012/05/data-visualization-clarity-or-aesthetics/), which evaluates visualisations along two primary dimensions: clarity and aesthetics.
@@ -413,7 +572,7 @@ plot3 <- ggplot(annual_servicetrade, aes(x = Year)) +
 final_plot <- ((plot1 | plot2) / plot3) + 
   plot_layout(widths = c(1, 1, 0.8)) +
   plot_annotation(
-    title = "Growth in exports of services surpassed imports in 2024, \nwith a Compound Annual Growth Rate (CAGR) of 15.2% vs. 12.8% for imports.",
+    title = "Growth in exports of services surpassed imports in 2024 for the first time in three years, \nwith a Compound Annual Growth Rate (CAGR) of 15.2% vs. 12.8% for imports.",
     theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
   )
 
@@ -469,7 +628,7 @@ plot3 <- ggplot(annual_servicetrade, aes(x = Year)) +
 final_plot <- ((plot1 | plot2) / plot3) + 
   plot_layout(widths = c(1, 1, 0.8)) +
   plot_annotation(
-    title = "Growth in exports of services surpassed imports in 2024, \nwith a Compound Annual Growth Rate (CAGR) of 15.2% vs. 12.8% for imports.",
+    title = "Growth in exports of services surpassed imports in 2024 for the first time in three years, \nwith a Compound Annual Growth Rate (CAGR) of 15.2% vs. 12.8% for imports.",
     theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
   )
 
@@ -606,7 +765,7 @@ ggplot(annual_merchandisetrade, aes(x = Year)) +
                         labels = function(x) paste0(x, "%")) 
   ) +
 
-  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023.", 
+  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023. However, this growth rate \n did not reach the levels seen before 2023.", 
        x = "Year",
        fill = "Legend", 
        color = "Legend") + 
@@ -664,7 +823,7 @@ ggplot(annual_merchandisetrade, aes(x = Year)) +
                         labels = function(x) paste0(x, "%")) 
   ) +
 
-  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023.", 
+  labs(title = "Total merchandise trade rebounded and grew by 6.6% in 2024, \n reversing the contraction in 2023. However, this growth rate \n did not reach the levels seen before 2023.", 
        x = "Year",
        fill = "Legend", 
        color = "Legend") + 
@@ -749,6 +908,9 @@ domesticexport_2024$Year <- 2024
 
 We will tranpose *domesticexport_2024* for easier processing:
 
+::: {.callout-note collapse="true"}
+#### Expand to See the Code
+
 ```{r}
 domesticexport_2024_long <- domesticexport_2024 %>%
   pivot_longer(cols = -Year, names_to = "Category", values_to = "Value") %>%
@@ -773,6 +935,7 @@ domesticexport_2024_long <- domesticexport_2024_long %>%
   mutate(Category = recode(Category, !!!replacement_names))
 
 ```
+:::
 
 #### Data Visualisation
 
@@ -848,6 +1011,7 @@ print(final_plot)
 ```
 
 #### Code
+
 ```{r, eval=FALSE, results="hide"}
 #| fig-width: 12
 #| fig-height: 8
@@ -914,6 +1078,261 @@ print(final_plot)
 ```
 :::
 
+# 4.0 Time-Series Forecasting
+
+Since Mr. Donald Trump took office as the President of the United States in January 2025, one of the most closely watched topics has been global trade. As one of Singapore's major trading partners, this analysis will focus on the domestic exports of merchandise goods from Singapore to the United States from 2015 to 2025. The aim is to identify any seasonal patterns, understand the underlying trends, and forecast future values using several time series methods.
+
+## 4.1 Visualising Time-Series Data
+
+Before we proceed with the time-series forecasting, we will perform some exploratory data analysis to understand the dataset. The code chunk below plots both a line chart and seasonal plot to visually inspect the trend and confirm the presence of seasonality in the data:
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+
+#| fig-width: 12
+
+p1 <- us_exports %>%
+  gg_season(Exports) +
+  labs(title = "Seasonal Plot of Domestic Exports to the United States, \n 2015 to 2024",
+       x = "Month of the Year",
+       y = "Exports") +
+  facet_wrap(~ Country, scales = "free_y") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+p2 <- us_exports %>%
+  ggplot(aes(x = YearMonth, y = Exports, group = Country)) +
+  geom_line() +
+  labs(title = "Time Series of Domestic Exports to the United States, \n 2015 to 2024",
+       x = "Year",
+       y = "Exports") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+
+combined_plot <- p2 / p1 + 
+  plot_annotation(
+    title = "Domestic Exports to the United States \n grew from 2015 to 2024, peaking in March 2024.",
+    theme = theme(plot.title = element_text(size = 14, hjust = 0.5))
+  )
+
+combined_plot
+
+```
+
+#### Code
+
+```{r, eval=FALSE, results="hide"}
+
+#| fig-width: 12
+
+p1 <- us_exports %>%
+  gg_season(Exports) +
+  labs(title = "Seasonal Plot of Domestic Exports to the United States, \n 2015 to 2024",
+       x = "Month of the Year",
+       y = "Exports") +
+  facet_wrap(~ Country, scales = "free_y") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+p2 <- us_exports %>%
+  ggplot(aes(x = YearMonth, y = Exports, group = Country)) +
+  geom_line() +
+  labs(title = "Time Series of Domestic Exports to the United States, \n 2015 to 2024",
+       x = "Year",
+       y = "Exports") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+
+combined_plot <- p2 / p1 + 
+  plot_annotation(
+    title = "Domestic Exports to the United States \n grew from 2015 to 2024, peaking in March 2024.",
+    theme = theme(plot.title = element_text(size = 14, hjust = 0.5))
+  )
+
+combined_plot
+
+```
+:::
+
+::: callout-note
+#### Insights
+
+-   Domestic exports to the United States generally increased from 2015 to 2024.
+
+-   There are strong seasonal peaks in March and July, especially in recent years.
+
+-   There is an increase in variability over the years, with the amplitude of peaks and troughs increasing over the years, suggesting a potential multiplicative effect.
+:::
+
+For the purpose of forecasting, we will use the last 12 months (Jan 24 - Dec 24) for hold-out and the rest for training.
+
+```{r}
+
+us_exports2 <- us_exports %>%
+  mutate(Type = if_else(
+    YearMonth >= ymd("2024-01-01"),  # Ensure YearMonth is compared as a Date
+    "Hold-out", 
+    "Training"))
+
+```
+
+The code chunk below extracts the training dataset from *us_exports2* by using the `filter()` of the dplyr package:
+
+```{r}
+
+us_exports_train <- us_exports2 %>%
+  filter(Type == "Training")
+
+```
+
+To further understand the underlying structure of domestic exports from Singapore to the United States, an STL decomposition was performed via the following code chunk:
+
+::: panel-tabset
+#### Plot
+
+```{r, echo=FALSE}
+us_exports_train %>%
+  model(stl = STL(Exports)) %>%
+  components() %>%
+  autoplot()
+```
+
+#### Code
+
+```{r, eval=FALSE, results="hide"}
+us_exports_train %>%
+  model(stl = STL(Exports)) %>%
+  components() %>%
+  autoplot()
+```
+:::
+
+::: callout-note
+#### Insights
+
+-   The trend component demonstrates a general upward trend from 2015 to 2024, implying a growth in export volumes during this period.
+
+-   The seasonal component displays consistent patterns annually, with peaks typically occurring in 1H of each year. The amplitude of seasonal fluctuations increased from 2020.
+
+-   The remainder component shows significant fluctuations (i.e. increased noise) after 2020, suggesting increased uncertainty or unexplained variations in export activity.
+:::
+
+## 4.2 Time-Series Forecasting
+
+### 4.2.1 Fitting Exponential Smoothing State Space (ETS) Model
+
+This section focuses on the application of the ETS model on the domestic exports data.
+
+```{r}
+fit_ses <- us_exports_train %>%
+  model(ETS(Exports ~ error("A") 
+            + trend("N") 
+            + season("N")))
+
+fit_ses %>%
+  report()
+```
+
+To assess the fit of the model, the residuals of the fitted model are examined via the following code chunk:
+
+```{r}
+gg_tsresiduals(fit_ses)
+```
+
+```{r}
+us_H <- us_exports_train %>%
+  model(`Holt's method` = 
+          ETS(Exports ~ error("A") +
+                trend("A") + 
+                season("N")))
+us_H %>% report()
+```
+
+```{r}
+us_HAd <- us_exports_train %>%
+  model(`Holt's method` = 
+          ETS(Exports ~ error("A") +
+                trend("Ad") + 
+                season("N")))
+us_HAd %>% report()
+```
+
+```{r}
+us_WH <- us_exports_train %>%
+  model(
+    Additive = ETS(Exports ~ error("A") 
+                   + trend("A") 
+                   + season("A")),
+    Multiplicative = ETS(Exports ~ error("M") 
+                         + trend("A") 
+                         + season("M"))
+    )
+
+us_WH %>% report()
+```
+
+```{r}
+fit_ETS <- us_exports_train %>%
+  model(`SES` = ETS(Exports ~ error("A") + 
+                      trend("N") + 
+                      season("N")),
+        `Holt`= ETS(Exports ~ error("A") +
+                      trend("A") +
+                      season("N")),
+        `damped Holt` = 
+          ETS(Exports ~ error("A") +
+                trend("Ad") + 
+                season("N")),
+        `WH_A` = ETS(
+          Exports ~ error("A") + 
+            trend("A") + 
+            season("A")),
+        `WH_M` = ETS(Exports ~ error("M") 
+                         + trend("A") 
+                         + season("M"))
+  )
+```
+
+```{r}
+fit_ETS %>%
+  tidy()
+```
+
+```{r}
+fit_ETS %>%
+  forecast(h = "12 months") %>%
+  autoplot(us_exports2, 
+           level = NULL)
+```
+
+```{r}
+fit_autoARIMA <- us_exports_train %>%
+  model(ARIMA(Exports))
+report(fit_autoARIMA)
+```
+
+```{r}
+us_fit <- us_exports_train %>%
+  model(
+    ets = ETS(Exports),
+    arima = ARIMA(Exports)
+  )
+```
+
+```{r}
+us_fc <- us_fit %>%
+  forecast(h = "12 months")
+```
+
+```{r}
+#| fig-width: 12
+us_fc %>%
+  autoplot(us_exports2)
+```
 
 # 6.0 References
 
