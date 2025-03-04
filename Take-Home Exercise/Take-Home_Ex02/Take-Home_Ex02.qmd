@@ -14,9 +14,23 @@ execute:
 
 ## 1.1 The Task
 
+This take home exercise requires us to:
+
+-   Download [Merchandise Trade by Region/Market](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data) from [Department of Statistics Singapore, DOS](https://www.singstat.gov.sg/) website,
+
+<!-- -->
+
+-   Select three data visualisation on [this page](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade), comments on the pros and cons and provide sketches of the make-over,
+
+-   Using appropriate ggplot2 and others packages create the make-over of the three data visualisation critic above, and
+
+-   Analyse the data with either time-series analysis or time-series forecasting methods by compliment the analysis with appropriate data visualisation methods and R packages.
+
 # 2.0 Data Preparation
 
 ## 2.1 Loading the Required Libraries
+
+The code chunk below loads the relevant R libraries required for this exercise.
 
 ```{r}
 pacman::p_load(plotly, ggthemes, tsibble, feasts, fable, seasonal, patchwork, ggplot2, tidyverse, dplyr, lubridate) 
@@ -387,20 +401,7 @@ us_exports <- ts_longer %>%
   filter(Country == "United States",
          !(YearMonth == ymd("2025-01-01")))
 
-
 us_exports
-```
-
-We will also create a similar tsibble for continents:
-
-```{r}
-
-ts_continent <- ts_longer %>%
-  filter(Country %in% c("America", "Asia", "Europe", "Oceania", "Africa"),
-         YearMonth != ymd("2025-01-01")) %>%
-  rename(Continent = Country)
-
-head(ts_continent)
 ```
 
 # 3.0 Data Visualisation Make-over
@@ -1078,7 +1079,7 @@ print(final_plot)
 ```
 :::
 
-# 4.0 Time-Series Forecasting
+# 4.0 Time-Series Analysis and Forecast
 
 Since Mr. Donald Trump took office as the President of the United States in January 2025, one of the most closely watched topics has been global trade. As one of Singapore's major trading partners, this analysis will focus on the domestic exports of merchandise goods from Singapore to the United States from 2015 to 2025. The aim is to identify any seasonal patterns, understand the underlying trends, and forecast future values using several time series methods.
 
@@ -1090,7 +1091,6 @@ Before we proceed with the time-series forecasting, we will perform some explora
 #### Plot
 
 ```{r, echo=FALSE}
-
 #| fig-width: 12
 
 p1 <- us_exports %>%
@@ -1195,6 +1195,8 @@ To further understand the underlying structure of domestic exports from Singapor
 #### Plot
 
 ```{r, echo=FALSE}
+#| fig-width: 12
+
 us_exports_train %>%
   model(stl = STL(Exports)) %>%
   components() %>%
@@ -1218,65 +1220,20 @@ us_exports_train %>%
 
 -   The seasonal component displays consistent patterns annually, with peaks typically occurring in 1H of each year. The amplitude of seasonal fluctuations increased from 2020.
 
--   The remainder component shows significant fluctuations (i.e. increased noise) after 2020, suggesting increased uncertainty or unexplained variations in export activity.
+-   The remainder component shows significant fluctuations (i.e. increased noise) after 2020, suggesting increased uncertainty or unexplained variations in export activity. This period of uncertainty coincides with major global events such as the COVID-19 pandemic and the presence of geopolitical tensions (e.g. trade war between US and China, Russo-Ukrainian War) during this period.
 :::
 
 ## 4.2 Time-Series Forecasting
 
-### 4.2.1 Fitting Exponential Smoothing State Space (ETS) Model
+To conduct the time-series analysis, the following code utilizes the `dplyr` and `fable` packages in R to fit multiple Exponential Smoothing State Space (ETS) models to the training dataset. The models applied include Simple Exponential Smoothing (SES), Holt's Linear, Damped Holt's Linear, and both Additive and Multiplicative versions of the Holt-Winter's model. Apart from the ETS Models, an ARIMA model was also integrated in the code chunk below for comparison.
 
-This section focuses on the application of the ETS model on the domestic exports data.
+::: panel-tabset
+#### Plot
 
-```{r}
-fit_ses <- us_exports_train %>%
-  model(ETS(Exports ~ error("A") 
-            + trend("N") 
-            + season("N")))
+```{r, echo=FALSE}
+#| fig-width: 12
 
-fit_ses %>%
-  report()
-```
-
-To assess the fit of the model, the residuals of the fitted model are examined via the following code chunk:
-
-```{r}
-gg_tsresiduals(fit_ses)
-```
-
-```{r}
-us_H <- us_exports_train %>%
-  model(`Holt's method` = 
-          ETS(Exports ~ error("A") +
-                trend("A") + 
-                season("N")))
-us_H %>% report()
-```
-
-```{r}
-us_HAd <- us_exports_train %>%
-  model(`Holt's method` = 
-          ETS(Exports ~ error("A") +
-                trend("Ad") + 
-                season("N")))
-us_HAd %>% report()
-```
-
-```{r}
-us_WH <- us_exports_train %>%
-  model(
-    Additive = ETS(Exports ~ error("A") 
-                   + trend("A") 
-                   + season("A")),
-    Multiplicative = ETS(Exports ~ error("M") 
-                         + trend("A") 
-                         + season("M"))
-    )
-
-us_WH %>% report()
-```
-
-```{r}
-fit_ETS <- us_exports_train %>%
+fit_ETS_ARIMA <- us_exports_train %>%
   model(`SES` = ETS(Exports ~ error("A") + 
                       trend("N") + 
                       season("N")),
@@ -1293,49 +1250,93 @@ fit_ETS <- us_exports_train %>%
             season("A")),
         `WH_M` = ETS(Exports ~ error("M") 
                          + trend("A") 
-                         + season("M"))
+                         + season("M")),
+        `ARIMA` = ARIMA(Exports)
   )
-```
 
-```{r}
-fit_ETS %>%
-  tidy()
-```
-
-```{r}
-fit_ETS %>%
+fit_ETS_ARIMA %>%
   forecast(h = "12 months") %>%
   autoplot(us_exports2, 
            level = NULL)
+
 ```
 
-```{r}
-fit_autoARIMA <- us_exports_train %>%
-  model(ARIMA(Exports))
-report(fit_autoARIMA)
-```
+#### Results
 
-```{r}
-us_fit <- us_exports_train %>%
-  model(
-    ets = ETS(Exports),
-    arima = ARIMA(Exports)
+```{r, echo=FALSE}
+fit_ETS_ARIMA <- us_exports_train %>%
+  model(`SES` = ETS(Exports ~ error("A") + 
+                      trend("N") + 
+                      season("N")),
+        `Holt`= ETS(Exports ~ error("A") +
+                      trend("A") +
+                      season("N")),
+        `damped Holt` = 
+          ETS(Exports ~ error("A") +
+                trend("Ad") + 
+                season("N")),
+        `WH_A` = ETS(
+          Exports ~ error("A") + 
+            trend("A") + 
+            season("A")),
+        `WH_M` = ETS(Exports ~ error("M") 
+                         + trend("A") 
+                         + season("M")),
+        `ARIMA` = ARIMA(Exports)
   )
+
+fit_ETS_ARIMA %>%
+  report()
+
 ```
 
-```{r}
-us_fc <- us_fit %>%
-  forecast(h = "12 months")
-```
+#### Code
 
-```{r}
-#| fig-width: 12
-us_fc %>%
-  autoplot(us_exports2)
-```
+```{r, eval=FALSE, results="hide"}
+fit_ETS_ARIMA <- us_exports_train %>%
+  model(`SES` = ETS(Exports ~ error("A") + 
+                      trend("N") + 
+                      season("N")),
+        `Holt`= ETS(Exports ~ error("A") +
+                      trend("A") +
+                      season("N")),
+        `damped Holt` = 
+          ETS(Exports ~ error("A") +
+                trend("Ad") + 
+                season("N")),
+        `WH_A` = ETS(
+          Exports ~ error("A") + 
+            trend("A") + 
+            season("A")),
+        `WH_M` = ETS(Exports ~ error("M") 
+                         + trend("A") 
+                         + season("M")),
+        `ARIMA` = ARIMA(Exports)
+  )
 
-# 6.0 References
+```
+:::
+
+::: callout-note
+#### Insights
+
+-   Among all the models trained, the ARIMA(0,1,1)(1,0,0)\[12\] model performed the best, evidenced by it having the lowest AIC and BIC values of 1,610 and 1,618 respectively. The derived model suggests the following:
+
+    -   The absence of the non-seasonal AR term indicates that the model does not predict current value of the time-series based on its immediately preceding values. It suggests that the time-series might be more influenced by random fluctuations than any underlying trend in the short-term.
+
+    -   The inclusion of 1 seasonal AR term indicates that the time-series has an annual seasonal pattern.
+
+-   However, the plot shows that the forecasted values during the hold-out period of Jan 24 - Dec 24 deviate significantly from the actual export data. While the ARIMA model predicts a peak in exports in 1H 2024, the actual data revealed that the peak occurred in 2H 2024.
+
+-   This discrepancy suggests that the ARIMA model has several limitations in forecasting future values:
+
+    -   Both the ETS and ARIMA models rely on past data to forecast future values, making them inherently unable to account for sudden, unexpected disruptions such as the Red Sea Crisis in 2024 which impacted trade significantly.
+
+    -   The models also assume that past patterns remain stable over time, making them less effective when long-term structural changes occur (e.g. broader economic shifts to trade protectionist policies or external shocks).
+:::
+
+# 5.0 References
 
 Kam, T. S. (2023). *R for Visual Analytics*. Retrieved from <https://r4va.netlify.app>
 
-<https://dataremixed.com/2012/05/clarity-or-aesthetics-part-2-a-tale-of-four-quadrants/>
+Jones, B. (2012, May 31). *Clarity or aesthetics? Part 2: A tale of four quadrants*. DataRemixed. <https://dataremixed.com/2012/05/clarity-or-aesthetics-part-2-a-tale-of-four-quadrants/>
