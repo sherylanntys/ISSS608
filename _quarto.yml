@@ -46,6 +46,13 @@ website:
           href: Hands-on Exercise/Hands-on_Ex05/Hands-on_Ex055.html
         - text: "Hands-On Exercise 7.0"
           href: Hands-on Exercise/Hands-on_Ex07/Hands-on_Ex07.html
+        - text: "Hands-On Exercise 8.1"
+          href: Hands-on Exercise/Hands-on_Ex08/Hands-on_Ex081.html
+        - text: "Hands-On Exercise 8.2"
+          href: Hands-on Exercise/Hands-on_Ex08/Hands-on_Ex082.html
+        - text: "Hands-On Exercise 8.3"
+          href: Hands-on Exercise/Hands-on_Ex08/Hands-on_Ex083.html
+          
           
       - text: "In-class Exercise"
         menu:
@@ -60,14 +67,15 @@ website:
         - text: "In-class Exercise 7.0"
           href: In-class Exercise/In-class_Ex07/In-class_Ex07.html
       
-      
-      
       - text: "Take-home Exercise"
         menu: 
         - text: "Take-home Exercise 1.0"
           href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html
         - text: "Take-home Exercise 2.0"
           href: Take-Home Exercise/Take-Home_Ex02/Take-Home_Ex02.html
+          
+      - text: "Project"
+        href: https://isss608-weatherpulse.netlify.app/
 
 
 format:

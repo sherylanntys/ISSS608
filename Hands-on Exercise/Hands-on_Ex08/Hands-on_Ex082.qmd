@@ -1,0 +1,107 @@
+---
+title: "Hands-on Exercise 8.2: Visualising Geospatial Point Data"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-03-08"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Getting Started
+
+## 1.1 Importing the relevant R packages
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse)
+```
+
+## 1.2. Data import and preparation
+
+The code chunk below uses *read_csv()* function of **readr** package to import *SGPools_svy21.csv* into R as a tibble data frame called *sgpools*.
+
+```{r}
+sgpools <- read_csv("data/aspatial/SGPools_svy21.csv")
+list(sgpools)
+```
+
+## 1.3 Creating a sf data frame from an aspatial data frame
+
+The code chunk below converts sgpools data frame into a simple feature data frame by using *st_as_sf()* of **sf** packages
+
+```{r}
+sgpools_sf <- st_as_sf(sgpools, 
+                       coords = c("XCOORD", "YCOORD"),
+                       crs= 3414)
+```
+
+```{r}
+list(sgpools_sf)
+```
+
+# 2.0 Drawing Proportional Symbol Map
+
+The code chunk below turns on the interactive mode of tmap:
+
+```{r}
+tmap_mode("view")
+```
+
+## 2.1 Interactive point symbol map
+
+The code chunks below creates an interactive point symbol map.
+
+```{r}
+tm_shape(sgpools_sf)+
+tm_bubbles(col = "red",
+           size = 1,
+           border.col = "black",
+           border.lwd = 1)
+```
+
+## 2.2 Making it proportional
+
+The code chunks below assigns *Gp1Gp2Winnings* is to the size visual attribute.
+
+```{r}
+tm_shape(sgpools_sf)+
+tm_bubbles(col = "red",
+           size = "Gp1Gp2 Winnings",
+           border.col = "black",
+           border.lwd = 1)
+```
+
+## 2.3 Giving it different colours
+
+The code chunk below assigns *OUTLET_TYPE* to the colour attribute variable.
+
+```{r}
+tm_shape(sgpools_sf)+
+tm_bubbles(col = "OUTLET TYPE", 
+          size = "Gp1Gp2 Winnings",
+          border.col = "black",
+          border.lwd = 1)
+```
+
+## 2.4 Faceted plots
+
+The argument *sync* in *tm_facets()* can be used in this case to produce multiple maps with synchronised zoom and pan settings.
+
+```{r}
+tm_shape(sgpools_sf) +
+  tm_bubbles(col = "OUTLET TYPE", 
+          size = "Gp1Gp2 Winnings",
+          border.col = "black",
+          border.lwd = 1) +
+  tm_facets(by= "OUTLET TYPE",
+            nrow = 1,
+            sync = TRUE)
+```
+
+Switching `tmap`'s Viewer back to *plot* mode:
+
+```{r}
+tmap_mode("plot")
+```
