@@ -1,0 +1,254 @@
+---
+title: "Take-Home Exercise 3.0: Prototyping Modules for Visual Analytics Shiny Application"
+author: "Sheryl Ann Tan Yi-Shi"
+date: "2025-03-28"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+---
+
+# 1.0 Introduction
+
+# 2.0 Data Preparation
+
+## 2.1 Loading Packages
+
+```{r}
+pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
+               tmap, tidyverse, DT)
+```
+
+## 2.2 Data Scraping
+
+The dataset was sourced from the Meteorological Service Singaproe (MSS) website[^1], which provides extensive historical daily records of rainfall, temperature and wind speed. Covering a period from 1980 to 2025, the data is segmented by month, and by each of the 64 weather stations across Singapore. For this project, we focused on the period from 2020 to 2024. We also noted that only 44 out of the 64 stations had downloadable records.
+
+[^1]: **Meteorological Service Singapore.** (n.d.). *Historical daily records*. Meteorological Service Singapore. <https://www.weather.gov.sg/climate-historical-daily/>[↩︎](https://isss608-weatherpulse.netlify.app/project%20proposal/project_proposal#fnref8)
+
+The code block below initializes the data scraping process by reading a list of station codes from a CSV file and setting up a loop to download data for the specified years and months.
+
+```{r}
+stations_df <- read_csv("data/StationList.csv")  
+station_codes <- stations_df$StationID  
+```
+
+The main scraping loop, designed to fetch and preprocess the data, is detailed in the code block below:
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See the Code Block
+
+```{r, eval=FALSE, results='hide'}
+years <- 2020:2024
+months <- sprintf("%02d", 1:12)
+
+
+base_url <- "https://www.weather.gov.sg/files/dailydata/DAILYDATA_%s_%d%s.csv"
+
+all_data <- list()
+i <- 1
+
+for (station in station_codes) {
+  for (year in years) {
+    for (month in months) {
+      url <- sprintf(base_url, station, year, month)
+      cat("Downloading:", url, "\n")
+    
+    try({
+      res <- read_csv(url, show_col_types = FALSE) %>%
+        mutate(across(
+          contains(c("Temperature", "Rainfall", "Wind")),
+          ~ suppressWarnings(as.numeric(.))
+        )) %>%
+        mutate(
+          station = as.character(station),
+          year = as.integer(year),
+          month = as.integer(month),
+          Day = as.integer(Day)
+        )
+  
+      all_data[[i]] <- res
+      i <- i + 1
+      }, silent = TRUE)
+    }
+  }
+}
+```
+
+:::
+
+Once the monthly data for each station had been downloaded, the data was subsequently consolidated into a single DataFrame:
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See the Code Block
+
+```{r, eval=FALSE, results="hide"}
+climate_data <- bind_rows(all_data)
+
+climate_data <- climate_data %>%
+  mutate(
+    date = make_date(year, month, Day)
+  )
+```
+
+:::
+
+
+```{r, echo=FALSE}
+climate_data1 <- read_csv("data/climate_data.csv")
+```
+
+After the data has been consolidated, the glimpse() function was used to gain a quick understanding of the data structure.
+
+```{r}
+glimpse(climate_data1)
+```
+To facilitate the development of the R Shiny application, the weather data was split into three separate datasets — rainfall, temperature, and wind speed. Each dataset contains only the relevant variables for the respective weather parameter, alongside essential metadata such as station name, date, and time components.
+
+By isolating each weather component, users can independently explore trends, seasonality, and anomalies for rainfall, temperature, and wind speed. Additionally, this approach simplifies backend logic, improves processing efficiency, and avoids unnecessary overhead from unrelated columns during visualisation and analysis.
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See Code Block
+
+```{r}
+climate_rainfall <- climate_data1 %>%
+  select(Station, Year, Month, Day, date, station, year, month,
+         contains("Rainfall"))
+
+climate_temperature <- climate_data1 %>%
+  select(Station, Year, Month, Day, date, station, year, month,
+         contains("Temperature"))
+
+climate_windspeed <- climate_data1 %>%
+  select(Station, Year, Month, Day, date, station, year, month,
+         contains("Wind"))
+```
+
+:::
+
+## 2.3 Understanding the Data
+
+### 2.3.1 Checking for Missing Values
+
+It is crucial to identify the extent of missing data, which significantly impacts the subsequent analysis phases. The following code calculates the percentage of missing values for each of the weather variable dataset.
+
+#### 2.3.1.1 Missing Values for the Rainfall Dataset
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See the Code Block
+
+```{r, result="hide"}
+
+rainfall_missing_by_station <- climate_rainfall %>%
+  group_by(station) %>%
+  summarise(across(
+    contains("Rainfall"),
+    ~mean(is.na(.)) * 100,
+    .names = "missing_{.col}"
+  )) %>%
+  arrange(across(starts_with("missing"), desc))
+```
+
+:::
+
+```{r, echo=FALSE}
+datatable(rainfall_missing_by_station, options = list(pageLength = 10))
+```
+Based on the results of the missing values analysis for the rainfall dataset, all stations contain some degree of missing data. However, a few stations exhibit a significantly higher proportion of missing data, such as Station S29 - Pasir Ris (West), which has more than 10% missing rainfall data primarily concentrated in the year 2021.
+
+To resolve this issue, stations with more than 5% missing data will be excluded from the analysis as a high proportion of missing values may lead to biased trends or seasonality patterns, skewed aggregate statistics or unreliable forecasts. In this case, we will exclude S29, S92 and S60 from the rainfall dataset as shown in the code below:
+
+```{r}
+climate_rainfall_filtered <- climate_rainfall %>%
+  filter(!station %in% c("S29", "S92", "S60"))
+```
+
+#### 2.3.1.2 Missing Values for the Temperature Dataset
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See the Code Block
+
+```{r, result="hide"}
+temperature_missing_by_station <- climate_temperature %>%
+  group_by(station) %>%
+  summarise(across(
+    contains("Temperature"),
+    ~mean(is.na(.)) * 100,
+    .names = "missing_{.col}"
+  )) %>%
+  arrange(across(starts_with("missing"), desc))
+```
+
+:::
+
+```{r, echo=FALSE}
+datatable(temperature_missing_by_station, options = list(pageLength = 10))
+```
+
+Based on the results of the missing values analysis for the temperature dataset, several stations exhibited 100% missing data for temperature measurements, suggesting that these stations may lack the necessary equipment to record temperature.
+
+In line with the approach taken for the rainfall dataset, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S23, S80, S25, S108, and S06.
+
+```{r}
+climate_temperature_filtered <- climate_temperature %>%
+  filter(!station %in% c("S07", "S08", "S112", "S113", "S114", "S119", "S123", 
+                         "S29", "S33", "S35", "S40", "S64", "S66", "S69", "S71", 
+                         "S77", "S78", "S79", "S81", "S84", "S88", "S89", "S90", 
+                         "S92", "S94", "S23", "S80", "S25", "S108", "S06"))
+```
+
+
+#### 2.3.1.3 Missing Values for the Wind Speed Dataset
+
+::: {.callout-note collapse="true"}
+
+#### Expand to See the Code Block
+
+```{r, result="hide"}
+windspeed_missing_by_station <- climate_windspeed %>%
+  group_by(station) %>%
+  summarise(across(
+    contains("Wind"),
+    ~mean(is.na(.)) * 100,
+    .names = "missing_{.col}"
+  )) %>%
+  arrange(across(starts_with("missing"), desc))
+```
+
+:::
+
+```{r, echo=FALSE}
+datatable(windspeed_missing_by_station, options = list(pageLength = 10))
+```
+Like the temperature dataset, several stations exhibited 100% missing data for wind speed measurements. In line with the approach taken for the rainfall and temperature datasets, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S80, S23, S50, S43, S117, S108, S60 and S06.
+
+```{r}
+climate_windspeed_filtered <- climate_windspeed %>%
+  filter(!station %in% c("S07", "S08", "S112", "S113", "S114", "S119", "S123", 
+                         "S29", "S33", "S35", "S40", "S64", "S66", "S69", "S71", 
+                         "S77", "S78", "S79", "S81", "S84", "S88", "S89", "S90", 
+                         "S92", "S94", "S80", "S23", "S50", "S43", "S117", "S108", 
+                         "S60", "S06"))
+```
+
+### 2.3.2 Ensuring Date 
+
+
+```{r}
+climate_rainfall_filtered %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n())
+
+```
+
+
+
+# 3.0 Exploratory Data Analysis
+
+# 4.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
