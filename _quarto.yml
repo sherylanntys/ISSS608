@@ -76,6 +76,8 @@ website:
           href: Take-Home Exercise/Take-Home_Ex01/Take-Home_Ex01b.html
         - text: "Take-home Exercise 2.0"
           href: Take-Home Exercise/Take-Home_Ex02/Take-Home_Ex02.html
+        - text: "Take-home Exercise 3.0"
+          href: Take-Home Exercise/Take-Home_Ex03/Take-Home_Ex03.html
           
       - text: "Project"
         href: https://isss608-weatherpulse.netlify.app/
