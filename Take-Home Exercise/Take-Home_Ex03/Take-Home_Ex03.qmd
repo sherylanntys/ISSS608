@@ -18,7 +18,7 @@ execute:
 
 ```{r}
 pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
-               tmap, tidyverse, DT)
+               tmap, tidyverse, DT, zoo, plotly, sunburstR, magrittr)
 ```
 
 ## 2.2 Data Scraping
@@ -36,14 +36,16 @@ station_codes <- stations_df$StationID
 
 The main scraping loop, designed to fetch and preprocess the data, is detailed in the code block below:
 
-::: {.callout-note collapse="true"}
+::: callout-important
+The data from January 2020 to March 2020 are encoded in `latin1`, while the data starting from April 2020 are encoded in `UTF-8`. Therefore, it is essential for the main scraping loop to be robust enough to accommodate both encodings effectively.
+:::
 
+::: {.callout-note collapse="true"}
 #### Expand to See the Code Block
 
 ```{r, eval=FALSE, results='hide'}
 years <- 2020:2024
 months <- sprintf("%02d", 1:12)
-
 
 base_url <- "https://www.weather.gov.sg/files/dailydata/DAILYDATA_%s_%d%s.csv"
 
@@ -55,9 +57,25 @@ for (station in station_codes) {
     for (month in months) {
       url <- sprintf(base_url, station, year, month)
       cat("Downloading:", url, "\n")
-    
-    try({
-      res <- read_csv(url, show_col_types = FALSE) %>%
+      
+      # Attempt to read with latin1, if it fails, try UTF-8
+      res <- try({
+        read_csv(url, locale = locale(encoding = "latin1"), show_col_types = FALSE)
+      }, silent = TRUE)
+      
+      if (inherits(res, "try-error")) {
+        res <- try({
+          read_csv(url, locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
+        }, silent = TRUE)
+      }
+
+      # If both fail, continue to the next file
+      if (inherits(res, "try-error")) {
+        cat("Failed to read:", url, "\n")
+        next
+      }
+
+      res <- res %>%
         mutate(across(
           contains(c("Temperature", "Rainfall", "Wind")),
           ~ suppressWarnings(as.numeric(.))
@@ -68,21 +86,18 @@ for (station in station_codes) {
           month = as.integer(month),
           Day = as.integer(Day)
         )
-  
+      
       all_data[[i]] <- res
       i <- i + 1
-      }, silent = TRUE)
     }
   }
 }
 ```
-
 :::
 
 Once the monthly data for each station had been downloaded, the data was subsequently consolidated into a single DataFrame:
 
 ::: {.callout-note collapse="true"}
-
 #### Expand to See the Code Block
 
 ```{r, eval=FALSE, results="hide"}
@@ -93,12 +108,10 @@ climate_data <- climate_data %>%
     date = make_date(year, month, Day)
   )
 ```
-
 :::
 
-
 ```{r, echo=FALSE}
-climate_data1 <- read_csv("data/climate_data.csv")
+climate_data1 <- read_csv("data/climate_data1.csv")
 ```
 
 After the data has been consolidated, the glimpse() function was used to gain a quick understanding of the data structure.
@@ -106,12 +119,12 @@ After the data has been consolidated, the glimpse() function was used to gain a 
 ```{r}
 glimpse(climate_data1)
 ```
+
 To facilitate the development of the R Shiny application, the weather data was split into three separate datasets — rainfall, temperature, and wind speed. Each dataset contains only the relevant variables for the respective weather parameter, alongside essential metadata such as station name, date, and time components.
 
 By isolating each weather component, users can independently explore trends, seasonality, and anomalies for rainfall, temperature, and wind speed. Additionally, this approach simplifies backend logic, improves processing efficiency, and avoids unnecessary overhead from unrelated columns during visualisation and analysis.
 
 ::: {.callout-note collapse="true"}
-
 #### Expand to See Code Block
 
 ```{r}
@@ -127,7 +140,6 @@ climate_windspeed <- climate_data1 %>%
   select(Station, Year, Month, Day, date, station, year, month,
          contains("Wind"))
 ```
-
 :::
 
 ## 2.3 Understanding the Data
@@ -139,7 +151,6 @@ It is crucial to identify the extent of missing data, which significantly impact
 #### 2.3.1.1 Missing Values for the Rainfall Dataset
 
 ::: {.callout-note collapse="true"}
-
 #### Expand to See the Code Block
 
 ```{r, result="hide"}
@@ -153,25 +164,43 @@ rainfall_missing_by_station <- climate_rainfall %>%
   )) %>%
   arrange(across(starts_with("missing"), desc))
 ```
-
 :::
 
 ```{r, echo=FALSE}
 datatable(rainfall_missing_by_station, options = list(pageLength = 10))
 ```
+
 Based on the results of the missing values analysis for the rainfall dataset, all stations contain some degree of missing data. However, a few stations exhibit a significantly higher proportion of missing data, such as Station S29 - Pasir Ris (West), which has more than 10% missing rainfall data primarily concentrated in the year 2021.
 
-To resolve this issue, stations with more than 5% missing data will be excluded from the analysis as a high proportion of missing values may lead to biased trends or seasonality patterns, skewed aggregate statistics or unreliable forecasts. In this case, we will exclude S29, S92 and S60 from the rainfall dataset as shown in the code below:
+To resolve this issue, stations with more than 5% missing data will be excluded from the analysis as a high proportion of missing values may lead to biased trends or seasonality patterns, skewed aggregate statistics or unreliable forecasts. In this case, we will exclude S29, S92, S64, S06 from the rainfall dataset as shown in the code below:
 
 ```{r}
 climate_rainfall_filtered <- climate_rainfall %>%
-  filter(!station %in% c("S29", "S92", "S60"))
+  filter(!station %in% c("S29", "S92", "S64", "S06"))
+```
+
+For stations with \<5% missing data, we employ **linear interpolation** to estimate the missing values. This method assumes a linear relationship (straight line) between two known data points and calculates the missing values accordingly[^2]. This method is effective for datasets where changes between consecutive data points are expected to be gradual / linear (i.e. weather parameters).
+
+[^2]: **Gore, R. (2023, January).** Weather parameter analysis using interpolation methods. *Artificial Intelligence and Applications, 1*(4). https://doi.org/10.47852/bonviewAIA3202443
+
+The following code chunk implements linear interpolation in R using the `na.approx()` function from the zoo\` package:
+
+```{r}
+climate_rainfall_interpolated <- climate_rainfall_filtered %>%
+  arrange(station, date) %>%
+  group_by(station) %>%
+  mutate(
+    `Daily Rainfall Total (mm)`     = na.approx(`Daily Rainfall Total (mm)`, x = date, na.rm = FALSE),
+    `Highest 30 Min Rainfall (mm)`  = na.approx(`Highest 30 Min Rainfall (mm)`, x = date, na.rm = FALSE),
+    `Highest 60 Min Rainfall (mm)`  = na.approx(`Highest 60 Min Rainfall (mm)`, x = date, na.rm = FALSE),
+    `Highest 120 Min Rainfall (mm)` = na.approx(`Highest 120 Min Rainfall (mm)`, x = date, na.rm = FALSE)
+  ) %>%
+  ungroup()
 ```
 
 #### 2.3.1.2 Missing Values for the Temperature Dataset
 
 ::: {.callout-note collapse="true"}
-
 #### Expand to See the Code Block
 
 ```{r, result="hide"}
@@ -184,7 +213,6 @@ temperature_missing_by_station <- climate_temperature %>%
   )) %>%
   arrange(across(starts_with("missing"), desc))
 ```
-
 :::
 
 ```{r, echo=FALSE}
@@ -193,21 +221,33 @@ datatable(temperature_missing_by_station, options = list(pageLength = 10))
 
 Based on the results of the missing values analysis for the temperature dataset, several stations exhibited 100% missing data for temperature measurements, suggesting that these stations may lack the necessary equipment to record temperature.
 
-In line with the approach taken for the rainfall dataset, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S23, S80, S25, S108, and S06.
+In line with the approach taken for the rainfall dataset, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S108, S23, S80, S25 and S06.
 
 ```{r}
 climate_temperature_filtered <- climate_temperature %>%
   filter(!station %in% c("S07", "S08", "S112", "S113", "S114", "S119", "S123", 
                          "S29", "S33", "S35", "S40", "S64", "S66", "S69", "S71", 
                          "S77", "S78", "S79", "S81", "S84", "S88", "S89", "S90", 
-                         "S92", "S94", "S23", "S80", "S25", "S108", "S06"))
+                         "S92", "S94", "S108", "S23", "S80", "S25", "S06"))
 ```
 
+Similar to the rainfall dataset, for stations with \<5% missing data, we employ **linear interpolation** to estimate the missing values.
+
+```{r}
+climate_temperature_interpolated <- climate_temperature_filtered %>%
+  arrange(station, date) %>%
+  group_by(station) %>%
+  mutate(
+    `Mean Temperature (°C)`     = na.approx(`Mean Temperature (°C)`, x = date, na.rm = FALSE),
+    `Maximum Temperature (°C)`  = na.approx(`Maximum Temperature (°C)`, x = date, na.rm = FALSE),
+    `Minimum Temperature (°C)`  = na.approx(`Minimum Temperature (°C)`, x = date, na.rm = FALSE)
+  ) %>%
+  ungroup()
+```
 
 #### 2.3.1.3 Missing Values for the Wind Speed Dataset
 
 ::: {.callout-note collapse="true"}
-
 #### Expand to See the Code Block
 
 ```{r, result="hide"}
@@ -220,35 +260,300 @@ windspeed_missing_by_station <- climate_windspeed %>%
   )) %>%
   arrange(across(starts_with("missing"), desc))
 ```
-
 :::
 
 ```{r, echo=FALSE}
 datatable(windspeed_missing_by_station, options = list(pageLength = 10))
 ```
-Like the temperature dataset, several stations exhibited 100% missing data for wind speed measurements. In line with the approach taken for the rainfall and temperature datasets, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S80, S23, S50, S43, S117, S108, S60 and S06.
+
+Like the temperature dataset, several stations exhibited 100% missing data for wind speed measurements. In line with the approach taken for the rainfall and temperature datasets, stations with more than 5% missing data will be excluded from the analysis. The following stations will be removed from the temperature dataset: S07, S08, S112, S113, S114, S119, S123, S29, S33, S35, S40, S64, S66, S69, S71, S77, S78, S79, S81, S84, S88, S89, S90, S92, S94, S80, S23, S60, S44, S50, S43 and S117.
 
 ```{r}
 climate_windspeed_filtered <- climate_windspeed %>%
   filter(!station %in% c("S07", "S08", "S112", "S113", "S114", "S119", "S123", 
                          "S29", "S33", "S35", "S40", "S64", "S66", "S69", "S71", 
                          "S77", "S78", "S79", "S81", "S84", "S88", "S89", "S90", 
-                         "S92", "S94", "S80", "S23", "S50", "S43", "S117", "S108", 
-                         "S60", "S06"))
+                         "S92", "S94", "S80", "S23", "S60", "S44", "S50", "S43", 
+                         "S117"))
 ```
 
-### 2.3.2 Ensuring Date 
-
+Similar to the rainfall dataset, for stations with \<5% missing data, we employ **linear interpolation** to estimate the missing values.
 
 ```{r}
-climate_rainfall_filtered %>%
+climate_windspeed_interpolated <- climate_windspeed_filtered %>%
+  arrange(station, date) %>%
   group_by(station) %>%
-  summarise(min_date = min(date), max_date = max(date), total_days = n())
-
+  mutate(
+    `Mean Wind Speed (km/h)`     = na.approx(`Mean Wind Speed (km/h)`, x = date, na.rm = FALSE),
+    `Max Wind Speed (km/h)`  = na.approx(`Max Wind Speed (km/h)`, x = date, na.rm = FALSE)
+  ) %>%
+  ungroup()
 ```
 
+### 2.3.2 Ensuring Date Completeness
 
+To verify date completeness, we checked that each weather station contains records spanning across 1 January 2020 to 31 December 2024. This step ensures that there are no structural gaps in the time data for any station. The following were computed for each station in the respective data sets:
+
+-   `min_date`: The earliest date available in the dataset
+
+-   `max_date`: The latest date available.
+
+-   `total_days`: The number of daily records
+
+**Key Findings**:
+
+-   All stations have consistent start and end dates, with `min_date = 2020-01-01` and `max_date = 2024-12-31`.
+
+<!-- -->
+
+-   The `total_days` column confirms that **each station has a complete set of daily records (1,827 days)**, corresponding to 5 full years (including 2020 as a leap year).
+
+<!-- -->
+
+-   This indicates a **uniform and complete time series** across all stations and parameters.
+
+The follow sub-sections show the code chunks and corresponding results of the date completeness check for each dataset.
+
+#### 2.3.2.1 Rainfall Dataset
+
+```{r, eval=FALSE}
+climate_rainfall_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n())
+```
+
+```{r, echo=FALSE}
+datatable(climate_rainfall_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n()), options = list(pageLength = 10))
+```
+
+#### 2.3.2.2 Temperature Dataset
+
+```{r, eval=FALSE}
+climate_temperature_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n())
+```
+
+```{r, echo=FALSE}
+datatable(climate_temperature_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n()), options = list(pageLength = 10))
+```
+
+#### 2.3.2.3 Wind Speed Dataset
+
+```{r, eval=FALSE}
+climate_windspeed_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n())
+```
+
+```{r, echo=FALSE}
+datatable(climate_windspeed_interpolated %>%
+  group_by(station) %>%
+  summarise(min_date = min(date), max_date = max(date), total_days = n()), options = list(pageLength = 10))
+```
 
 # 3.0 Exploratory Data Analysis
 
-# 4.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
+## 3.1 Calendar Heatmap
+
+A calendar heatmap would be used to visualise daily weather records across different stations and years. Each day is represented as a cell in the heatmap, with colour intensity varying according to value of weather data (such as temperature or rainfall) for that day. The calendar heatmap enables quick identification of trends and / or anomalies over the course of the year.
+
+**Key Considerations for Implementation**
+
+-   **Station Selection**: Users should be able to select which weather station's data they want to view.
+
+-   **Year Selection**: Users should have the ability to choose the year of interest.
+
+-   **Variable Selection**: Users should have the ability to select between different weather variables and measurement.
+
+-   **Tooltips**: A tooltip that display detailed data values when a user hovers a over specific day's cell would be implmented. This provide instant access to precise data values, eliminating the ambiguity that may arise from solely interpreting color intensities.
+
+**General Implementation Method**
+
+We created a function called `create_calendar_heatmap`, that takes in four parameters: the dataset, the selected weather station, the year of interest and the variable of interest (e.g. mean temperature, max wind speed, etc.). The heatmap colour would update depending on the dataset used.
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Block on Function Implementation
+
+```{r}
+
+create_calendar_heatmap <- function(data, selected_station, selected_year, dataset_type, var_type) {
+  
+  var_mapping <- list(
+    "rainfall" = list(
+      "Daily Rainfall Total" = "Daily Rainfall Total (mm)",
+      "Highest 30 Min Rainfall" = "Highest 30 Min Rainfall (mm)",
+      "Highest 60 Min Rainfall" = "Highest 60 Min Rainfall (mm)",
+      "Highest 120 Min Rainfall" = "Highest 120 Min Rainfall (mm)"
+    ),
+    "temperature" = list(
+      "Mean Temperature" = "Mean Temperature (°C)",
+      "Maximum Temperature" = "Maximum Temperature (°C)",
+      "Minimum Temperature" = "Minimum Temperature (°C)"
+    ),
+    "windspeed" = list(
+      "Mean Wind Speed" = "Mean Wind Speed (km/h)",
+      "Max Wind Speed" = "Max Wind Speed (km/h)"
+    )
+  )
+  
+  units <- list(
+    "rainfall" = "mm",
+    "temperature" = "°C",
+    "windspeed" = "km/h"
+  )
+
+  color_schemes <- list(
+    "rainfall" = "Blues",
+    "temperature" = "Reds",
+    "windspeed" = "Greens"
+  )
+  
+  selected_var <- var_mapping[[dataset_type]][[var_type]]
+  selected_unit <- units[[dataset_type]]
+  selected_colorscale <- color_schemes[[dataset_type]]
+  
+  reverse_scale <- ifelse(dataset_type == "temperature", FALSE, TRUE)
+  
+  first_day <- as.Date(sprintf("%d-01-01", selected_year))
+  last_date <- as.Date(sprintf("%d-12-31", selected_year))
+  
+  plot_data <- data %>%
+    filter(Station == selected_station,
+           date >= first_day,
+           date <= last_date) %>%
+    mutate(
+      weekday = wday(date, label = TRUE, abbr = TRUE, week_start = 1),
+      week_num = floor((yday(date) + wday(first_day, week_start = 1) - 1) / 7),
+      month_label = factor(month(date, label = TRUE, abbr = TRUE))
+    ) %>%
+    mutate(
+      weekday = factor(weekday, 
+                      levels = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"))
+    )
+  
+  week_to_month <- plot_data %>%
+    group_by(week_num) %>%
+    summarise(month_label = first(month_label))
+  
+  p <- plot_ly(
+    data = plot_data,
+    x = ~week_num,
+    y = ~weekday,
+    z = as.formula(paste0("~`", selected_var, "`")),
+    type = "heatmap",
+    colorscale = selected_colorscale,
+    reversescale = reverse_scale,
+    text = ~paste(
+      "Date:", date,
+      "<br>Day:", weekday,
+      "<br>Month:", month_label,
+      "<br>", var_type, ":", round(get(selected_var), 1), selected_unit
+    ),
+    hoverinfo = "text",
+    hoverongaps = FALSE
+  ) %>%
+    layout(
+      title = paste(var_type, "Calendar Heatmap -", selected_station, "(",selected_year,")"),
+      xaxis = list(
+        title = "Month",
+        ticktext = as.character(unique(plot_data$month_label)),
+        tickvals = sapply(unique(plot_data$month_label), 
+                         function(m) median(plot_data$week_num[plot_data$month_label == m]))  
+      ),
+      yaxis = list(
+        title = "Day of Week",
+        categoryarray = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"),
+        categoryorder = "array",
+        autorange = "reversed"
+      ),
+      margin = list(
+        l = 50,
+        r = 50,
+        b = 50,
+        t = 50
+      )
+    ) %>%
+    colorbar(
+      title = paste(var_type, "(",selected_unit,")"),
+      orientation = "h",
+      len = 0.8,
+      y = -0.4,
+      thickness = 15
+    )
+  
+  return(p)
+}
+```
+:::
+
+**Example Usage**
+
+::: {.panel-tabset}
+
+#### Max Wind Speed @ Changi (2020)
+
+```{r, echo=FALSE}
+wind_max <- create_calendar_heatmap(
+  data = climate_windspeed_interpolated,
+  selected_station = "Changi", 
+  selected_year = 2020,
+  dataset_type = "windspeed",
+  var_type = "Max Wind Speed"
+)
+
+wind_max
+```
+
+#### Daily Rainfall @ Admiralty (2022)
+
+```{r, echo=FALSE}
+rain_plot <- create_calendar_heatmap(
+  data = climate_rainfall_interpolated,
+  selected_station = "Admiralty", 
+  selected_year = 2022,
+  dataset_type = "rainfall",
+  var_type = "Daily Rainfall Total")
+
+rain_plot
+```
+
+#### Mean Temperature @ Clementi (2024)
+
+```{r, echo=FALSE}
+temp_plot <- create_calendar_heatmap(
+  data = climate_temperature_interpolated,
+  selected_station = "Clementi", 
+  selected_year = 2024,
+  dataset_type = "temperature",
+  var_type = "Mean Temperature"
+)
+
+temp_plot
+```
+
+:::
+
+
+
+
+
+
+
+```{r}
+str(climate_windspeed_interpolated)
+```
+
+## 3.2 Sunburst Diagram
+
+```{r}
+str(climate_temperature_interpolated)
+```
+
+# 4.0 Confirmatory Data Analysis
+
+# 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
