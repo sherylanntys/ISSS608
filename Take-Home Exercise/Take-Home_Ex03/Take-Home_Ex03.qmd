@@ -18,7 +18,7 @@ execute:
 
 ```{r}
 pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
-               tmap, tidyverse, DT, zoo, plotly, sunburstR, magrittr)
+               tmap, tidyverse, DT, zoo, plotly, magrittr, ggstatsplot)
 ```
 
 ## 2.2 Data Scraping
@@ -581,7 +581,7 @@ We created a `create_sunburst` function that generates a sunburst diagram visual
 
 ```{r}
 create_sunburst <- function(data, selected_station, dataset_type, var_type, year_range) {
-  # Define variable mapping for each dataset
+
   var_mapping <- list(
     "rainfall" = list(
       "Total Rainfall" = "Daily Rainfall Total (mm)",
@@ -600,7 +600,6 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
     )
   )
   
-  # Define aggregation functions for each variable
   agg_functions <- list(
     "rainfall" = list(
       "Total Rainfall" = "sum",
@@ -619,14 +618,12 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
     )
   )
   
-  # Get the unit based on dataset type
   units <- list(
     "rainfall" = "mm",
     "temperature" = "°C",
     "windspeed" = "km/h"
   )
   
-  # Define color schemes for each dataset type
   color_schemes <- list(
     "rainfall" = "Blues",
     "temperature" = "OrRd",
@@ -638,10 +635,8 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
   selected_colorscale <- color_schemes[[dataset_type]]
   selected_agg <- agg_functions[[dataset_type]][[var_type]]
   
-  # Set reverse_scale based on dataset type
   reverse_scale <- ifelse(dataset_type == "temperature", FALSE, TRUE)
   
-  # Prepare monthly averages with appropriate aggregation function
   plot_data <- data %>%
     filter(Station == selected_station,
            Year >= year_range[1],
@@ -657,13 +652,13 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
       .groups = 'drop'
     )
   
-  # Create the plot
+
   p <- plot_ly()
   
-  # Create segments for each year
+
   years <- year_range[1]:year_range[2]
   months <- 1:12
-  angles <- seq(0, 330, by = 30)  # 12 angles for months
+  angles <- seq(0, 330, by = 30)
   
   for(i in seq_along(years)) {
     year <- years[i]
@@ -671,7 +666,6 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
     
     year_data <- plot_data %>% filter(Year == year)
     
-    # Get values for this year
     vals <- sapply(months, function(m) {
       val <- year_data$Value[year_data$Month == m]
       if(length(val) == 0) return(0)
@@ -691,12 +685,12 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
         showscale = (i == 1),
         colorbar = list(
           title = paste(var_type, "(", selected_unit, ")"),
-          len = 0.5,         # Make colorbar shorter
-          thickness = 10,    # Make colorbar thinner
-          x = 0.95,         # Position to the right
-          y = 0.5,          # Center vertically
-          tickfont = list(size = 10),  # Smaller tick labels
-          titlefont = list(size = 10)  # Smaller title
+          len = 0.5,         
+          thickness = 10,   
+          x = 0.95,         
+          y = 0.5,          
+          tickfont = list(size = 10),  
+          titlefont = list(size = 10)  
         ),
         line = list(
           color = 'white',
@@ -713,7 +707,7 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
     )
   }
   
-  # Update layout
+
   p <- p %>% layout(
     polar = list(
       radialaxis = list(
@@ -974,7 +968,10 @@ create_line_chart <- function(data, selected_stations, dataset_type, var_type, d
 
 #### Mean Temperature \@ Admiralty, Changi, Ang Mo Kio (2020 - 2024)
 
-```{r,echo}
+```{r, echo=FALSE}
+#| fig-width: 12
+#| fig-height: 8
+
 temp_lplot <- create_line_chart(
   data = climate_temperature_interpolated,
   selected_stations = c("Admiralty", "Changi", "Ang Mo Kio"),
@@ -987,5 +984,137 @@ temp_lplot
 ```
 
 # 4.0 Confirmatory Data Analysis
+
+We considered incorporating confirmatory data analysis in our Shiny app. This function, designed using `ggstatsplot`, allows users to perform statistical comparisons across different years for a selected weather station and variable.
+
+We created a function named `create_between_stats` to perform the confirmatory data analysis. Apart from allowing users to choosing the dataset_type, station, years as per EDA, this function would also allow users to choose the statistical approach used in the CDA: parametric, non-parametric, robust or Bayesian. Users can also speciy the confidence level of the analysis.
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Block on Function Implementation
+
+```{r}
+create_between_stats <- function(dataset_type, 
+                               selected_station,
+                               selected_var,
+                               years = c(2020:2024),
+                               stat_approach = "p",
+                               conf_level = 0.95) {
+  
+  # Variable mapping for different datasets
+  var_mapping <- list(
+    "rainfall" = list(
+      "Total Rainfall" = "Daily Rainfall Total (mm)",
+      "Highest 30 Min Rainfall" = "Highest 30 Min Rainfall (mm)",
+      "Highest 60 Min Rainfall" = "Highest 60 Min Rainfall (mm)",
+      "Highest 120 Min Rainfall" = "Highest 120 Min Rainfall (mm)"
+    ),
+    "temperature" = list(
+      "Mean Temperature" = "Mean Temperature (°C)",
+      "Maximum Temperature" = "Maximum Temperature (°C)",
+      "Minimum Temperature" = "Minimum Temperature (°C)"
+    ),
+    "windspeed" = list(
+      "Mean Wind Speed" = "Mean Wind Speed (km/h)",
+      "Max Wind Speed" = "Max Wind Speed (km/h)"
+    )
+  )
+  
+  # Select appropriate dataset
+  data <- switch(dataset_type,
+                 "rainfall" = climate_rainfall_interpolated,
+                 "temperature" = climate_temperature_interpolated,
+                 "windspeed" = climate_windspeed_interpolated,
+                 stop("Invalid dataset type"))
+  
+  # Prepare the data
+  plot_data <- data %>%
+    filter(Station == selected_station,
+           year(date) %in% years) %>%
+    select(date, Station, !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    mutate(Year = as.factor(year(date))) %>%
+    rename(Value = !!sym(var_mapping[[dataset_type]][[selected_var]]))
+  
+  # Create title based on selection
+  title <- paste(selected_var, "Distribution by Year at", selected_station)
+  
+  # Create subtitle based on statistical approach
+  subtitle <- case_when(
+    stat_approach == "p" ~ "Parametric statistics",
+    stat_approach == "np" ~ "Non-parametric statistics",
+    stat_approach == "r" ~ "Robust statistics",
+    TRUE ~ "Bayes statistics"
+  )
+  
+  # Create the plot
+  p <- ggbetweenstats(
+    data = plot_data,
+    x = Year,
+    y = Value,
+    type = stat_approach,
+    mean.ci = TRUE,
+    conf.level = conf_level,
+    pairwise.comparisons = TRUE,
+    pairwise.display = "s",
+    p.adjust.method = "fdr",
+    messages = FALSE,
+    title = title,
+    subtitle = subtitle
+  )
+  
+  return(p)
+}
+```
+
+:::
+
+
+**Example Usage**
+
+::: panel-tabset
+
+#### Mean Temperature \@ Changi (2020 - 2023)
+
+```{r, echo=FALSE}
+temp_stats <- create_between_stats(
+  dataset_type = "temperature",
+  selected_station = "Changi",
+  selected_var = "Mean Temperature",
+  years = c(2020:2023),
+  stat_approach = "p",
+  conf_level = 0.95
+)
+
+temp_stats
+
+```
+#### Total Rainfall \@ Changi (2021 - 2024)
+
+```{r, echo=FALSE}
+rain_stats <- create_between_stats(
+  dataset_type = "rainfall",
+  selected_station = "Changi",
+  selected_var = "Total Rainfall",
+  years = c(2021:2024),
+  stat_approach = "np",
+  conf_level = 0.99
+)
+
+rain_stats
+```
+#### Mean Wind Speed \@ Changi (2020 - 2024)
+
+```{r, echo=FALSE}
+wind_stats <- create_between_stats(
+  dataset_type = "windspeed",
+  selected_station = "Changi",
+  selected_var = "Mean Wind Speed",
+  years = c(2020:2024),
+  stat_approach = "r",  # robust
+  conf_level = 0.90
+)
+
+wind_stats
+```
+:::
 
 # 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
