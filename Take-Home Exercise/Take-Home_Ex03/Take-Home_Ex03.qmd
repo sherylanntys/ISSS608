@@ -12,6 +12,12 @@ execute:
 
 # 1.0 Introduction
 
+Singapore's climate has been experiencing **rising temperatures and increasing weather extremes** driven by climate change and urbanisation. In 2024, Singapore experienced one of its **hottest years on record**, with temperatures exceeding long-term averages. These climate trends pose significant risks, including **heat stress, water resource management challenges and urban planning concerns**.\
+\
+Existing reports and tools offer real-time weather forecasts and historical comparisons using long-term averages. However, they lack interactive analysis tools that would allow for a deeper exploration of historical trends and future projections.
+
+This report covers the prototypes that were developed for inclusion in the **Weather Pulse** application.
+
 # 2.0 Data Preparation
 
 ## 2.1 Loading Packages

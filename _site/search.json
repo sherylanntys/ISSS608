@@ -2224,5 +2224,12 @@
     "title": "Take-Home Exercise 3.0: Prototyping Modules for Visual Analytics Shiny Application",
     "section": "6.4 Time-Series Forecasting",
     "text": "6.4 Time-Series Forecasting"
+  },
+  {
+    "objectID": "Take-Home Exercise/Take-Home_Ex03/Take-Home_Ex03.html",
+    "href": "Take-Home Exercise/Take-Home_Ex03/Take-Home_Ex03.html",
+    "title": "Take-Home Exercise 3.0: Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "",
+    "text": "Singapore’s climate has been experiencing rising temperatures and increasing weather extremes driven by climate change and urbanisation. In 2024, Singapore experienced one of its hottest years on record, with temperatures exceeding long-term averages. These climate trends pose significant risks, including heat stress, water resource management challenges and urban planning concerns.\n\nExisting reports and tools offer real-time weather forecasts and historical comparisons using long-term averages. However, they lack interactive analysis tools that would allow for a deeper exploration of historical trends and future projections.\nThis report covers the prototypes that were developed for inclusion in the Weather Pulse application."
   }
 ]
