@@ -19,7 +19,7 @@ execute:
 ```{r}
 pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
                tmap, tidyverse, DT, zoo, plotly, magrittr, ggstatsplot,
-               feasts, tsibble, fable, kableExtra, dplyr)
+               feasts, tsibble, fable, kableExtra, dplyr, ggrepel)
 ```
 
 ## 2.2 Data Scraping
@@ -1285,7 +1285,7 @@ wind_stats
 
 # 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
 
-## 5.1 Time-Series Forecasting Using Different Models
+## 5.1 Time-Series Forecasting: Comparing Across Models
 
 After gaining an understanding of the time-series data via the EDA tools in Section 3.0, users can use the time-series forcasting tool to **forecast weather parameters** using various statistical models.
 
@@ -1446,9 +1446,18 @@ create_forecast <- function(dataset_type,
   }
   
   accuracy_table <- fit_models %>%
-    report() %>%
-    select(.model, AIC, BIC, AICc) %>%
-    rename(Model = .model) %>%
+    accuracy() %>%
+    select(.model, ME, RMSE, MAE, MPE, MAPE, MASE, RMSSE) %>%
+    rename(
+      Model = .model,
+      "Mean Error" = ME,
+      "Root Mean Square Error" = RMSE,
+      "Mean Absolute Error" = MAE,
+      "Mean Percentage Error" = MPE,
+      "Mean Absolute Percentage Error" = MAPE,
+      "Mean Absolute Scaled Error" = MASE,
+      "Root Mean Square Scaled Error" = RMSSE
+    ) %>%
     kable(
       caption = "Model Accuracy Metrics",
       format = "html",
@@ -1466,6 +1475,8 @@ create_forecast <- function(dataset_type,
 }
 ```
 :::
+
+**Example Usage**
 
 ::: panel-tabset
 #### Mean Temperature \@ Changi (Training: 2020 - 2023, Forecast: 2024)
