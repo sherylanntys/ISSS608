@@ -18,7 +18,8 @@ execute:
 
 ```{r}
 pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
-               tmap, tidyverse, DT, zoo, plotly, magrittr, ggstatsplot)
+               tmap, tidyverse, DT, zoo, plotly, magrittr, ggstatsplot,
+               feasts, tsibble, fable)
 ```
 
 ## 2.2 Data Scraping
@@ -368,18 +369,20 @@ A calendar heatmap would be used to **visualise daily weather records** across d
 
 -   **Tooltips**: A tooltip that display detailed data values when a user hovers a over specific day's cell would be implmented. This provide instant access to precise data values, eliminating the ambiguity that may arise from solely interpreting color intensities.
 
+-   **Colour Intensity**: The color intensity of each monthly segment varies according to specific weather data values, such as average temperature, total rainfall, or other relevant metrics. A single colour scheme is selected for each variable (e.g. temperature in shades of red, rainfall in shades of blue) to avoid confusion that comes with diverging colour schemes.
+
 **General Implementation Method**
 
-We created a function called `create_calendar_heatmap`, that takes in four parameters: the dataset, the selected weather station, the year of interest and the variable of interest (e.g. mean temperature, max wind speed, etc.). The heatmap colour would update depending on the dataset used.
+We created a function called `create_calendar_heatmap`, that takes in four parameters: the dataset, the selected weather station, the year of interest and the variable of interest. The heatmap colour would update depending on the dataset used.
 
 **Parameters**
 
-| **Parameter**      | UI For Parameter Selection |
-|--------------------|----------------------------|
-| `data`             | Dropdown List              |
-| `var_type`         | Dropdown List              |
-| `selected_station` | Dropdown List              |
-| `selected_year`    | Dropdown List              |
+| **Parameter** | Description | UI For Parameter Selection |
+|----|----|----|
+| `data` | Type of weather variable: rainfall, temperature, wind speed | Dropdown List |
+| `var_type` | Type of metric for the selected weather variable. For example, under temperature, users can select mean temperature, max temperature, min temperature. | Dropdown List |
+| `selected_station` | The weather station from which the data is drawn. | Dropdown List |
+| `selected_year` | The year from which the data is drawn. | Dropdown List |
 
 ::: {.callout-note collapse="true"}
 #### Expand to See the Code Block on Function Implementation
@@ -549,7 +552,7 @@ While the calendar heatmap helps to display daily weather records within the con
 
 -   **Monthly Segmentation**: Within each annual ring, the circle is further divided into 12 equal segments, each representing a month from January to December.
 
--   **Colour Intensity**: The color intensity of each monthly segment varies according to specific weather data values, such as average temperature, total rainfall, or other relevant metrics.
+-   **Colour Intensity**: The color intensity of each monthly segment varies according to specific weather data values, such as average temperature, total rainfall, or other relevant metrics. A single colour scheme is selected for each variable (e.g. temperature in shades of red, rainfall in shades of blue) to avoid confusion that comes with diverging colour schemes.
 
 -   **Tooltips**: A tooltip that display detailed data values when a user hovers a over specific day's cell would be implemented. This provide instant access to precise data values, eliminating the ambiguity that may arise from solely interpreting color intensities.
 
@@ -561,20 +564,12 @@ While the calendar heatmap helps to display daily weather records within the con
 
 We created a `create_sunburst` function that generates a sunburst diagram visualisation using `plotly`. Users can select the following parameters, and the sunburst diagram would update accordingly:
 
--   `data`: The dataset containing the weather records
-
--   `selected_station`: The weather station from which the data is drawn.
-
--   `var_type`: The weather metric within the chosen dataset category
-
--   `year_range`: Defines the range of years over which the data should be visualised.
-
-| **Parameter**      | UI For Parameter Selection |
-|--------------------|----------------------------|
-| `data`             | Dropdown List              |
-| `var_type`         | Dropdown List              |
-| `selected_station` | Dropdown List              |
-| `year_range`       | Checkbox                   |
+| **Parameter** | Description | UI For Parameter Selection |
+|----|----|----|
+| `data` | Type of weather variable: rainfall, temperature, wind speed | Dropdown List |
+| `var_type` | Type of metric for the selected variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
+| `selected_station` | The weather station from which the data is drawn. | Dropdown List |
+| `year_range` | Defines the range of years over which the data should be visualised. | Checkbox |
 
 ::: {.callout-note collapse="true"}
 #### Expand to See the Code Block on Function Implementation
@@ -807,22 +802,18 @@ Line charts may be used to visualise time-series data across multiple weather st
 
 **General Implementation method**
 
-We developed a function named `create_line_chart`, using `plotly`. The function accepts several parameters such as:
+We developed a function named `create_line_chart`, using `plotly`.
 
--   `data`: The dataset containing the weather records
+-   **Tooltips**: A tooltip that display detailed data values when a user hovers a over specific day's point on the line chart would be implemented. This provide instant access to precise data values, eliminating the ambiguity.
 
--   `selected_station`: The weather station from which the data is drawn.
+Users can also select the following parameters:
 
--   `var_type`: The metric within the chosen dataset category
-
--   `date_range`: Defines the range of dateover which the data should be visualised.
-
-| **Parameter**      | UI For Parameter Selection              |
-|--------------------|-----------------------------------------|
-| `data`             | Dropdown List                           |
-| `selected_station` | Checkbox                                |
-| `var_type`         | Dropdown List                           |
-| `date_range`       | Input boxes for start date and end date |
+| **Parameter** | Description | UI For Parameter Selection |
+|----|----|----|
+| `data` | The type of weather variable under study: rainfall, temperature or wind speed. | Dropdown List |
+| `selected_station` | The weather station from which the data is drawn. | Checkbox |
+| `var_type` | The type of metric for the selected weather variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
+| `date_range` | Defines the range of dateover which the data should be visualised. | Input boxes for start date and end date |
 
 ::: {.callout-note collapse="true"}
 #### Expand to See the Code Block on Function Implementation
@@ -983,24 +974,37 @@ temp_lplot <- create_line_chart(
 temp_lplot
 ```
 
-# 4.0 Confirmatory Data Analysis
+## 3.4 STL Decomposition
 
-We considered incorporating confirmatory data analysis in our Shiny app. This function, designed using `ggstatsplot`, allows users to perform statistical comparisons across different years for a selected weather station and variable.
+We planned to include a **STL Decomposition** function in our Shiny application,decomposes time-series data into seasonal, trend, and residual components. While the initial EDA tools implemented is used primarily for initial data exploration (helping to uncover patterns, trends, and anomalies in a visually intuitive manner), STL decomposition visusalises a structural separation of components, allowing users to understand:
 
-We created a function named `create_between_stats` to perform the confirmatory data analysis. Apart from allowing users to choosing the dataset_type, station, years as per EDA, this function would also allow users to choose the statistical approach used in the CDA: parametric, non-parametric, robust or Bayesian. Users can also speciy the confidence level of the analysis.
+-   Underlying patterns explicitly
+
+-   Which patterns in the data are predictable (trend and seasonal) and which are not (residual).
+
+By understanding each component of the time series data, users can identify and shortlist the model required for time-series forecasting.
+
+**General Implementation Method**
+We developed a function named `create_ts_decomposition`, using `STL`.
+
+Users can also select the following parameters and the charts would be generated accordingly:
+
+| **Parameter** | Description | UI For Parameter Selection |
+|----|----|----|
+| `dataset_type` | The type of weather variable under study: rainfall, temperature or wind speed. | Dropdown List |
+| `selected_station` | The weather station from which the data is drawn. | Checkbox |
+| `selected_var` | The type of metric for the selected weather variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
+| `date_range` | Defines the range of dateover which the data should be visualised. | Input boxes for start date and end date |
 
 ::: {.callout-note collapse="true"}
 #### Expand to See the Code Block on Function Implementation
 
 ```{r}
-create_between_stats <- function(dataset_type, 
-                               selected_station,
-                               selected_var,
-                               years = c(2020:2024),
-                               stat_approach = "p",
-                               conf_level = 0.95) {
+create_ts_decomposition <- function(dataset_type,
+                                  selected_station,
+                                  selected_var,
+                                  date_range = c("2020-01-01", "2024-12-31")) {
   
-  # Variable mapping for different datasets
   var_mapping <- list(
     "rainfall" = list(
       "Total Rainfall" = "Daily Rainfall Total (mm)",
@@ -1019,14 +1023,164 @@ create_between_stats <- function(dataset_type,
     )
   )
   
-  # Select appropriate dataset
+  units <- list(
+    "rainfall" = "mm",
+    "temperature" = "°C",
+    "windspeed" = "km/h"
+  )
+  
   data <- switch(dataset_type,
                  "rainfall" = climate_rainfall_interpolated,
                  "temperature" = climate_temperature_interpolated,
                  "windspeed" = climate_windspeed_interpolated,
                  stop("Invalid dataset type"))
   
-  # Prepare the data
+  start_date <- as.Date(date_range[1])
+  end_date <- as.Date(date_range[2])
+  
+  months_diff <- length(seq(start_date, end_date, by = "month"))
+  
+  message("Date range: ", start_date, " to ", end_date)
+  message("Number of months in range: ", months_diff)
+  
+  ts_data <- data %>%
+    filter(Station == selected_station,
+           date >= start_date,
+           date <= end_date) %>%
+    select(date, Station, !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    rename(Value = !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    mutate(
+      year_month = yearmonth(date)
+    ) %>%
+    group_by(year_month) %>%
+    summarise(
+      Value = mean(Value, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    as_tsibble(index = year_month) %>%
+    fill_gaps()
+  
+  message("Number of observations in dataset: ", nrow(ts_data))
+  
+  if (nrow(ts_data) < 24) {
+    stop("Not enough data for decomposition. Need at least 24 months of data. Current months: ", nrow(ts_data))
+  }
+  
+  title <- paste(selected_var, "Time Series Decomposition at", selected_station,
+                "\nPeriod:", format(start_date, "%b %Y"), 
+                "to", format(end_date, "%b %Y"))
+  
+  decomp_plot <- ts_data %>%
+    model(
+      stl = STL(Value ~ season(period = 12) + trend())
+    ) %>%
+    components() %>%
+    autoplot() +
+    theme_bw() +
+    labs(
+      title = title,
+      x = "Period",
+      y = paste(selected_var, "(", units[[dataset_type]], ")"),
+      season_year = "Seasonal Pattern",
+      trend = "Trend",
+      remainder = "Random"
+    ) +
+    theme(
+      plot.title = element_text(size = 12, face = "bold"),
+      axis.title = element_text(size = 10),
+      axis.text = element_text(size = 9),
+      legend.position = "none"
+    )
+  
+  return(decomp_plot)
+}
+```
+:::
+
+**Example Usage**
+
+::: panel-tabset
+#### Mean Wind Speed \@ Changi (2020 - 2023)
+
+```{r, echo=FALSE}
+temp_decomp <- create_ts_decomposition(
+  dataset_type = "temperature",
+  selected_station = "Changi",
+  selected_var = "Mean Temperature",
+  date_range = c("2020-01-01", "2023-12-31")
+)
+
+temp_decomp
+```
+
+#### Total Rainfall \@ Changi (2020 - 2022)
+
+```{r, echo=FALSE}
+rain_decomp <- create_ts_decomposition(
+  dataset_type = "rainfall",
+  selected_station = "Changi",
+  selected_var = "Total Rainfall",
+  date_range = c("2020-01-01", "2022-12-31")
+)
+
+rain_decomp
+```
+
+#### Mean Wind Speed \@ Changi (2020 - 2024)
+
+```{r, echo=FALSE}
+wind_decomp <- create_ts_decomposition(
+  dataset_type = "windspeed",
+  selected_station = "Changi",
+  selected_var = "Mean Wind Speed",
+  date_range = c("2020-01-01", "2024-12-31")
+)
+
+wind_decomp
+```
+:::
+
+# 4.0 Confirmatory Data Analysis
+
+We considered incorporating confirmatory data analysis in our Shiny app. This function, designed using `ggstatsplot`, allows users to perform statistical comparisons across different years for a selected weather station and variable.
+
+We created a function named `create_between_stats` to perform the confirmatory data analysis. Apart from allowing users to choosing the dataset_type, station, years as per EDA, this function would also allow users to choose the statistical approach used in the CDA: parametric, non-parametric, robust or Bayesian. Users can also speciy the confidence level of the analysis.
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Block on Function Implementation
+
+```{r}
+create_between_stats <- function(dataset_type, 
+                               selected_station,
+                               selected_var,
+                               years = c(2020:2024),
+                               stat_approach = "p",
+                               conf_level = 0.95) {
+  
+  var_mapping <- list(
+    "rainfall" = list(
+      "Total Rainfall" = "Daily Rainfall Total (mm)",
+      "Highest 30 Min Rainfall" = "Highest 30 Min Rainfall (mm)",
+      "Highest 60 Min Rainfall" = "Highest 60 Min Rainfall (mm)",
+      "Highest 120 Min Rainfall" = "Highest 120 Min Rainfall (mm)"
+    ),
+    "temperature" = list(
+      "Mean Temperature" = "Mean Temperature (°C)",
+      "Maximum Temperature" = "Maximum Temperature (°C)",
+      "Minimum Temperature" = "Minimum Temperature (°C)"
+    ),
+    "windspeed" = list(
+      "Mean Wind Speed" = "Mean Wind Speed (km/h)",
+      "Max Wind Speed" = "Max Wind Speed (km/h)"
+    )
+  )
+  
+  data <- switch(dataset_type,
+                 "rainfall" = climate_rainfall_interpolated,
+                 "temperature" = climate_temperature_interpolated,
+                 "windspeed" = climate_windspeed_interpolated,
+                 stop("Invalid dataset type"))
+  
   plot_data <- data %>%
     filter(Station == selected_station,
            year(date) %in% years) %>%
@@ -1034,10 +1188,8 @@ create_between_stats <- function(dataset_type,
     mutate(Year = as.factor(year(date))) %>%
     rename(Value = !!sym(var_mapping[[dataset_type]][[selected_var]]))
   
-  # Create title based on selection
   title <- paste(selected_var, "Distribution by Year at", selected_station)
   
-  # Create subtitle based on statistical approach
   subtitle <- case_when(
     stat_approach == "p" ~ "Parametric statistics",
     stat_approach == "np" ~ "Non-parametric statistics",
@@ -1045,7 +1197,6 @@ create_between_stats <- function(dataset_type,
     TRUE ~ "Bayes statistics"
   )
   
-  # Create the plot
   p <- ggbetweenstats(
     data = plot_data,
     x = Year,
@@ -1064,14 +1215,11 @@ create_between_stats <- function(dataset_type,
   return(p)
 }
 ```
-
 :::
-
 
 **Example Usage**
 
 ::: panel-tabset
-
 #### Mean Temperature \@ Changi (2020 - 2023)
 
 ```{r, echo=FALSE}
@@ -1087,6 +1235,7 @@ temp_stats <- create_between_stats(
 temp_stats
 
 ```
+
 #### Total Rainfall \@ Changi (2021 - 2024)
 
 ```{r, echo=FALSE}
@@ -1101,6 +1250,7 @@ rain_stats <- create_between_stats(
 
 rain_stats
 ```
+
 #### Mean Wind Speed \@ Changi (2020 - 2024)
 
 ```{r, echo=FALSE}
@@ -1118,3 +1268,5 @@ wind_stats
 :::
 
 # 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
+
+# 6.0 UI Design
