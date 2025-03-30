@@ -1540,3 +1540,33 @@ wind_forecast$table
 :::
 
 # 6.0 UI Design
+
+## 6.1 Proposed User Journey
+
+![](images/clipboard-2759628416.png)
+
+## 6.2 Home Page
+
+![](images/clipboard-3003550232.png)
+
+![](images/clipboard-1936874898.png)
+
+## 6.3 Exploratory Data Analysis
+
+![](images/clipboard-565633028.png)
+
+![](images/clipboard-130558555.png)
+
+## 6.4 Time-Series Forecasting
+
+![](images/clipboard-3954488602.png)
+
+![](images/clipboard-2266058084.png)
+
+# 7.0 References
+
+Buathang, K., Lew, Y. Z. S., & Lim, J. J. (n.d.). Weather analytics. Retrieved from https://isss608-group9-weatheranalytics.shinyapps.io/shinyapp/
+
+Kam, T. S. (2023, December 4). R for Visual Analytics. Retrieved from https://r4va.netlify.app/
+
+Seah, G. (2021, July 31). Storyboard. Retrieved from https://giniceseah.netlify.app/posts/2021-07-31-storyboard/
