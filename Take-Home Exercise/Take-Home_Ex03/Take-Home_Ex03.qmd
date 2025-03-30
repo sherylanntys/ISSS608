@@ -1291,7 +1291,160 @@ wind_stats
 
 # 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
 
-## 5.1 Time-Series Forecasting: Comparing Across Models
+## 5.1 Time-Series Forecasting: Model Assumptions
+
+Before users begin forecasting the various weather parameters, we created a `create_model_diagnostics` function to assist in validating the assumptions of the time-series models by visualising the residuals. These diagnostics are crucial for ensuring that the model fits the data appropriately and that the forecasts it produces are reliable. The function handles different types of weather data—rainfall, temperature, and windspeed—and supports several model types including Simple Exponential Smoothing (SES), Holt's linear trend method, Holt-Winters seasonal methods, and ARIMA.
+
+The **diagnostics plots** include the following:
+
+-   **Residuals Plot**: Shows the residuals over time to help identify any apparent trends or patterns that the model hasn't captured. A random scatter of points around the zero line suggests that the model has successfully captured the underlying patterns in the data.
+
+<!-- -->
+
+-    **ACF Plot**: Displays the autocorrelation of the residuals. For a well-fitted model, we expect no significant autocorrelation in the residuals; significant spikes might indicate a model misspecification.
+
+-    **Histogram of Residuals**: Aids in checking the normality of the residuals. The histogram should ideally resemble a normal distribution, indicating that the prediction errors are random and model assumptions hold.
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Block on Function Implementation
+
+```{r}
+library(fable)
+library(feasts)
+library(ggplot2)
+
+create_model_diagnostics <- function(dataset_type,
+                                   selected_station,
+                                   selected_var,
+                                   selected_model,
+                                   training_start = "2020-01-01",
+                                   training_end = "2023-12-31") {
+  
+  var_mapping <- list(
+    "rainfall" = list(
+      "Total Rainfall" = "Daily Rainfall Total (mm)",
+      "Highest 30 Min Rainfall" = "Highest 30 Min Rainfall (mm)",
+      "Highest 60 Min Rainfall" = "Highest 60 Min Rainfall (mm)",
+      "Highest 120 Min Rainfall" = "Highest 120 Min Rainfall (mm)"
+    ),
+    "temperature" = list(
+      "Mean Temperature" = "Mean Temperature (°C)",
+      "Maximum Temperature" = "Maximum Temperature (°C)",
+      "Minimum Temperature" = "Minimum Temperature (°C)"
+    ),
+    "windspeed" = list(
+      "Mean Wind Speed" = "Mean Wind Speed (km/h)",
+      "Max Wind Speed" = "Max Wind Speed (km/h)"
+    )
+  )
+  
+  data <- switch(dataset_type,
+                "rainfall" = climate_rainfall_interpolated,
+                "temperature" = climate_temperature_interpolated,
+                "windspeed" = climate_windspeed_interpolated,
+                stop("Invalid dataset type"))
+  
+  training_start_date <- as.Date(training_start)
+  training_end_date <- as.Date(training_end)
+  
+  ts_data <- data %>%
+    filter(Station == selected_station,
+           date >= training_start_date,
+           date <= training_end_date) %>%
+    select(date, Station, !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    rename(Value = !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    mutate(year_month = yearmonth(date)) %>%
+    group_by(year_month) %>%
+    summarise(Value = mean(Value, na.rm = TRUE),
+              .groups = 'drop') %>%
+    as_tsibble(index = year_month) %>%
+    fill_gaps()
+  
+  model_spec <- switch(selected_model,
+                      "SES" = ETS(Value ~ error("A") + trend("N") + season("N")),
+                      "Holt" = ETS(Value ~ error("A") + trend("A") + season("N")),
+                      "Damped Holt" = ETS(Value ~ error("A") + trend("Ad") + season("N")),
+                      "Winter-Add" = ETS(Value ~ error("A") + trend("A") + season("A")),
+                      "Winter-Mult" = ETS(Value ~ error("M") + trend("A") + season("M")),
+                      "ARIMA" = ARIMA(Value),
+                      stop("Invalid model type"))
+  
+  fit <- ts_data %>%
+    model(Model = model_spec) 
+  
+  residuals_plot <- fit %>%
+    augment() %>%
+    autoplot(.innov) +
+    labs(title = paste("Residuals Plot for", selected_model, "Model"),
+         subtitle = paste("Station:", selected_station, "| Variable:", selected_var),
+         y = "Residuals",
+         x = "Time") +
+    theme_light() +
+    theme(plot.title = element_text(size = 12, face = "bold"),
+          plot.subtitle = element_text(size = 10),
+          axis.title = element_text(size = 10),
+          axis.text = element_text(size = 9))
+  
+  acf_plot <- fit %>%
+    augment() %>%
+    ACF(.innov) %>%
+    autoplot() +
+    labs(title = "ACF of Residuals") +
+    theme_light()
+  
+  hist_plot <- fit %>%
+    augment() %>%
+    ggplot(aes(x = .innov)) +
+    geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+    labs(title = "Histogram of Residuals",
+         x = "Residuals",
+         y = "Count") +
+    theme_light()
+  
+  combined_plot <- gridExtra::grid.arrange(
+    residuals_plot, acf_plot, hist_plot,
+    ncol = 1,
+    heights = c(1, 1, 1)
+  )
+  
+  return(combined_plot)
+}
+```
+:::
+
+**Example Usage**
+
+::: panel-tabset
+
+#### Mean Temperature (SES)
+
+```{r, echo=FALSE}
+diagnostics_plot <- create_model_diagnostics(
+    dataset_type = "temperature",
+    selected_station = "Changi",
+    selected_var = "Mean Temperature",
+    selected_model = "SES",
+    training_start = "2020-01-01",
+    training_end = "2023-12-31"
+)
+
+```
+
+#### Total Rainfall (Winter-Additive)
+```{r, echo=FALSE}
+rain_diagnostics <- create_model_diagnostics(
+    dataset_type = "rainfall",
+    selected_station = "Changi",
+    selected_var = "Total Rainfall",
+    selected_model = "Winter-Add",
+    training_start = "2020-01-01",
+    training_end = "2023-12-31"
+)
+
+```
+:::
+
+## 5.2 Time-Series Forecasting: Comparing Across Models
 
 After gaining an understanding of the time-series data via the EDA tools in Section 3.0, users can use the time-series forcasting tool to **forecast weather parameters** using various statistical models.
 
