@@ -1319,10 +1319,6 @@ Users can select the following parameters:
 #### Expand to See the Code Block on Function Implementation
 
 ```{r}
-library(fable)
-library(feasts)
-library(ggplot2)
-
 create_model_diagnostics <- function(dataset_type,
                                    selected_station,
                                    selected_var,
