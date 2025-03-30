@@ -19,7 +19,7 @@ execute:
 ```{r}
 pacman::p_load(readxl, dplyr, readr, lubridate, sf, 
                tmap, tidyverse, DT, zoo, plotly, magrittr, ggstatsplot,
-               feasts, tsibble, fable)
+               feasts, tsibble, fable, kableExtra, dplyr)
 ```
 
 ## 2.2 Data Scraping
@@ -371,6 +371,10 @@ A calendar heatmap would be used to **visualise daily weather records** across d
 
 -   **Colour Intensity**: The color intensity of each monthly segment varies according to specific weather data values, such as average temperature, total rainfall, or other relevant metrics. A single colour scheme is selected for each variable (e.g. temperature in shades of red, rainfall in shades of blue) to avoid confusion that comes with diverging colour schemes.
 
+**Function Objectives**
+
+The goal of this functionality is to provide users with a detailed visual representation of daily weather data throughout a selected year. This visualisation enables users to quickly understand day-to-day and month-to-month variations in specific weather parameters.
+
 **General Implementation Method**
 
 We created a function called `create_calendar_heatmap`, that takes in four parameters: the dataset, the selected weather station, the year of interest and the variable of interest. The heatmap colour would update depending on the dataset used.
@@ -378,7 +382,7 @@ We created a function called `create_calendar_heatmap`, that takes in four param
 **Parameters**
 
 | **Parameter** | Description | UI For Parameter Selection |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | `data` | Type of weather variable: rainfall, temperature, wind speed | Dropdown List |
 | `var_type` | Type of metric for the selected weather variable. For example, under temperature, users can select mean temperature, max temperature, min temperature. | Dropdown List |
 | `selected_station` | The weather station from which the data is drawn. | Dropdown List |
@@ -388,7 +392,6 @@ We created a function called `create_calendar_heatmap`, that takes in four param
 #### Expand to See the Code Block on Function Implementation
 
 ```{r}
-
 create_calendar_heatmap <- function(data, selected_station, selected_year, dataset_type, var_type) {
   
   var_mapping <- list(
@@ -560,12 +563,16 @@ While the calendar heatmap helps to display daily weather records within the con
 
 -   **Data Aggregation**: Given the daily granularity of our data sets, we would need to aggregate these information into monthly metrics to align with our visualisation structure. However, the aggregation must be tailored to the nature of each metric. For example, for Maximum Temperature, we should find the highest temperature recorded in the month, whereas for Mean Temperature, we should find the average temperature for the month.
 
+**Function Objectives**
+
+The purpose of this functionality is to enable users to visually explore and understand the **cyclical and seasonal patterns** in weather parameters through a radial chart.
+
 **General Implementation Method**
 
 We created a `create_sunburst` function that generates a sunburst diagram visualisation using `plotly`. Users can select the following parameters, and the sunburst diagram would update accordingly:
 
 | **Parameter** | Description | UI For Parameter Selection |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | `data` | Type of weather variable: rainfall, temperature, wind speed | Dropdown List |
 | `var_type` | Type of metric for the selected variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
 | `selected_station` | The weather station from which the data is drawn. | Dropdown List |
@@ -743,7 +750,7 @@ create_sunburst <- function(data, selected_station, dataset_type, var_type, year
 **Example Usage**
 
 ::: panel-tabset
-#### Mean Temperature \@ Pasir Panjang (2020-2023)
+#### Mean Temperature \@ Pasir Panjang (2020-2024)
 
 ```{r, echo=FALSE}
 #| fig-width: 12
@@ -754,7 +761,7 @@ temp_cplot <- create_sunburst(
   selected_station = "Pasir Panjang",
   dataset_type = "temperature",
   var_type = "Mean Temperature",
-  year_range = c(2020, 2023)
+  year_range = c(2020, 2024)
 )
 
 temp_cplot
@@ -798,7 +805,11 @@ wind_cplot
 
 ## 3.3 Line Chart
 
-Line charts may be used to visualise time-series data across multiple weather stations. This visualisation facilitates the comparison of weather trends / patterns over a continuous period.
+Line charts may be used to visualise time-series data across multiple weather stations. This visualisation facilitates the comparison of weather trends / patterns over a continuous period.This function enables users to **compare** temporal variables.
+
+**Function Objectives**
+
+The purpose of this functionality is to provide users with a dynamic and detailed visualization of weather parameter trends across multiple stations within a specified date range.
 
 **General Implementation method**
 
@@ -809,9 +820,9 @@ We developed a function named `create_line_chart`, using `plotly`.
 Users can also select the following parameters:
 
 | **Parameter** | Description | UI For Parameter Selection |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | `data` | The type of weather variable under study: rainfall, temperature or wind speed. | Dropdown List |
-| `selected_station` | The weather station from which the data is drawn. | Checkbox |
+| `selected_station` | The weather station from which the data is drawn. Users can select multiple stations for comparison. | Checkbox |
 | `var_type` | The type of metric for the selected weather variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
 | `date_range` | Defines the range of dateover which the data should be visualised. | Input boxes for start date and end date |
 
@@ -984,13 +995,18 @@ We planned to include a **STL Decomposition** function in our Shiny application,
 
 By understanding each component of the time series data, users can identify and shortlist the model required for time-series forecasting.
 
+**Function Objectives**
+
+The goal of this function is to empower users to decompose their selected time series data into its fundamental components in order to enhance user comprehension of the data, in preparation for advanced statistical modelling / forecasting.
+
 **General Implementation Method**
+
 We developed a function named `create_ts_decomposition`, using `STL`.
 
 Users can also select the following parameters and the charts would be generated accordingly:
 
 | **Parameter** | Description | UI For Parameter Selection |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | `dataset_type` | The type of weather variable under study: rainfall, temperature or wind speed. | Dropdown List |
 | `selected_station` | The weather station from which the data is drawn. | Checkbox |
 | `selected_var` | The type of metric for the selected weather variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
@@ -1140,7 +1156,7 @@ wind_decomp
 ```
 :::
 
-# 4.0 Confirmatory Data Analysis
+# 4.0 Confirmatory Data Analysis (Optional)
 
 We considered incorporating confirmatory data analysis in our Shiny app. This function, designed using `ggstatsplot`, allows users to perform statistical comparisons across different years for a selected weather station and variable.
 
@@ -1259,7 +1275,7 @@ wind_stats <- create_between_stats(
   selected_station = "Changi",
   selected_var = "Mean Wind Speed",
   years = c(2020:2024),
-  stat_approach = "r",  # robust
+  stat_approach = "r",
   conf_level = 0.90
 )
 
@@ -1268,5 +1284,248 @@ wind_stats
 :::
 
 # 5.0 Time-Series Analysis: Visualising Time-Series Forecasting of Weather Parameters
+
+## 5.1 Time-Series Forecasting Using Different Models
+
+After gaining an understanding of the time-series data via the EDA tools in Section 3.0, users can use the time-series forcasting tool to **forecast weather parameters** using various statistical models.
+
+**Function Objective**
+
+The goal of this functionality is to empower users to not only generate but also compare forecasts from multiple models, thereby identifying the most accurate predictive model for their specific context.
+
+**General Implementation Method**
+
+We developed a function, `create_forecast`, that users can interact with to perform weather forecasts based on historical data, using `forecast()` of fable. Users can select and interact with the following parameters:
+
+| **Parameter** | Description | UI For Parameter Selection |
+|------------------------|------------------------|------------------------|
+| `dataset_type` | The type of weather variable under study: rainfall, temperature or wind speed. | Dropdown List |
+| `selected_station` | The weather station from which the data is drawn. | Dropdown List |
+| `selected_var` | The type of metric for the selected weather variable. For example, for temperature, users can select mean temperature, max temperature or min temperature. | Dropdown List |
+| `models` | Users can choose from a range of models, including SES, Holt, Damped Hold, Holt-Winters (additive and multiplicative), and ARIMA. | Checkbox |
+| `training_start`, `training_end`, `holdout_end` | Users can specify training and holdout periods. | Input fields. |
+
+The function outputs an **interactive plot** that visually compares the forecasted data against actual data. Users can hover over the line chart for more details on the data value. A **reference line** was added in the plot to allow users to know when the holdout period starts. The function also outputs a **table** that displays forecasting accuracy metrics such as AIC, BIC, and AICc. These plots are generated using `ggplotly`.
+
+::: {.callout-note collapse="true"}
+#### Expand to See the Code Block on Function Implementation
+
+```{r}
+create_forecast <- function(dataset_type,
+                          selected_station,
+                          selected_var,
+                          training_start = "2020-01-01",
+                          training_end = "2023-12-31",
+                          holdout_end = "2024-12-31",
+                          models = c("SES", "Holt", "Damped Holt", "Winter-Add", "Winter-Mult", "ARIMA")) {
+  
+  var_mapping <- list(
+    "rainfall" = list(
+      "Total Rainfall" = "Daily Rainfall Total (mm)",
+      "Highest 30 Min Rainfall" = "Highest 30 Min Rainfall (mm)",
+      "Highest 60 Min Rainfall" = "Highest 60 Min Rainfall (mm)",
+      "Highest 120 Min Rainfall" = "Highest 120 Min Rainfall (mm)"
+    ),
+    "temperature" = list(
+      "Mean Temperature" = "Mean Temperature (°C)",
+      "Maximum Temperature" = "Maximum Temperature (°C)",
+      "Minimum Temperature" = "Minimum Temperature (°C)"
+    ),
+    "windspeed" = list(
+      "Mean Wind Speed" = "Mean Wind Speed (km/h)",
+      "Max Wind Speed" = "Max Wind Speed (km/h)"
+    )
+  )
+  
+  units <- list(
+    "rainfall" = "mm",
+    "temperature" = "°C",
+    "windspeed" = "km/h"
+  )
+  
+  data <- switch(dataset_type,
+                 "rainfall" = climate_rainfall_interpolated,
+                 "temperature" = climate_temperature_interpolated,
+                 "windspeed" = climate_windspeed_interpolated,
+                 stop("Invalid dataset type"))
+  
+  training_start_date <- as.Date(training_start)
+  training_end_date <- as.Date(training_end)
+  holdout_end_date <- as.Date(holdout_end)
+  
+  horizon <- length(seq(training_end_date, holdout_end_date, by = "month")) - 1
+  
+  message("Training period: ", training_start_date, " to ", training_end_date)
+  message("Holdout period end: ", holdout_end_date)
+  message("Forecast horizon (months): ", horizon)
+
+  ts_data <- data %>%
+    filter(Station == selected_station,
+           date >= training_start_date,
+           date <= holdout_end_date) %>%
+    select(date, Station, !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    rename(Value = !!sym(var_mapping[[dataset_type]][[selected_var]])) %>%
+    mutate(
+      year_month = yearmonth(date),
+      Type = if_else(date <= training_end_date, "Training", "Hold-out")
+    ) %>%
+    group_by(year_month) %>%
+    summarise(
+      Value = mean(Value, na.rm = TRUE),
+      Type = first(Type),
+      .groups = 'drop'
+    ) %>%
+    as_tsibble(index = year_month) %>%
+    fill_gaps()
+  
+  training_data <- ts_data %>%
+    filter(Type == "Training")
+  
+  model_spec <- list()
+  
+  if ("SES" %in% models) {
+    model_spec$SES <- ETS(Value ~ error("A") + trend("N") + season("N"))
+  }
+  if ("Holt" %in% models) {
+    model_spec$Holt <- ETS(Value ~ error("A") + trend("A") + season("N"))
+  }
+  if ("Damped Holt" %in% models) {
+    model_spec$`Damped Holt` <- ETS(Value ~ error("A") + trend("Ad") + season("N"))
+  }
+  if ("Winter-Add" %in% models) {
+    model_spec$`Winter-Add` <- ETS(Value ~ error("A") + trend("A") + season("A"))
+  }
+  if ("Winter-Mult" %in% models) {
+    model_spec$`Winter-Mult` <- ETS(Value ~ error("M") + trend("A") + season("M"))
+  }
+  if ("ARIMA" %in% models) {
+    model_spec$ARIMA <- ARIMA(Value)
+  }
+  
+  fit_models <- training_data %>%
+    model(!!!model_spec)
+  
+  forecast_data <- fit_models %>%
+    forecast(h = paste(horizon, "months"))
+  
+  base_plot <- forecast_data %>%
+    autoplot(ts_data, level = NULL) +
+    theme_light() +
+    geom_vline(xintercept = yearmonth(training_end_date +days(1)), 
+               linetype = "dashed", 
+               color = "grey50") +
+    labs(
+      title = paste("Forecast for", selected_var, "at", selected_station),
+      subtitle = paste("Training:", format(training_start_date, "%b %Y"),
+                      "to", format(training_end_date, "%b %Y"),
+                      "| Holdout:", format(holdout_end_date, "%b %Y")),
+      x = "Period",
+      y = paste(selected_var, "(", units[[dataset_type]], ")")
+    ) +
+    theme(
+      plot.title = element_text(size = 12, face = "bold"),
+      axis.title = element_text(size = 10),
+      axis.text = element_text(size = 9)
+    )
+  
+  forecast_plot <- ggplotly(base_plot, tooltip = c("x", "y", ".model")) %>%
+    layout(
+      hoverlabel = list(bgcolor = "white"),
+      showlegend = TRUE,
+      legend = list(title = list(text = "Models"))
+    )
+  
+  for(i in 1:length(forecast_plot$x$data)) {
+    forecast_plot$x$data[[i]]$text <- format(as.Date(forecast_plot$x$data[[i]]$x), "%b %Y")
+    forecast_plot$x$data[[i]]$hovertemplate <- paste(
+      "%{text}<br>",
+      "Value: %{y:.1f}", units[[dataset_type]], "<br>",
+      "Model: ", forecast_plot$x$data[[i]]$name, "<br>",
+      "<extra></extra>"
+    )
+  }
+  
+  accuracy_table <- fit_models %>%
+    report() %>%
+    select(.model, AIC, BIC, AICc) %>%
+    rename(Model = .model) %>%
+    kable(
+      caption = "Model Accuracy Metrics",
+      format = "html",
+      digits = 2
+    ) %>%
+    kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed"),
+      full_width = FALSE
+    )
+  
+  return(list(
+    plot = forecast_plot,
+    table = accuracy_table
+  ))
+}
+```
+:::
+
+::: panel-tabset
+#### Mean Temperature \@ Changi (Training: 2020 - 2023, Forecast: 2024)
+
+```{r, echo=FALSE}
+#| fig-width: 16
+#| fig-height: 8
+temp_forecast <- create_forecast(
+  dataset_type = "temperature",
+  selected_station = "Changi",
+  selected_var = "Mean Temperature",
+  training_start = "2020-01-01",
+  training_end = "2023-12-31",
+  holdout_end = "2024-12-31",
+  models = c("SES", "Holt", "Winter-Add", "ARIMA")
+)
+
+temp_forecast$plot
+temp_forecast$table
+```
+
+#### Total Rain \@ Changi (Training: 2020 - 2023, Forecast: 2024 - 2025)
+
+```{r, echo=FALSE}
+#| fig-width: 16
+#| fig-height: 8
+
+rain_forecast <- create_forecast(
+  dataset_type = "rainfall",
+  selected_station = "Changi",
+  selected_var = "Total Rainfall",
+  training_start = "2020-01-01",
+  training_end = "2023-12-31",
+  holdout_end = "2025-12-31",
+  models = c("Winter-Add", "Winter-Mult", "ARIMA")
+)
+
+rain_forecast$plot
+rain_forecast$table
+```
+
+#### Mean Wind Speed \@ Changi (Training: 2020 - 2022, Forecast: 2023)
+
+```{r, echo=FALSE}
+#| fig-width: 16
+#| fig-height: 8
+
+wind_forecast <- create_forecast(
+  dataset_type = "windspeed",
+  selected_station = "Changi",
+  selected_var = "Mean Wind Speed",
+  training_start = "2020-01-01",
+  training_end = "2022-12-31",
+  holdout_end = "2023-12-31",
+  models = c("SES", "Holt", "ARIMA")
+)
+
+wind_forecast$plot
+wind_forecast$table
+```
+:::
 
 # 6.0 UI Design
